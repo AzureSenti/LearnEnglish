@@ -1,15 +1,38 @@
+# --- Android Studio / IntelliJ ---
+.idea/
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+*.iws
+*.ipr
+out/
+gen/
+
+# --- Gradle ---
+.gradle/
+build/
+/captures/
+
+# --- Local Config / Secrets ---
+# File này chứa đường dẫn SDK trên máy cá nhân, TUYỆT ĐỐI không push
 local.properties
+
+# --- NDK / C++ ---
+.externalNativeBuild/
+.cxx/
+*.pyc
+
+# --- Log files ---
+*.log
+
+# --- OS specific ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Backup files ---
+*.bak
+*.swp
+*~
+
+# --- Android Test & Lint ---
+lint/intermediate-res/
+lint/generated/
