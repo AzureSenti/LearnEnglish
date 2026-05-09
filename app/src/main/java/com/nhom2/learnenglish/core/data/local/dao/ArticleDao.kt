@@ -10,7 +10,7 @@ import com.nhom2.learnenglish.core.data.local.entity.WordEntity
 interface ArticleDao : BaseDao<ArticleEntity> {
 
     @Query("SELECT * FROM article WHERE id = :id")
-    suspend fun getById(id: Long): WordEntity?
+    suspend fun getById(id: Long): ArticleEntity?
 
     @Query("Select * from article")
     suspend fun getAll(): List<ArticleEntity>
