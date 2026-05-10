@@ -11,24 +11,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LearnEnglish">
+
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".LibraryActivity"
+            android:name=".ui.activity.LibraryActivity"
             android:exported="false" />
+
         <activity
-            android:name=".ArticlesActivity"
+            android:name=".ui.activity.ArticlesActivity"
             android:exported="false" />
+
         <activity
-            android:name=".ArticleDetailActivity"
+            android:name=".ui.activity.ArticleDetailActivity"
             android:exported="false" />
+
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.nhom2.learnenglish;
+package com.nhom2.learnenglish.ui.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,6 +6,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.nhom2.learnenglish.R;
+import com.nhom2.learnenglish.model.Article;
+
 import java.util.List;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {

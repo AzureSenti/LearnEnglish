@@ -1,4 +1,4 @@
-package com.nhom2.learnenglish;
+package com.nhom2.learnenglish.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.nhom2.learnenglish.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,16 +57,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Phương thức điều hướng dùng chung để đảm bảo tính nhất quán (SOLID - DRY)
-     * @param targetActivity Lớp activity đích
-     */
     private void navigateTo(Class<?> targetActivity) {
         Intent intent = new Intent(MainActivity.this, targetActivity);
-        // Tái sử dụng activity nếu đã có trong stack
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
-        // Hiệu ứng chuyển trang tức thì (giống chuyển Tab)
         overridePendingTransition(0, 0);
     }
 

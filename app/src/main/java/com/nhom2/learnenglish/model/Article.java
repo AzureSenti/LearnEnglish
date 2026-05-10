@@ -1,4 +1,4 @@
-package com.nhom2.learnenglish;
+package com.nhom2.learnenglish.model;
 
 public class Article {
     private String title;

@@ -1,4 +1,4 @@
-package com.nhom2.learnenglish;
+package com.nhom2.learnenglish.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,11 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.nhom2.learnenglish.R;
+import com.nhom2.learnenglish.model.Article;
+import com.nhom2.learnenglish.ui.adapter.ArticleAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
