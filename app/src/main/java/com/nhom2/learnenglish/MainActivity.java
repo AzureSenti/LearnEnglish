@@ -1,13 +1,11 @@
 package com.nhom2.learnenglish;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
 
 import com.nhom2.learnenglish.core.data.local.mockdata.MockDataImport;
 import com.nhom2.learnenglish.core.util.Navigator;
