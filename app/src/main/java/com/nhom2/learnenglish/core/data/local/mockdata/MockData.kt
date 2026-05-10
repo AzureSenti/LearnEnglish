@@ -1,20 +1,19 @@
-package com.nhom2.learnenglish.core.data.local
+package com.nhom2.learnenglish.core.data.local.mockdata
 
-
-import com.nhom2.learnenglish.core.data.local.entity.*
+import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity
 
 object MockData {
     val articles = listOf(
         ArticleEntity(
             title = "A Saharan Spinosaurus",
             content = "Today, Jenguebi is dry and barren, with few trees and endless sand. The local Tuareg community calls the area where the fossils were found Sirig Taghat, which translates to “No water, no goat.”\n" +
-                "\n" +
-                "Sereno was drawn to the Sahara because of a report by French geologist Hugues Faure in the 1950s of a dinosaur tooth he found in Niger and wanted to search for similar sites.\n" +
-                "\n" +
-                "“I knew it was the needle in the haystack,” Sereno says of the remote fossil site. “It could easily have been swallowed by the sand.”\n" +
-                "\n" +
-                "Led by a local guide named Abdul Nasser riding on a moped across the desert, Sereno and Vidal first scouted the site in 2019 and found a Spinosaurus jawbone, along with a handful of other fossils. After returning in 2022, they ultimately identified bones from three S. mirabilis individuals, along with another predatory dinosaur named Carcharodontosaurus, two long-necked sauropod dinosaurs, crocodiles, turtles, and a freshwater fish species that could reach 12 feet long.",
-            ),
+                    "\n" +
+                    "Sereno was drawn to the Sahara because of a report by French geologist Hugues Faure in the 1950s of a dinosaur tooth he found in Niger and wanted to search for similar sites.\n" +
+                    "\n" +
+                    "“I knew it was the needle in the haystack,” Sereno says of the remote fossil site. “It could easily have been swallowed by the sand.”\n" +
+                    "\n" +
+                    "Led by a local guide named Abdul Nasser riding on a moped across the desert, Sereno and Vidal first scouted the site in 2019 and found a Spinosaurus jawbone, along with a handful of other fossils. After returning in 2022, they ultimately identified bones from three S. mirabilis individuals, along with another predatory dinosaur named Carcharodontosaurus, two long-necked sauropod dinosaurs, crocodiles, turtles, and a freshwater fish species that could reach 12 feet long.",
+        ),
 
         ArticleEntity(
             title = "China develops ultra-low-cost iron battery that retains 99.4% efficiency for over 16 years",
