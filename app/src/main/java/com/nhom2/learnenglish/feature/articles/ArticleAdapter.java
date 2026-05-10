@@ -1,4 +1,4 @@
-package com.nhom2.learnenglish.ui.adapter;
+package com.nhom2.learnenglish.feature.articles;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,23 +8,30 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nhom2.learnenglish.R;
-import com.nhom2.learnenglish.model.Article;
+import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity;
 
 import java.util.List;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
 
-    private List<Article> articleList;
+
+    private List<ArticleEntity> articleData;
     private OnArticleClickListener listener;
 
     public interface OnArticleClickListener {
-        void onArticleClick(Article article);
+        void onArticleClick(ArticleEntity article);
     }
 
-    public ArticleAdapter(List<Article> articleList, OnArticleClickListener listener) {
-        this.articleList = articleList;
+    public ArticleAdapter( OnArticleClickListener listener) {
+
         this.listener = listener;
     }
+
+    public void updateData(List<ArticleEntity> newData) {
+        this.articleData = newData;
+        notifyDataSetChanged();
+    }
+
 
     @NonNull
     @Override
@@ -35,13 +42,15 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     @Override
     public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
-        Article article = articleList.get(position);
+        ArticleEntity article = articleData.get(position);
+
+
         holder.tvTitle.setText(article.getTitle());
         holder.tvDescription.setText(article.getDescription());
         holder.tvLevel.setText(article.getLevel());
         holder.tvCategory.setText(article.getCategory());
         holder.tvReadTime.setText(article.getReadTime());
-        
+
         holder.tvStatus.setVisibility(article.isCompleted() ? View.VISIBLE : View.GONE);
 
         holder.itemView.setOnClickListener(v -> {
@@ -50,10 +59,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
             }
         });
     }
-
     @Override
     public int getItemCount() {
-        return articleList.size();
+        return articleData != null ? articleData.size() : 0;
     }
 
     static class ArticleViewHolder extends RecyclerView.ViewHolder {

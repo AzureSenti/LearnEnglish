@@ -1,4 +1,4 @@
-package com.nhom2.learnenglish.ui.activity;
+package com.nhom2.learnenglish.feature.mainmenu;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +13,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.nhom2.learnenglish.R;
+import com.nhom2.learnenglish.feature.articles.ArticlesActivity;
+import com.nhom2.learnenglish.feature.articles.ArticleDetailActivity;
+import com.nhom2.learnenglish.ui.activity.LibraryActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainMenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void navigateTo(Class<?> targetActivity) {
-        Intent intent = new Intent(MainActivity.this, targetActivity);
+        Intent intent = new Intent(MainMenuActivity.this, targetActivity);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
         overridePendingTransition(0, 0);

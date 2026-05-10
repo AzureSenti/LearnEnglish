@@ -13,7 +13,7 @@
         android:theme="@style/Theme.LearnEnglish">
 
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,16 +22,13 @@
         </activity>
 
         <activity
-            android:name=".ui.activity.LibraryActivity"
+            android:name=".feature.mainmenu.MainMenuActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.activity.ArticlesActivity"
+            android:name=".feature.articles.ArticlesActivity"
             android:exported="false" />
 
-        <activity
-            android:name=".ui.activity.ArticleDetailActivity"
-            android:exported="false" />
 
     </application>
 

@@ -13,6 +13,10 @@ object MockData {
                     "“I knew it was the needle in the haystack,” Sereno says of the remote fossil site. “It could easily have been swallowed by the sand.”\n" +
                     "\n" +
                     "Led by a local guide named Abdul Nasser riding on a moped across the desert, Sereno and Vidal first scouted the site in 2019 and found a Spinosaurus jawbone, along with a handful of other fossils. After returning in 2022, they ultimately identified bones from three S. mirabilis individuals, along with another predatory dinosaur named Carcharodontosaurus, two long-necked sauropod dinosaurs, crocodiles, turtles, and a freshwater fish species that could reach 12 feet long.",
+            level = "B2 Intermediate",
+            category = "Business",
+            readTime = "5 min read",
+            isCompleted = true
         ),
 
         ArticleEntity(
@@ -26,15 +30,13 @@ object MockData {
                     "\n" +
                     "The main challenge for iron flow batteries has been their short lifespan. Over time, the battery’s active materials can break down or leak through internal membranes, reducing efficiency and shortening operational life.\n" +
                     "\n" +
-                    "To solve this, the Chinese team designed a new iron compound that acts like a protective shield. It helps prevent damage to the battery’s core materials and stops them from leaking across the membrane, as reported by the South China Morning Post.\n"
+                    "To solve this, the Chinese team designed a new iron compound that acts like a protective shield. It helps prevent damage to the battery’s core materials and stops them from leaking across the membrane, as reported by the South China Morning Post.\n",
+
+            level = "B2 Intermediate",
+            category = "Business",
+            readTime = "5 min read",
+            isCompleted = false
         )
-
-
     )
 
-    fun generateInitialArticle(): List<ArticleEntity> {
-        return articles.map { article ->
-            ArticleEntity(title = article.title, content = article.content)
-        }
-    }
 }

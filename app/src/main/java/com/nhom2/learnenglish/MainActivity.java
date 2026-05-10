@@ -10,7 +10,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.nhom2.learnenglish.core.data.local.mockdata.MockDataImport;
-import com.nhom2.learnenglish.feature.articles.ArticlesActivity;
+import com.nhom2.learnenglish.core.util.Navigator;
+import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
         MockDataImport.INSTANCE.importIfNeeded(this);
 
-        Intent intent = new Intent(this, ArticlesActivity.class);
-        startActivity(intent);
+        Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
+
         finish();
     }
 }

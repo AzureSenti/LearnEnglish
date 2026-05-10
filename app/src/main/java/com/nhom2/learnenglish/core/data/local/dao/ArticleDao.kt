@@ -15,4 +15,8 @@ interface ArticleDao : BaseDao<ArticleEntity> {
     @Query("Select * from article")
     suspend fun getAll(): List<ArticleEntity>
 
+    @Query("DELETE FROM article")
+    suspend fun deleteAll()
 }
+
+

@@ -1,4 +1,4 @@
-package com.nhom2.learnenglish.ui.activity;
+package com.nhom2.learnenglish.feature.articles;
 
 import android.os.Bundle;
 import android.view.View;
