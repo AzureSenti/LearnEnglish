@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +19,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        
+
+        setupWindowInsets();
+        setupNavigation();
+    }
+
+    private void setupWindowInsets() {
         View mainView = findViewById(R.id.main);
         if (mainView != null) {
             ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
@@ -27,30 +33,38 @@ public class MainActivity extends AppCompatActivity {
                 return insets;
             });
         }
+    }
 
-        // Điều hướng Bottom Navigation
+    private void setupNavigation() {
+        // Nút See All trong phần Featured Articles
+        TextView btnSeeAllArticles = findViewById(R.id.btn_see_all_articles);
+        if (btnSeeAllArticles != null) {
+            btnSeeAllArticles.setOnClickListener(v -> navigateTo(ArticlesActivity.class));
+        }
+
+        // Điều hướng Bottom Navigation - Library
         LinearLayout navLibrary = findViewById(R.id.nav_library);
         if (navLibrary != null) {
-            navLibrary.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, LibraryActivity.class);
-                    // FLAG_ACTIVITY_REORDER_TO_FRONT giúp tái sử dụng activity nếu nó đã tồn tại
-                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    startActivity(intent);
-                    // Loại bỏ hiệu ứng trượt mặc định để cảm giác giống chuyển Tab hơn
-                    overridePendingTransition(0, 0);
-                }
-            });
+            navLibrary.setOnClickListener(v -> navigateTo(LibraryActivity.class));
         }
-        
-        // Tab hiện tại (Explore) - không cần xử lý click hoặc xử lý để scroll lên đầu
+    }
+
+    /**
+     * Phương thức điều hướng dùng chung để đảm bảo tính nhất quán (SOLID - DRY)
+     * @param targetActivity Lớp activity đích
+     */
+    private void navigateTo(Class<?> targetActivity) {
+        Intent intent = new Intent(MainActivity.this, targetActivity);
+        // Tái sử dụng activity nếu đã có trong stack
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
+        // Hiệu ứng chuyển trang tức thì (giống chuyển Tab)
+        overridePendingTransition(0, 0);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // Loại bỏ hiệu ứng khi đóng activity để mượt mà
         if (isFinishing()) {
             overridePendingTransition(0, 0);
         }
