@@ -42,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
             btnSeeAllArticles.setOnClickListener(v -> navigateTo(ArticlesActivity.class));
         }
 
+        // Card bài báo nổi bật ở trang chủ
+        LinearLayout cardFeaturedArticle = findViewById(R.id.card_featured_article);
+        if (cardFeaturedArticle != null) {
+            cardFeaturedArticle.setOnClickListener(v -> navigateTo(ArticleDetailActivity.class));
+        }
+
         // Điều hướng Bottom Navigation - Library
         LinearLayout navLibrary = findViewById(R.id.nav_library);
         if (navLibrary != null) {
