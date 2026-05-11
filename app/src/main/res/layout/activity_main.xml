@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
-    tools:context=".MainActivity">
+    tools:context=".ui.activity.MainActivity">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -288,13 +288,17 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/btn_view_all_word_sets"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:text="View All"
                     android:textColor="@color/blue_primary"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground" />
             </RelativeLayout>
 
             <LinearLayout
@@ -304,6 +308,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/card_word_set_tech"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -311,7 +316,10 @@
                     android:background="@drawable/bg_card_white"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <ImageView
                         android:layout_width="24dp"
@@ -338,6 +346,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/card_word_set_daily"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -345,7 +354,10 @@
                     android:background="@drawable/bg_card_white"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <ImageView
                         android:layout_width="24dp"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
-    tools:context=".LibraryActivity">
+    tools:context=".ui.activity.LibraryActivity">
 
     <!-- Top App Bar -->
     <androidx.appcompat.widget.Toolbar
@@ -76,7 +76,7 @@
                     android:src="@drawable/ic_search" />
             </RelativeLayout>
 
-            <!-- Grid of Word Sets (Placeholder) -->
+            <!-- Grid of Word Sets -->
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -85,8 +85,9 @@
                 android:columnCount="2"
                 android:rowOrderPreserved="false">
 
-                <!-- Item 1 -->
+                <!-- Item 1: Irregular Verbs -->
                 <LinearLayout
+                    android:id="@+id/card_irregular_verbs"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -94,7 +95,10 @@
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/bg_card_white"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -138,8 +142,9 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <!-- Item 2 -->
+                <!-- Item 2: IELTS Prep -->
                 <LinearLayout
+                    android:id="@+id/card_ielts_prep"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -147,7 +152,10 @@
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/bg_card_white"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -191,8 +199,9 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <!-- Item 3 -->
+                <!-- Item 3: IT Vocabulary -->
                 <LinearLayout
+                    android:id="@+id/card_it_vocabulary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -200,7 +209,10 @@
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/bg_card_white"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -244,8 +256,9 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <!-- Item 4 -->
+                <!-- Item 4: Travel Essentials -->
                 <LinearLayout
+                    android:id="@+id/card_travel_essentials"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -253,7 +266,10 @@
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/bg_card_white"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -297,8 +313,9 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <!-- Item 5 -->
+                <!-- Item 5: Business Idioms -->
                 <LinearLayout
+                    android:id="@+id/card_business_idioms"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -306,7 +323,10 @@
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/bg_card_white"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <RelativeLayout
                         android:layout_width="match_parent"

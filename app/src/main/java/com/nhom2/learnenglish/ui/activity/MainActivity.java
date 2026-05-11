@@ -50,6 +50,28 @@ public class MainActivity extends AppCompatActivity {
             cardFeaturedArticle.setOnClickListener(v -> navigateTo(ArticleDetailActivity.class));
         }
 
+        // Word Set: Tech Idioms
+        LinearLayout cardWordSetTech = findViewById(R.id.card_word_set_tech);
+        if (cardWordSetTech != null) {
+            cardWordSetTech.setOnClickListener(v -> {
+                Intent intent = new Intent(this, WordSetDetailActivity.class);
+                intent.putExtra("SET_TITLE", "Tech Idioms");
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            });
+        }
+
+        // Word Set: Daily Phrases
+        LinearLayout cardWordSetDaily = findViewById(R.id.card_word_set_daily);
+        if (cardWordSetDaily != null) {
+            cardWordSetDaily.setOnClickListener(v -> {
+                Intent intent = new Intent(this, WordSetDetailActivity.class);
+                intent.putExtra("SET_TITLE", "Daily Phrases");
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            });
+        }
+
         // Điều hướng Bottom Navigation - Library
         LinearLayout navLibrary = findViewById(R.id.nav_library);
         if (navLibrary != null) {
