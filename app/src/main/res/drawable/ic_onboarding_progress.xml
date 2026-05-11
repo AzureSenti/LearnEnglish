@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- Bars -->
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M28,78 H38 V98 H28 Z" />
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M44,68 H54 V98 H44 Z" />
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M60,58 H70 V98 H60 Z" />
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M76,48 H86 V98 H76 Z" />
+    <!-- Trophy hint -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M18,38 H42 V52 H18 Z" />
+    <path
+        android:fillColor="#FFA000"
+        android:pathData="M26,52 H34 V62 H26 Z" />
+</vector>

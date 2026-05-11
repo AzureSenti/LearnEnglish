@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="background_screen">#F8F9FE</color>
+    <color name="background_screen_alt">#F9F9FB</color>
+    <color name="background_screen_soft">#F8F9FF</color>
+
+    <color name="primary_blue">#0056B3</color>
+    <color name="primary_blue_bright">#0056D2</color>
+    <color name="title_blue_dark">#0047AB</color>
+
+    <color name="green_primary">#006B44</color>
+    <color name="green_primary_dark">#006847</color>
+
+    <color name="text_primary">#1A1A1A</color>
+    <color name="text_secondary">#4A4A4A</color>
+    <color name="text_muted">#757575</color>
+    <color name="text_hint">#9E9E9E</color>
+
+    <color name="border_light">#DDE1E8</color>
+    <color name="divider_light">#E8EAEF</color>
+
+    <color name="error_red">#C62828</color>
+    <color name="error_red_dark">#B71C1C</color>
+    <color name="error_background">#FFEBEE</color>
+
+    <color name="illustration_teal">#B2DFDB</color>
+    <color name="illustration_teal_soft">#E0F7FA</color>
+    <color name="illustration_grey_panel">#ECEFF4</color>
+
+    <color name="footer_strip_bg">#F0F2F8</color>
+    <color name="card_white">#FFFFFF</color>
+
+    <color name="logo_circle_blue">#1565C0</color>
+    <color name="logo_shield">#1A237E</color>
+
+    <!-- Profile/Statistics redesign -->
+    <color name="surface_soft">#F4F6FB</color>
+    <color name="surface_card">#FFFFFF</color>
+    <color name="icon_muted">#8A94A6</color>
+    <color name="chip_level_bg">#DCE8FF</color>
+    <color name="chip_level_text">#2B5FDD</color>
+    <color name="stat_blue_bg">#EEF4FF</color>
+    <color name="stat_yellow_bg">#FFF5D6</color>
+    <color name="stat_purple_bg">#F0E9FF</color>
+    <color name="badge_green_bg">#DFF7EA</color>
+    <color name="badge_yellow_bg">#FFF5D6</color>
+    <color name="badge_purple_bg">#EEE9FF</color>
+    <color name="nav_inactive">#9AA3B2</color>
+</resources>

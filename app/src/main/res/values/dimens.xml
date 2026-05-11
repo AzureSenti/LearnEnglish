@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="screen_padding_horizontal">24dp</dimen>
+    <dimen name="screen_padding_vertical">24dp</dimen>
+    <dimen name="input_corner_radius">12dp</dimen>
+    <dimen name="button_corner_radius">12dp</dimen>
+    <dimen name="card_corner_large">20dp</dimen>
+    <dimen name="card_corner_medium">16dp</dimen>
+    <dimen name="skip_corner_radius">20dp</dimen>
+
+    <dimen name="card_corner_small">14dp</dimen>
+    <dimen name="nav_height">72dp</dimen>
+</resources>

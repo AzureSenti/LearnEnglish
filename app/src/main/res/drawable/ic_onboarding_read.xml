@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- Phone frame -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M38,18 H82 A8,8 0 0,1 90,26 V94 A8,8 0 0,1 82,102 H38 A8,8 0 0,1 30,94 V26 A8,8 0 0,1 38,18 Z" />
+    <path
+        android:fillColor="@color/illustration_teal"
+        android:pathData="M42,32 H78 V88 H42 Z" />
+    <!-- Simple figure -->
+    <path
+        android:fillColor="#5C6BC0"
+        android:pathData="M52,72 A10,10 0 1,1 72,72 L72,88 H52 Z" />
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M56,48 H74 V62 H56 Z" />
+</vector>
