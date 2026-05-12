@@ -18,13 +18,24 @@ data class ArticleEntity (
     @ColumnInfo(name = "content")
     val content: String,
 
+    @ColumnInfo(name = "description")
+    val description: String? = null,
+
+    @ColumnInfo(name = "category")
+    val category: String? = null,
+
+    @ColumnInfo(name = "level")
+    val level: String? = null,
+
+    @ColumnInfo(name = "read_time")
+    val readTime: String? = null,
+
     @ColumnInfo(name = "image")
     val image: String? = null,
 
     @ColumnInfo(name = "author")
     val author: String? = null,
 
-    @ColumnInfo(name = "date")
-    val date: String? = null,
-
+    @ColumnInfo(name = "is_completed")
+    val isCompleted: Boolean = false,
 )

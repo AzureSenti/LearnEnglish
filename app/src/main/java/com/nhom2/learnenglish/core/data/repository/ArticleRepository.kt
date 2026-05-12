@@ -16,6 +16,6 @@ class ArticleRepository (
         return articleDao.getAll()
     }
 
-    suspend fun getWordById(id: Long): ArticleEntity? = articleDao.getById(id)
+    suspend fun getArticleById(id: Long): ArticleEntity? = articleDao.getById(id)
 
 }

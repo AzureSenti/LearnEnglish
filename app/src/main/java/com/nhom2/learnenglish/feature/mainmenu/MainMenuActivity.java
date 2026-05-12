@@ -1,6 +1,5 @@
-package com.nhom2.learnenglish.ui.activity;
+package com.nhom2.learnenglish.feature.mainmenu;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,8 +12,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.nhom2.learnenglish.R;
+import com.nhom2.learnenglish.core.util.Navigator;
+import com.nhom2.learnenglish.feature.articles.ArticlesActivity;
+import com.nhom2.learnenglish.feature.articles.ArticleDetailActivity;
+import com.nhom2.learnenglish.ui.activity.LibraryActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainMenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +44,13 @@ public class MainActivity extends AppCompatActivity {
         // Nút See All trong phần Featured Articles
         TextView btnSeeAllArticles = findViewById(R.id.btn_see_all_articles);
         if (btnSeeAllArticles != null) {
-            btnSeeAllArticles.setOnClickListener(v -> navigateTo(ArticlesActivity.class));
+            btnSeeAllArticles.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this,ArticlesActivity.class));
         }
 
         // Card bài báo nổi bật ở trang chủ
         LinearLayout cardFeaturedArticle = findViewById(R.id.card_featured_article);
         if (cardFeaturedArticle != null) {
-            cardFeaturedArticle.setOnClickListener(v -> navigateTo(ArticleDetailActivity.class));
+            cardFeaturedArticle.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this,ArticleDetailActivity.class));
         }
 
         // Word Set: Tech Idioms
@@ -75,16 +78,11 @@ public class MainActivity extends AppCompatActivity {
         // Điều hướng Bottom Navigation - Library
         LinearLayout navLibrary = findViewById(R.id.nav_library);
         if (navLibrary != null) {
-            navLibrary.setOnClickListener(v -> navigateTo(LibraryActivity.class));
+            navLibrary.setOnClickListener(v ->   Navigator.INSTANCE.navigateTo(this, LibraryActivity.class));
         }
     }
 
-    private void navigateTo(Class<?> targetActivity) {
-        Intent intent = new Intent(MainActivity.this, targetActivity);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-    }
+
 
     @Override
     protected void onPause() {

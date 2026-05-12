@@ -1,0 +1,99 @@
+package com.nhom2.learnenglish.feature.articles;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.ImageView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.nhom2.learnenglish.R;
+import com.nhom2.learnenglish.core.data.local.AppDatabase;
+import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity;
+import com.nhom2.learnenglish.core.data.local.mockdata.MockDataImport;
+import com.nhom2.learnenglish.core.data.repository.ArticleRepository;
+import com.nhom2.learnenglish.core.util.AppExecutors;
+import com.nhom2.learnenglish.core.util.Navigator;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ArticlesActivity extends AppCompatActivity {
+
+    private ArticleRepository articleRepository;
+    private ArticleAdapter adapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_articles);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        setupData();
+        setupToolbar();
+        setupRecyclerView();
+
+        loadArticleData();
+    }
+
+    private void setupData() {
+        AppDatabase db = AppDatabase.Companion.getInstance(this);
+        articleRepository = new ArticleRepository(
+                db.articleDao(),
+                AppExecutors.Companion.getInstance()
+        );
+        MockDataImport.INSTANCE.importIfNeeded(this);
+    }
+
+    private void setupToolbar() {
+        ImageView ivBack = findViewById(R.id.iv_back);
+        if (ivBack != null) {
+            ivBack.setOnClickListener(v -> {
+                finish();
+                overridePendingTransition(0, 0);
+            });
+        }
+    }
+
+    private void setupRecyclerView() {
+        RecyclerView rvArticles = findViewById(R.id.rv_articles);
+        if (rvArticles != null) {
+            rvArticles.setLayoutManager(new LinearLayoutManager(this));
+
+            adapter = new ArticleAdapter( article ->
+                    Navigator.INSTANCE.navigateTo(this, ArticleDetailActivity.class)
+            );
+            rvArticles.setAdapter(adapter);
+        }
+    }
+
+    private void loadArticleData() {
+        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+            try {
+                List<ArticleEntity> list = kotlinx.coroutines.BuildersKt.runBlocking(
+                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
+                        (scope, continuation) -> articleRepository.getAllArticles(continuation)
+                );
+
+                runOnUiThread(() -> {
+                    if (adapter != null) {
+                        adapter.updateData(list);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+}

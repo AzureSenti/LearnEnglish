@@ -9,6 +9,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.nhom2.learnenglish.R;
+import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
 
 public class LibraryActivity extends AppCompatActivity {
 
@@ -62,7 +63,7 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     private void moveToExplore() {
-        Intent intent = new Intent(LibraryActivity.this, MainActivity.class);
+        Intent intent = new Intent(LibraryActivity.this, MainMenuActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
         overridePendingTransition(0, 0);
