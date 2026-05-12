@@ -10,13 +10,13 @@ import com.nhom2.learnenglish.core.data.local.entity.WordEntity
 interface ArticleDao : BaseDao<ArticleEntity> {
 
     @Query("SELECT * FROM article WHERE id = :id")
-    suspend fun getById(id: Long): ArticleEntity?
+    override suspend fun getById(id: Long): ArticleEntity?
 
     @Query("Select * from article")
-    suspend fun getAll(): List<ArticleEntity>
+    override suspend fun getAll(): List<ArticleEntity>
 
     @Query("DELETE FROM article")
-    suspend fun deleteAll()
+    override suspend fun deleteAll()
 }
 
 

@@ -5,6 +5,7 @@ import androidx.room3.Delete
 import androidx.room3.Insert
 import androidx.room3.OnConflictStrategy
 import androidx.room3.Update
+import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity
 
 
 interface BaseDao<T> {
@@ -20,4 +21,10 @@ interface BaseDao<T> {
 
     @Delete
     suspend fun delete(entity: T): Int
+
+    abstract suspend fun getAll(): List<T>
+
+    abstract suspend fun getById(id: Long): T?
+
+    abstract suspend fun deleteAll()
 }
