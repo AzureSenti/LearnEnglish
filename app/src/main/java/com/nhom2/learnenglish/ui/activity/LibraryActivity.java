@@ -1,6 +1,5 @@
 package com.nhom2.learnenglish.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -9,6 +8,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.nhom2.learnenglish.R;
+import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
 
 public class LibraryActivity extends AppCompatActivity {
@@ -24,7 +24,6 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     private void setupBackNavigation() {
-        // Xử lý nút Back theo chuẩn Android mới
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -34,7 +33,6 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     private void setupBottomNavigation() {
-        // Chuyển về màn hình Explore
         LinearLayout navExplore = findViewById(R.id.nav_explore);
         if (navExplore != null) {
             navExplore.setOnClickListener(v -> moveToExplore());
@@ -42,7 +40,6 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     private void setupWordSetNavigation() {
-        // Gán sự kiện click cho các bộ từ vựng
         setupCardClick(R.id.card_irregular_verbs, "Irregular Verbs");
         setupCardClick(R.id.card_ielts_prep, "IELTS Prep");
         setupCardClick(R.id.card_it_vocabulary, "IT Vocabulary");
@@ -54,7 +51,7 @@ public class LibraryActivity extends AppCompatActivity {
         View card = findViewById(id);
         if (card != null) {
             card.setOnClickListener(v -> {
-                Intent intent = new Intent(this, WordSetDetailActivity.class);
+                android.content.Intent intent = new android.content.Intent(this, WordSetDetailActivity.class);
                 intent.putExtra("SET_TITLE", title);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
@@ -63,9 +60,14 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     private void moveToExplore() {
-        Intent intent = new Intent(LibraryActivity.this, MainMenuActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
+        Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isFinishing()) {
+            overridePendingTransition(0, 0);
+        }
     }
 }

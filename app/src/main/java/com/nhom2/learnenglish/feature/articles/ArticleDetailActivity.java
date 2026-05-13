@@ -22,12 +22,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
     private void setupToolbar() {
         ImageView ivBack = findViewById(R.id.iv_back);
         if (ivBack != null) {
-            ivBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onBackPressedDispatcher();
-                }
-            });
+            ivBack.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
         }
     }
 
@@ -41,7 +36,11 @@ public class ArticleDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void onBackPressedDispatcher() {
-        getOnBackPressedDispatcher().onBackPressed();
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isFinishing()) {
+            overridePendingTransition(0, 0);
+        }
     }
 }

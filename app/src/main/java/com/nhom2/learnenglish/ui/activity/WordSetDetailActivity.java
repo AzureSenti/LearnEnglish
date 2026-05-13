@@ -32,17 +32,13 @@ public class WordSetDetailActivity extends AppCompatActivity {
         ImageView ivBack = findViewById(R.id.iv_back);
         TextView tvTitle = findViewById(R.id.tv_title);
         
-        // Nhận dữ liệu từ intent nếu có (sau này dùng DB sẽ truyền ID hoặc Title)
         String title = getIntent().getStringExtra("SET_TITLE");
         if (title != null) {
             tvTitle.setText(title);
         }
 
         if (ivBack != null) {
-            ivBack.setOnClickListener(v -> {
-                finish();
-                overridePendingTransition(0, 0);
-            });
+            ivBack.setOnClickListener(v -> finish());
         }
     }
 
@@ -62,9 +58,16 @@ public class WordSetDetailActivity extends AppCompatActivity {
             @Override
             public void handleOnBackPressed() {
                 finish();
-                overridePendingTransition(0, 0);
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isFinishing()) {
+            overridePendingTransition(0, 0);
+        }
     }
 
     private List<Word> getDummyWords() {

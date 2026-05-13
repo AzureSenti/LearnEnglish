@@ -1,7 +1,6 @@
 package com.nhom2.learnenglish.feature.articles;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -20,7 +19,6 @@ import com.nhom2.learnenglish.core.data.repository.ArticleRepository;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.Navigator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ArticlesActivity extends AppCompatActivity {
@@ -59,10 +57,7 @@ public class ArticlesActivity extends AppCompatActivity {
     private void setupToolbar() {
         ImageView ivBack = findViewById(R.id.iv_back);
         if (ivBack != null) {
-            ivBack.setOnClickListener(v -> {
-                finish();
-                overridePendingTransition(0, 0);
-            });
+            ivBack.setOnClickListener(v -> finish());
         }
     }
 
@@ -95,5 +90,13 @@ public class ArticlesActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isFinishing()) {
+            overridePendingTransition(0, 0);
+        }
     }
 }

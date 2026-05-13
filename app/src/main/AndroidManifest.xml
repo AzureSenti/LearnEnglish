@@ -29,6 +29,13 @@
             android:name=".feature.articles.ArticlesActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".feature.articles.ArticleDetailActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.LibraryActivity"
+            android:exported="false" />
 
         <activity
             android:name=".ui.activity.WordSetDetailActivity"

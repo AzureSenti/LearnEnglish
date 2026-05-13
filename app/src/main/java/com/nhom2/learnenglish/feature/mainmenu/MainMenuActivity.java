@@ -46,13 +46,13 @@ public class MainMenuActivity extends AppCompatActivity {
         // Nút See All trong phần Featured Articles
         TextView btnSeeAllArticles = findViewById(R.id.btn_see_all_articles);
         if (btnSeeAllArticles != null) {
-            btnSeeAllArticles.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this,ArticlesActivity.class));
+            btnSeeAllArticles.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this, ArticlesActivity.class));
         }
 
         // Card bài báo nổi bật ở trang chủ
         LinearLayout cardFeaturedArticle = findViewById(R.id.card_featured_article);
         if (cardFeaturedArticle != null) {
-            cardFeaturedArticle.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this,ArticleDetailActivity.class));
+            cardFeaturedArticle.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this, ArticleDetailActivity.class));
         }
 
         // Word Set: Tech Idioms
@@ -80,15 +80,14 @@ public class MainMenuActivity extends AppCompatActivity {
         // Điều hướng Bottom Navigation - Library
         LinearLayout navLibrary = findViewById(R.id.nav_library);
         if (navLibrary != null) {
-            navLibrary.setOnClickListener(v ->   Navigator.INSTANCE.navigateTo(this, LibraryActivity.class));
+            navLibrary.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this, LibraryActivity.class));
         }
     }
-
-
 
     @Override
     protected void onPause() {
         super.onPause();
+        // Xóa bỏ animation khi Activity kết thúc để tránh bị nháy màn hình
         if (isFinishing()) {
             overridePendingTransition(0, 0);
         }
