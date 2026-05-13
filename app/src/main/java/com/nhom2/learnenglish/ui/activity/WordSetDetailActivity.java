@@ -3,6 +3,8 @@ package com.nhom2.learnenglish.ui.activity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +25,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
 
         setupToolbar();
         setupRecyclerView();
+        setupBackNavigation();
     }
 
     private void setupToolbar() {
@@ -47,11 +50,21 @@ public class WordSetDetailActivity extends AppCompatActivity {
         RecyclerView rvWords = findViewById(R.id.rv_words);
         if (rvWords != null) {
             rvWords.setLayoutManager(new LinearLayoutManager(this));
-            
+
             List<Word> dummyWords = getDummyWords();
             WordAdapter adapter = new WordAdapter(dummyWords);
             rvWords.setAdapter(adapter);
         }
+    }
+
+    private void setupBackNavigation() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                finish();
+                overridePendingTransition(0, 0);
+            }
+        });
     }
 
     private List<Word> getDummyWords() {
@@ -62,11 +75,5 @@ public class WordSetDetailActivity extends AppCompatActivity {
         list.add(new Word("Paradigm", "/ˈpærədaɪm/", "Lv. 5"));
         list.add(new Word("Meticulous", "/məˈtɪkjələs/", "Lv. 3"));
         return list;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(0, 0);
     }
 }

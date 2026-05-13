@@ -1,5 +1,6 @@
 package com.nhom2.learnenglish.feature.mainmenu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -16,6 +17,7 @@ import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.feature.articles.ArticlesActivity;
 import com.nhom2.learnenglish.feature.articles.ArticleDetailActivity;
 import com.nhom2.learnenglish.ui.activity.LibraryActivity;
+import com.nhom2.learnenglish.ui.activity.WordSetDetailActivity;
 
 public class MainMenuActivity extends AppCompatActivity {
 

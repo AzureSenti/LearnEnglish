@@ -4,8 +4,6 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="bg_color">#FBFBFF</color>
-    <color name="text_primary">#1A1C1E</color>
-    <color name="text_secondary">#6C727A</color>
 
     <color name="blue_primary">#3D7BEE</color>
     <color name="blue_light">#E8F0FE</color>
