@@ -19,7 +19,6 @@
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:contentDescription="@null"
-            android:src="@drawable/logo_3english"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +29,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/login_welcome_title"
-            android:textAppearance="@style/TextAppearance.App.ScreenTitle"
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +36,6 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_email"
-            style="@style/Widget.App.TextInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -60,7 +57,6 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_password"
-            style="@style/Widget.App.TextInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

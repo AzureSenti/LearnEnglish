@@ -10,8 +10,8 @@ interface UserDao : BaseDao<UserEntity> {
     suspend fun getActiveUser(): UserEntity?
 
     @Query("SELECT * FROM users WHERE id = :id")
-    override suspend fun getById(id: Long): UserEntity?
+    suspend fun getById(id: Long): UserEntity?
 
     @Query("DELETE FROM users")
-    override suspend fun deleteAll()
+    suspend fun deleteAll()
 }
