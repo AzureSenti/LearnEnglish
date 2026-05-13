@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         useWithoutLogin.setOnClickListener(v -> {
-            Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
+            activateGuestMode();
         });
 
     }
@@ -137,6 +137,29 @@ public class LoginActivity extends AppCompatActivity {
 
                     Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không đúng!", Toast.LENGTH_LONG).show();
                 });
+            }
+        });
+    }
+
+    private void activateGuestMode() {
+        SessionManager sessionManager = new SessionManager(this);
+        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+            try {
+                kotlinx.coroutines.BuildersKt.runBlocking(
+                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
+                        (scope, continuation) -> userRepository.ensureLocalUserExists(continuation)
+                );
+
+                sessionManager.activateGuestMode();
+
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Chế độ ngoại tuyến: Tiến độ sẽ lưu tại máy", Toast.LENGTH_LONG).show();
+                    Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
+
+                    finish();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
