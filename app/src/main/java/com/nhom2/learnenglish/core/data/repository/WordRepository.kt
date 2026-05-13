@@ -4,6 +4,7 @@ import com.nhom2.learnenglish.core.data.local.dao.UserWordSetDao
 import com.nhom2.learnenglish.core.data.local.dao.WordDao
 import com.nhom2.learnenglish.core.data.local.dao.WordSetDao
 import com.nhom2.learnenglish.core.data.local.dao.WordSrsDao
+import com.nhom2.learnenglish.core.data.local.entity.UserWordSetCrossRef
 import com.nhom2.learnenglish.core.data.local.entity.WordEntity
 import com.nhom2.learnenglish.core.data.local.entity.WordSetEntity
 import com.nhom2.learnenglish.core.data.local.entity.WordSrsEntity
@@ -39,6 +40,7 @@ class WordRepository(
         }
     }
 
+
     suspend fun getWordListWithProgress(setId: Long, userId: Long): List<WordWithProgress> {
         val rawList = wordDao.getWordsWithProgressBySet(setId, userId)
 
@@ -49,5 +51,66 @@ class WordRepository(
                 item
             }
         }
+    }
+
+    suspend fun unlockWordSet(userId: Long, setId: Long): Boolean {
+        try {
+            val crossRef = UserWordSetCrossRef(userId = userId, setId = setId)
+            userWordSetDao.unlockSet(crossRef)
+            return true
+        } catch (e: Exception) {
+            e.printStackTrace();
+            return false
+        }
+    }
+
+    suspend fun getNewWordsToLearn(userId: Long, setId: Long): List<WordEntity> {
+        return wordDao.getUnlearnedWords(setId, userId, limit = 10)
+    }
+
+    suspend fun processWordLearning(userId: Long, wordId: Long, isCorrect: Boolean) {
+        val existingSrs = wordSrsDao.getWordSrs(userId, wordId)
+        val currentTime = System.currentTimeMillis()
+
+        if (existingSrs == null) {
+
+            val initialLevel = if (isCorrect) 1 else 0
+            val interval = calculateInterval(initialLevel)
+
+            val newSrs = WordSrsEntity(
+                userId = userId,
+                wordId = wordId,
+                level = initialLevel,
+                lastReviewDate = currentTime,
+                nextReviewDate = currentTime + interval,
+                isSynced = false
+            )
+            wordSrsDao.insertOrUpdate(newSrs)
+
+        } else {
+            val newLevel = if (isCorrect) existingSrs.level + 1 else maxOf(0, existingSrs.level - 1)
+            val interval = calculateInterval(newLevel)
+
+            val updatedSrs = existingSrs.copy(
+                level = newLevel,
+                lastReviewDate = currentTime,
+                nextReviewDate = currentTime + interval,
+                isSynced = false
+            )
+            wordSrsDao.insertOrUpdate(updatedSrs)
+        }
+    }
+
+    private fun calculateInterval(level: Int): Long {
+        val minutes: Long = when (level) {
+            0 -> 10
+            1 -> 60 * 12
+            2 -> 60 * 24
+            3 -> 60 * 24 * 3
+            4 -> 60 * 24 * 7
+            5 -> 60 * 24 * 14
+            else -> 60 * 24 * 30
+        }
+        return minutes * 60 * 1000L
     }
 }
