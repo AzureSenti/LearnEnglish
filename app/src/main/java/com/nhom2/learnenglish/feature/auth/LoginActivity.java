@@ -18,6 +18,7 @@ import com.nhom2.learnenglish.core.data.repository.UserRepository;
 import com.nhom2.learnenglish.core.network.Auth.AuthApi;
 import com.nhom2.learnenglish.core.network.RetrofitClient;
 import com.nhom2.learnenglish.core.util.AppExecutors;
+import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.core.util.SessionManager;
 import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
 
@@ -30,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText inputEmail, inputPassword;
     private MaterialButton buttonLogin;
     private MaterialCheckBox checkRemember;
-    private TextView linkForgotPassword, linkSignup;
+    private TextView linkForgotPassword, linkSignup, useWithoutLogin;
     private UserRepository userRepository;
 
     @Override
@@ -57,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         checkRemember = findViewById(R.id.check_remember);
         linkForgotPassword = findViewById(R.id.link_forgot_password);
         linkSignup = findViewById(R.id.link_signup);
+        useWithoutLogin = findViewById(R.id.use_without_login);
     }
 
     private void setupData() {
@@ -89,6 +91,11 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Chuyển sang trang Đăng ký", Toast.LENGTH_SHORT).show();
             // TODO: Mở SignupActivity
         });
+
+        useWithoutLogin.setOnClickListener(v -> {
+            Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
+        });
+
     }
 
     private void performLogin() {
@@ -118,9 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
 
                     Toast.makeText(LoginActivity.this, "Chào mừng trở lại!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
+                    Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
                 });
 
             } catch (Exception e) {
