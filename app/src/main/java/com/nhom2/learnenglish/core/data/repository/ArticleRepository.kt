@@ -7,15 +7,14 @@ import com.nhom2.learnenglish.core.data.local.entity.*
 import com.nhom2.learnenglish.core.util.AppExecutors
 
 class ArticleRepository (
-    private val articleDao: ArticleDao,
-
-    executors: AppExecutors = AppExecutors.getInstance()
+    executors: AppExecutors = AppExecutors.getInstance(),
+    private val articleDao: ArticleDao
 ) : BaseRepository(executors) {
 
-    suspend fun getAllArticles(): List<ArticleEntity> {
+    suspend fun getAll(): List<ArticleEntity> {
         return articleDao.getAll()
     }
 
-    suspend fun getArticleById(id: Long): ArticleEntity? = articleDao.getById(id)
+    suspend fun getById(id: Long): ArticleEntity? = articleDao.getById(id)
 
 }

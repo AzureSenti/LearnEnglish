@@ -1,7 +1,6 @@
 package com.nhom2.learnenglish.feature.articles;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -20,7 +19,6 @@ import com.nhom2.learnenglish.core.data.repository.ArticleRepository;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.Navigator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ArticlesActivity extends AppCompatActivity {
@@ -50,8 +48,8 @@ public class ArticlesActivity extends AppCompatActivity {
     private void setupData() {
         AppDatabase db = AppDatabase.Companion.getInstance(this);
         articleRepository = new ArticleRepository(
-                db.articleDao(),
-                AppExecutors.Companion.getInstance()
+                AppExecutors.Companion.getInstance(),
+                db.articleDao()
         );
         MockDataImport.INSTANCE.importIfNeeded(this);
     }
@@ -83,7 +81,7 @@ public class ArticlesActivity extends AppCompatActivity {
             try {
                 List<ArticleEntity> list = kotlinx.coroutines.BuildersKt.runBlocking(
                         kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> articleRepository.getAllArticles(continuation)
+                        (scope, continuation) -> articleRepository.getAll(continuation)
                 );
 
                 runOnUiThread(() -> {

@@ -20,4 +20,5 @@ interface BaseDao<T> {
 
     @Delete
     suspend fun delete(entity: T): Int
+
 }
