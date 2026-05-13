@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         SessionManager sessionManager = new SessionManager(this);
-
         if (sessionManager.isLoggedIn()) {
             Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
         } else {

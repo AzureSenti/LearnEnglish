@@ -32,6 +32,8 @@
         <activity
             android:name=".feature.auth.LoginActivity"
             android:exported="false" />
+        <activity android:name=".ui.activity.LibraryActivity"
+            android:exported="false" />
 
 
         <activity

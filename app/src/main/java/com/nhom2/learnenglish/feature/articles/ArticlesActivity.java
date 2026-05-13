@@ -66,9 +66,12 @@ public class ArticlesActivity extends AppCompatActivity {
         if (rvArticles != null) {
             rvArticles.setLayoutManager(new LinearLayoutManager(this));
 
-            adapter = new ArticleAdapter( article ->
-                    Navigator.INSTANCE.navigateTo(this, ArticleDetailActivity.class)
-            );
+            // Trong setupRecyclerView()
+            adapter = new ArticleAdapter(article -> {android.content.Intent intent = new android.content.Intent(this, ArticleDetailActivity.class);
+                intent.putExtra("article_id", article.getId()); // Giả sử ArticleEntity có getId()
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            });
             rvArticles.setAdapter(adapter);
         }
     }

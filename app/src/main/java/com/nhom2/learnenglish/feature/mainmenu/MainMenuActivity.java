@@ -13,13 +13,21 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.nhom2.learnenglish.R;
+import com.nhom2.learnenglish.core.data.local.AppDatabase;
+import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity;
+import com.nhom2.learnenglish.core.data.repository.ArticleRepository;
+import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.feature.articles.ArticlesActivity;
 import com.nhom2.learnenglish.feature.articles.ArticleDetailActivity;
 import com.nhom2.learnenglish.ui.activity.LibraryActivity;
 import com.nhom2.learnenglish.ui.activity.WordSetDetailActivity;
 
+import java.util.List;
+
 public class MainMenuActivity extends AppCompatActivity {
+
+    private ArticleRepository articleRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +36,17 @@ public class MainMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setupWindowInsets();
+        setupData();
         setupNavigation();
+        loadFeaturedArticle();
+    }
+
+    private void setupData() {
+        AppDatabase db = AppDatabase.Companion.getInstance(this);
+        articleRepository = new ArticleRepository(
+                AppExecutors.Companion.getInstance(),
+                db.articleDao()
+        );
     }
 
     private void setupWindowInsets() {
@@ -47,12 +65,6 @@ public class MainMenuActivity extends AppCompatActivity {
         TextView btnSeeAllArticles = findViewById(R.id.btn_see_all_articles);
         if (btnSeeAllArticles != null) {
             btnSeeAllArticles.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this, ArticlesActivity.class));
-        }
-
-        // Card bài báo nổi bật ở trang chủ
-        LinearLayout cardFeaturedArticle = findViewById(R.id.card_featured_article);
-        if (cardFeaturedArticle != null) {
-            cardFeaturedArticle.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this, ArticleDetailActivity.class));
         }
 
         // Word Set: Tech Idioms
@@ -84,10 +96,61 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     }
 
+    private void loadFeaturedArticle() {
+        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+            try {
+                // Lấy danh sách bài báo từ Repository
+                List<ArticleEntity> articles = kotlinx.coroutines.BuildersKt.runBlocking(
+                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
+                        (scope, continuation) -> articleRepository.getAll(continuation)
+                );
+
+                if (articles != null && !articles.isEmpty()) {
+                    // Lấy bài báo đầu tiên làm Featured Article
+                    ArticleEntity featured = articles.get(0);
+
+                    runOnUiThread(() -> updateFeaturedUI(featured));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void updateFeaturedUI(ArticleEntity article) {
+        TextView tvLevel = findViewById(R.id.tv_featured_level);
+        TextView tvCategory = findViewById(R.id.tv_featured_category);
+        TextView tvTitle = findViewById(R.id.tv_featured_title);
+        TextView tvDesc = findViewById(R.id.tv_featured_desc);
+        LinearLayout cardFeaturedArticle = findViewById(R.id.card_featured_article);
+
+        if (tvLevel != null) tvLevel.setText(article.getLevel());
+        if (tvCategory != null) tvCategory.setText(article.getCategory());
+        if (tvTitle != null) tvTitle.setText(article.getTitle());
+
+        // Cắt bớt content để làm description
+        if (tvDesc != null) {
+            String desc = article.getContent();
+            if (desc != null && desc.length() > 100) {
+                desc = desc.substring(0, 100) + "...";
+            }
+            tvDesc.setText(desc);
+        }
+
+        // Cập nhật sự kiện click với ID thực tế
+        if (cardFeaturedArticle != null) {
+            cardFeaturedArticle.setOnClickListener(v -> {
+                Intent intent = new Intent(this, ArticleDetailActivity.class);
+                intent.putExtra("article_id", article.getId());
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            });
+        }
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
-        // Xóa bỏ animation khi Activity kết thúc để tránh bị nháy màn hình
         if (isFinishing()) {
             overridePendingTransition(0, 0);
         }

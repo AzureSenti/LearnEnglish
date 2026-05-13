@@ -7,6 +7,10 @@ import androidx.room3.RoomDatabase
 import androidx.room3.TypeConverters
 import com.nhom2.learnenglish.core.data.local.dao.ArticleDao
 import com.nhom2.learnenglish.core.data.local.dao.UserDao
+import com.nhom2.learnenglish.core.data.local.dao.UserWordSetDao
+import com.nhom2.learnenglish.core.data.local.dao.WordDao
+import com.nhom2.learnenglish.core.data.local.dao.WordSetDao
+import com.nhom2.learnenglish.core.data.local.dao.WordSrsDao
 import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity
 import com.nhom2.learnenglish.core.data.local.entity.UserEntity
 import com.nhom2.learnenglish.core.data.local.entity.WordEntity
@@ -25,6 +29,10 @@ import com.nhom2.learnenglish.core.data.local.entity.WordEntity
 abstract class AppDatabase : RoomDatabase() {
     abstract fun articleDao(): ArticleDao
     abstract fun userDao() : UserDao
+    abstract fun wordDao(): WordDao
+    abstract fun wordSetDao(): WordSetDao
+    abstract fun wordSrsDao(): WordSrsDao
+    abstract fun userWordSetDao(): UserWordSetDao
 
 
     companion object {
