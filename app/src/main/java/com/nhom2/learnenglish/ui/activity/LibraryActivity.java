@@ -18,6 +18,12 @@ public class LibraryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library);
 
+        setupBackNavigation();
+        setupBottomNavigation();
+        setupWordSetNavigation();
+    }
+
+    private void setupBackNavigation() {
         // Xử lý nút Back theo chuẩn Android mới
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -25,15 +31,33 @@ public class LibraryActivity extends AppCompatActivity {
                 moveToExplore();
             }
         });
+    }
 
+    private void setupBottomNavigation() {
         // Chuyển về màn hình Explore
         LinearLayout navExplore = findViewById(R.id.nav_explore);
         if (navExplore != null) {
-            navExplore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    moveToExplore();
-                }
+            navExplore.setOnClickListener(v -> moveToExplore());
+        }
+    }
+
+    private void setupWordSetNavigation() {
+        // Gán sự kiện click cho các bộ từ vựng
+        setupCardClick(R.id.card_irregular_verbs, "Irregular Verbs");
+        setupCardClick(R.id.card_ielts_prep, "IELTS Prep");
+        setupCardClick(R.id.card_it_vocabulary, "IT Vocabulary");
+        setupCardClick(R.id.card_travel_essentials, "Travel Essentials");
+        setupCardClick(R.id.card_business_idioms, "Business Idioms");
+    }
+
+    private void setupCardClick(int id, String title) {
+        View card = findViewById(id);
+        if (card != null) {
+            card.setOnClickListener(v -> {
+                Intent intent = new Intent(this, WordSetDetailActivity.class);
+                intent.putExtra("SET_TITLE", title);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             });
         }
     }
