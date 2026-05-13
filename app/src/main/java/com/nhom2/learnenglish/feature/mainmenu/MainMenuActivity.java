@@ -1,5 +1,6 @@
 package com.nhom2.learnenglish.feature.mainmenu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -16,6 +17,7 @@ import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.feature.articles.ArticlesActivity;
 import com.nhom2.learnenglish.feature.articles.ArticleDetailActivity;
 import com.nhom2.learnenglish.ui.activity.LibraryActivity;
+import com.nhom2.learnenglish.ui.activity.WordSetDetailActivity;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -51,6 +53,28 @@ public class MainMenuActivity extends AppCompatActivity {
         LinearLayout cardFeaturedArticle = findViewById(R.id.card_featured_article);
         if (cardFeaturedArticle != null) {
             cardFeaturedArticle.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this,ArticleDetailActivity.class));
+        }
+
+        // Word Set: Tech Idioms
+        LinearLayout cardWordSetTech = findViewById(R.id.card_word_set_tech);
+        if (cardWordSetTech != null) {
+            cardWordSetTech.setOnClickListener(v -> {
+                Intent intent = new Intent(this, WordSetDetailActivity.class);
+                intent.putExtra("SET_TITLE", "Tech Idioms");
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            });
+        }
+
+        // Word Set: Daily Phrases
+        LinearLayout cardWordSetDaily = findViewById(R.id.card_word_set_daily);
+        if (cardWordSetDaily != null) {
+            cardWordSetDaily.setOnClickListener(v -> {
+                Intent intent = new Intent(this, WordSetDetailActivity.class);
+                intent.putExtra("SET_TITLE", "Daily Phrases");
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            });
         }
 
         // Điều hướng Bottom Navigation - Library
