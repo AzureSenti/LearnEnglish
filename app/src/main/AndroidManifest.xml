@@ -32,7 +32,7 @@
         <activity
             android:name=".feature.auth.LoginActivity"
             android:exported="false" />
-        <activity android:name=".ui.activity.LibraryActivity"
+        <activity android:name=".feature.wordsets.LibraryActivity"
             android:exported="false" />
 
 
@@ -46,7 +46,7 @@
 
 
         <activity
-            android:name=".ui.activity.WordSetDetailActivity"
+            android:name=".feature.wordsets.WordSetDetailActivity"
             android:exported="false" />
 
     </application>
