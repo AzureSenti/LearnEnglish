@@ -304,6 +304,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/card_word_set_tech"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -311,7 +312,10 @@
                     android:background="@drawable/bg_card_white"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <ImageView
                         android:layout_width="24dp"
@@ -338,6 +342,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/card_word_set_daily"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -345,7 +350,10 @@
                     android:background="@drawable/bg_card_white"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <ImageView
                         android:layout_width="24dp"
