@@ -26,7 +26,7 @@ import androidx.room3.PrimaryKey
 )
     ],
     indices = [
-        Index(value = ["word_id"], unique = true),
+        Index(value = ["word_id"]),
         Index(value = ["next_review_date"])
     ]
 )
