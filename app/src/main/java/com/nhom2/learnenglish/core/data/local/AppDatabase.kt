@@ -6,6 +6,7 @@ import androidx.room3.Room
 import androidx.room3.RoomDatabase
 import androidx.room3.TypeConverters
 import com.nhom2.learnenglish.core.data.local.dao.ArticleDao
+import com.nhom2.learnenglish.core.data.local.dao.UserDao
 import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity
 import com.nhom2.learnenglish.core.data.local.entity.UserEntity
 import com.nhom2.learnenglish.core.data.local.entity.WordEntity
@@ -23,6 +24,7 @@ import com.nhom2.learnenglish.core.data.local.entity.WordEntity
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun articleDao(): ArticleDao
+    abstract fun userDao() : UserDao
 
 
     companion object {

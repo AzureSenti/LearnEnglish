@@ -48,8 +48,8 @@ public class ArticlesActivity extends AppCompatActivity {
     private void setupData() {
         AppDatabase db = AppDatabase.Companion.getInstance(this);
         articleRepository = new ArticleRepository(
-                db.articleDao(),
-                AppExecutors.Companion.getInstance()
+                AppExecutors.Companion.getInstance(),
+                db.articleDao()
         );
         MockDataImport.INSTANCE.importIfNeeded(this);
     }
@@ -78,7 +78,7 @@ public class ArticlesActivity extends AppCompatActivity {
             try {
                 List<ArticleEntity> list = kotlinx.coroutines.BuildersKt.runBlocking(
                         kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> articleRepository.getAllArticles(continuation)
+                        (scope, continuation) -> articleRepository.getAll(continuation)
                 );
 
                 runOnUiThread(() -> {

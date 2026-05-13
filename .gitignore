@@ -36,3 +36,5 @@ desktop.ini
 # --- Android Test & Lint ---
 lint/intermediate-res/
 lint/generated/
+
+application-local.properties
