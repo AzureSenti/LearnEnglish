@@ -20,6 +20,6 @@ interface WordSetDao : BaseDao<WordSetEntity> {
     """)
     suspend fun getUnlockedWordSets(userId: Long): List<WordSetEntity>
 
-    @Query("DELETE FROM article")
+    @Query("DELETE FROM word_sets")
     suspend fun deleteAll()
 }

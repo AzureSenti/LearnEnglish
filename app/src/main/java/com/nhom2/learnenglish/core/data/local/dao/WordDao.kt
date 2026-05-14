@@ -52,6 +52,6 @@ interface WordDao : BaseDao<WordEntity> {
     suspend fun getUnlearnedWords(setId: Long, userId: Long, limit: Int = 10): List<WordEntity>
 
 
-    @Query("DELETE FROM article")
+    @Query("DELETE FROM words")
     suspend fun deleteAll()
 }
