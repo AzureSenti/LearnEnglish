@@ -26,6 +26,7 @@ interface WordDao : BaseDao<WordEntity> {
     """)
     suspend fun getWordsDueForReview(userId: Long, currentTime: Long, limit: Int = 20): List<WordEntity>
 
+    // Từ với tiến trình
     @Query("""
         SELECT 
             w.id AS word_id, 
@@ -40,6 +41,17 @@ interface WordDao : BaseDao<WordEntity> {
     """)
     suspend fun getWordsWithProgressBySet(setId: Long, userId: Long): List<WordWithProgress>
 
-    @Query("DELETE FROM article")
+    // Từ chưa học
+    @Query("""
+        SELECT w.* FROM words w
+        INNER JOIN word_set_cross_ref ref ON w.id = ref.word_id
+        LEFT JOIN word_srs srs ON w.id = srs.word_id AND srs.user_id = :userId
+        WHERE ref.set_id = :setId AND srs.word_id IS NULL
+        LIMIT :limit
+    """)
+    suspend fun getUnlearnedWords(setId: Long, userId: Long, limit: Int = 10): List<WordEntity>
+
+
+    @Query("DELETE FROM words")
     suspend fun deleteAll()
 }

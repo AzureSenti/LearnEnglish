@@ -29,6 +29,12 @@ data class UserEntity(
     @ColumnInfo(name = "coins")
     val coins: Int,
 
+    @ColumnInfo(name = "current_streak", defaultValue = "0")
+    val currentStreak: Int = 0,
+
+    @ColumnInfo(name = "longest_streak", defaultValue = "0")
+    val longestStreak: Int = 0,
+
     @ColumnInfo(name = "is_synced", defaultValue = "0")
     val isSynced: Boolean = false
 
