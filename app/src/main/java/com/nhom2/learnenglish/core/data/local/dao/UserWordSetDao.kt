@@ -7,7 +7,7 @@ import androidx.room3.Query
 import com.nhom2.learnenglish.core.data.local.entity.UserWordSetCrossRef
 
 @Dao
-interface UserWordSetDao {
+interface UserWordSetDao : BaseDao<UserWordSetCrossRef> {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun unlockSet(crossRef: UserWordSetCrossRef)

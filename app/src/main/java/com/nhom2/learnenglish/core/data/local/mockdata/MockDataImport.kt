@@ -29,6 +29,7 @@ object MockDataImport {
                     db.wordSetDao().deleteAll()
                     db.wordSetDao().insertAll(MockData.wordSets)
                     db.wordDao().insertAll(MockData.words)
+                    db.wordSetCrossDao().insertAll(MockData.wordSetRefs)
 
                 }
 
