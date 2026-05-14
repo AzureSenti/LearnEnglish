@@ -42,8 +42,7 @@ data class WordSrsEntity(
     @ColumnInfo(name = "level", defaultValue = "0")
     val level: Int,
 
-
-    @ColumnInfo(name = "next_review_date")
+    @ColumnInfo(name = "next_review_date",defaultValue = "0")
     val nextReviewDate: Long,
 
     @ColumnInfo(name = "last_review_date")
