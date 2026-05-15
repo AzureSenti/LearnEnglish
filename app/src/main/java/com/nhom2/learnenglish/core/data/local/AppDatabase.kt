@@ -14,22 +14,21 @@ import com.nhom2.learnenglish.core.data.local.dao.WordSetDao
 import com.nhom2.learnenglish.core.data.local.dao.WordSrsDao
 import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity
 import com.nhom2.learnenglish.core.data.local.entity.UserEntity
-import com.nhom2.learnenglish.core.data.local.entity.WordEntity
-import com.nhom2.learnenglish.core.data.local.entity.WordSetEntity
-import com.nhom2.learnenglish.core.data.local.entity.WordSetCrossRef
-import com.nhom2.learnenglish.core.data.local.entity.WordSrsEntity
 import com.nhom2.learnenglish.core.data.local.entity.UserWordSetCrossRef
-
+import com.nhom2.learnenglish.core.data.local.entity.WordEntity
+import com.nhom2.learnenglish.core.data.local.entity.WordSetCrossRef
+import com.nhom2.learnenglish.core.data.local.entity.WordSetEntity
+import com.nhom2.learnenglish.core.data.local.entity.WordSrsEntity
 
 @Database(
     entities = [
         UserEntity::class,
+        UserWordSetCrossRef::class,
         WordEntity::class,
-        ArticleEntity::class,
+        WordSrsEntity::class,
         WordSetEntity::class,
         WordSetCrossRef::class,
-        WordSrsEntity::class,
-        UserWordSetCrossRef::class
+        ArticleEntity::class,
 
     ],
     version = 1,
@@ -45,10 +44,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun wordSrsDao(): WordSrsDao
     abstract fun userWordSetDao(): UserWordSetDao
     abstract fun wordSetCrossDao(): WordSetCrossDao
-
-
-
-
+    
     companion object {
         private const val DATABASE_NAME = "learn_english_db"
 
