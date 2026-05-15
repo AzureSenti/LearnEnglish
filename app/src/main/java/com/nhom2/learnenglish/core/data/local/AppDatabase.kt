@@ -9,6 +9,7 @@ import com.nhom2.learnenglish.core.data.local.dao.ArticleDao
 import com.nhom2.learnenglish.core.data.local.dao.UserDao
 import com.nhom2.learnenglish.core.data.local.dao.UserWordSetDao
 import com.nhom2.learnenglish.core.data.local.dao.WordDao
+import com.nhom2.learnenglish.core.data.local.dao.WordSetCrossDao
 import com.nhom2.learnenglish.core.data.local.dao.WordSetDao
 import com.nhom2.learnenglish.core.data.local.dao.WordSrsDao
 import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity
@@ -33,6 +34,9 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun wordSetDao(): WordSetDao
     abstract fun wordSrsDao(): WordSrsDao
     abstract fun userWordSetDao(): UserWordSetDao
+    abstract fun wordSetCrossDao(): WordSetCrossDao
+
+
 
 
     companion object {

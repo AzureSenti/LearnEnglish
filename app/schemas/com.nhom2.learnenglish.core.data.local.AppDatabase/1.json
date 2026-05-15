@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "317ad369cbf956dbdf2d0db2e4e5e6d0",
+    "identityHash": "03a9a442f6a53035a575fb75780db18a",
     "entities": [
       {
         "tableName": "users",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `user_id` INTEGER NOT NULL, `full_name` TEXT NOT NULL, `avatar_url` TEXT NOT NULL, `email` TEXT NOT NULL, `coins` INTEGER NOT NULL, `is_synced` INTEGER NOT NULL DEFAULT 0)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `user_id` INTEGER NOT NULL, `full_name` TEXT NOT NULL, `avatar_url` TEXT NOT NULL, `email` TEXT NOT NULL, `coins` INTEGER NOT NULL, `current_streak` INTEGER NOT NULL DEFAULT 0, `longest_streak` INTEGER NOT NULL DEFAULT 0, `is_synced` INTEGER NOT NULL DEFAULT 0)",
         "fields": [
           {
             "fieldPath": "id",
@@ -43,6 +43,20 @@
             "columnName": "coins",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "currentStreak",
+            "columnName": "current_streak",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "longestStreak",
+            "columnName": "longest_streak",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "isSynced",
@@ -185,7 +199,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '317ad369cbf956dbdf2d0db2e4e5e6d0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '03a9a442f6a53035a575fb75780db18a')"
     ]
   }
 }
