@@ -10,11 +10,13 @@ interface WordDao : BaseDao<WordEntity> {
 
     // Lấy tất cả các từ thuộc về một Bộ từ (Set) cụ thể
     @Query("""
-        SELECT w.* FROM words w 
+        SELECT w.id, w.english_word, w.vietnamese_meaning, w.audio 
+        FROM words w 
         INNER JOIN word_set_cross_ref ref ON w.id = ref.word_id 
         WHERE ref.set_id = :setId
     """)
     suspend fun getWordsBySetId(setId: Long): List<WordEntity>
+
 
     // Lấy danh sách các từ ĐẾN HẠN ÔN TẬP của một User cụ thể
     @Query("""

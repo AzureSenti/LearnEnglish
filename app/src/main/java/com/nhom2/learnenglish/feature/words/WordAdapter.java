@@ -1,4 +1,4 @@
-package com.nhom2.learnenglish.ui.adapter;
+package com.nhom2.learnenglish.feature.words;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,16 +9,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nhom2.learnenglish.R;
-import com.nhom2.learnenglish.model.Word;
+import com.nhom2.learnenglish.core.data.local.model.WordWithProgress;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder> {
 
-    private final List<Word> wordList;
+    private List<WordWithProgress> wordList = new ArrayList<>();
 
-    public WordAdapter(List<Word> wordList) {
-        this.wordList = wordList;
+    public WordAdapter() {
+    }
+
+    public void updateData(List<WordWithProgress> newList) {
+        this.wordList = newList;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -30,10 +35,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
-        Word word = wordList.get(position);
-        holder.tvWord.setText(word.getWord());
-        holder.tvPhonetic.setText(word.getPhonetic());
-        holder.tvLevel.setText(word.getLevel());
+        WordWithProgress word = wordList.get(position);
+        holder.tvWord.setText(word.getEnglishWord());
+        holder.tvPhonetic.setText(word.getVietnameseMeaning());
+        
+        int level = word.getLevel() != null ? word.getLevel() : 0;
+        holder.tvLevel.setText("Lv. " + level);
     }
 
     @Override
