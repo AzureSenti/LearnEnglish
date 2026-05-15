@@ -29,6 +29,7 @@
                 app:tint="@color/text_primary" />
 
             <TextView
+                android:id="@+id/tv_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -60,6 +61,7 @@
             android:padding="24dp">
 
             <TextView
+                android:id="@+id/tv_detail_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Understanding Emotional Elasticity"
@@ -90,6 +92,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_detail_author"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Dr. Elena Vance"
@@ -98,6 +101,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tv_detail_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="8 min read • English Mastery"
@@ -118,6 +122,7 @@
 
             <!-- Article Body -->
             <TextView
+                android:id="@+id/tv_detail_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -142,15 +147,6 @@
                     android:textColor="@color/purple_tag_text"
                     android:textSize="16sp" />
             </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:lineSpacingExtra="6dp"
-                android:text="In the long term, those who prioritize emotional elasticity over rote memorization find that their speaking confidence grows exponentially. They become more approachable, more expressive, and ultimately, more fluent. They are not just learning a language; they are learning a new way to interact with the world around them."
-                android:textColor="@color/text_primary"
-                android:textSize="15sp" />
 
             <!-- Mark as Read Section -->
             <LinearLayout

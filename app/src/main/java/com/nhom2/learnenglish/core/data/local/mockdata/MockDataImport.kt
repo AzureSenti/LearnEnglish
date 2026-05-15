@@ -31,6 +31,7 @@ object MockDataImport {
                     db.wordDao().insertAll(MockData.words)
                     db.wordSetCrossDao().insertAll(MockData.wordSetRefs)
                 }
+                onComplete?.run()// call back
 
             } catch (e: Exception) {
                 e.printStackTrace()
