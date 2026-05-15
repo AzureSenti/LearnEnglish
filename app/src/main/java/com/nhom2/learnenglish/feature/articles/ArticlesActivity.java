@@ -42,17 +42,29 @@ public class ArticlesActivity extends AppCompatActivity {
         setupToolbar();
         setupRecyclerView();
 
-        loadArticleData();
+//        loadArticleData();
     }
 
-    private void setupData() {
-        AppDatabase db = AppDatabase.Companion.getInstance(this);
-        articleRepository = new ArticleRepository(
-                AppExecutors.Companion.getInstance(),
-                db.articleDao()
-        );
-        MockDataImport.INSTANCE.importIfNeeded(this);
-    }
+//    private void setupData() {
+//        AppDatabase db = AppDatabase.Companion.getInstance(this);
+//        articleRepository = new ArticleRepository(
+//                AppExecutors.Companion.getInstance(),
+//                db.articleDao()
+//        );
+//        MockDataImport.INSTANCE.importIfNeeded(this);
+//    }
+private void setupData() {
+    AppDatabase db = AppDatabase.Companion.getInstance(this);
+    articleRepository = new ArticleRepository(
+            AppExecutors.Companion.getInstance(),
+            db.articleDao()
+    );
+
+    // Gọi import và chờ nó xong mới load dữ liệu
+    MockDataImport.INSTANCE.importIfNeeded(this, () -> {
+        loadArticleData(); // Di chuyển vào đây
+    });
+}
 
     private void setupToolbar() {
         ImageView ivBack = findViewById(R.id.iv_back);

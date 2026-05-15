@@ -36,9 +36,9 @@ public class WordSetDetailActivity extends AppCompatActivity {
         setupRecyclerView();
         setupBackNavigation();
         
-//        if (setId != -1) {
-//            loadWords();
-//        }
+        if (setId != -1) {
+            loadWords();
+        }
     }
 
     private void setupData() {
@@ -75,25 +75,25 @@ public class WordSetDetailActivity extends AppCompatActivity {
         }
     }
 
-//    private void loadWords() {
-//        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
-//            try {
-//                // Giả định userId = -1 để lấy tất cả từ (chưa lọc theo user cụ thể trong mock data này)
-//                List<WordWithProgress> list = kotlinx.coroutines.BuildersKt.runBlocking(
-//                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-//                        (scope, continuation) -> wordRepository.getWordListWithProgress(setId, -1L, continuation)
-//                );
-//
-//                runOnUiThread(() -> {
-//                    if (adapter != null) {
-//                        adapter.updateData(list);
-//                    }
-//                });
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        });
-//    }
+    private void loadWords() {
+        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+            try {
+                // Giả định userId = -1 để lấy tất cả từ (chưa lọc theo user cụ thể trong mock data này)
+                List<WordWithProgress> list = kotlinx.coroutines.BuildersKt.runBlocking(
+                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
+                        (scope, continuation) -> wordRepository.getWordListWithProgress(setId, -1L, continuation)
+                );
+
+                runOnUiThread(() -> {
+                    if (adapter != null) {
+                        adapter.updateData(list);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
     private void setupBackNavigation() {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {

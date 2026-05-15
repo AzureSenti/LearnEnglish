@@ -15,12 +15,22 @@ import com.nhom2.learnenglish.core.data.local.dao.WordSrsDao
 import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity
 import com.nhom2.learnenglish.core.data.local.entity.UserEntity
 import com.nhom2.learnenglish.core.data.local.entity.WordEntity
+import com.nhom2.learnenglish.core.data.local.entity.WordSetEntity
+import com.nhom2.learnenglish.core.data.local.entity.WordSetCrossRef
+import com.nhom2.learnenglish.core.data.local.entity.WordSrsEntity
+import com.nhom2.learnenglish.core.data.local.entity.UserWordSetCrossRef
+
 
 @Database(
     entities = [
         UserEntity::class,
         WordEntity::class,
         ArticleEntity::class,
+        WordSetEntity::class,
+        WordSetCrossRef::class,
+        WordSrsEntity::class,
+        UserWordSetCrossRef::class
+
     ],
     version = 1,
     exportSchema = true

@@ -35,9 +35,9 @@ public class LibraryActivity extends AppCompatActivity {
         setupBottomNavigation();
         setupRecyclerView();
         
-        loadWordSetData();
-    }
 
+    }
+// cơ chế chờ đổ xong mới load
     private void setupData() {
         AppDatabase db = AppDatabase.Companion.getInstance(this);
         wordRepository = new WordRepository(
@@ -47,8 +47,11 @@ public class LibraryActivity extends AppCompatActivity {
                 db.userWordSetDao(),
                 AppExecutors.Companion.getInstance()
         );
-        // Đảm bảo dữ liệu đã được import
-        MockDataImport.INSTANCE.importIfNeeded(this);
+
+        // Đảm bảo dữ liệu đã được import xong mới load
+        MockDataImport.INSTANCE.importIfNeeded(this, () -> {
+            loadWordSetData(); // Di chuyển vào đây
+        });
     }
 
     private void setupBackNavigation() {
