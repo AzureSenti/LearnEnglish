@@ -30,7 +30,6 @@ object MockDataImport {
                     db.wordSetDao().insertAll(MockData.wordSets)
                     db.wordDao().insertAll(MockData.words)
                     db.wordSetCrossDao().insertAll(MockData.wordSetRefs)
-
                 }
                 onComplete?.run()// call back
 

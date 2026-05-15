@@ -44,7 +44,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun wordSrsDao(): WordSrsDao
     abstract fun userWordSetDao(): UserWordSetDao
     abstract fun wordSetCrossDao(): WordSetCrossDao
-    
+
     companion object {
         private const val DATABASE_NAME = "learn_english_db"
 
@@ -56,7 +56,6 @@ abstract class AppDatabase : RoomDatabase() {
                 INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
             }
         }
-
 
         private fun buildDatabase(context: Context): AppDatabase {
             return Room.databaseBuilder(
