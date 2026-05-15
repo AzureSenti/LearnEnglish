@@ -32,6 +32,12 @@ object MockDataImport {
                     db.wordSetCrossDao().insertAll(MockData.wordSetRefs)
                 }
 
+                if (onComplete != null) {
+                    AppExecutors.getInstance().mainThread.execute {
+                        onComplete.run()
+                    }
+                }
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }
