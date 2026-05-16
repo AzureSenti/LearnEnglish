@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing scale (matches HTML tokens) -->
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_sm">8dp</dimen>
+    <dimen name="space_unit">8dp</dimen>
+    <dimen name="space_md">16dp</dimen>
+    <dimen name="space_gutter">20dp</dimen>
+    <dimen name="space_lg">24dp</dimen>
+    <dimen name="space_xl">32dp</dimen>
+    <dimen name="space_xxl">48dp</dimen>
+
+    <!-- Radius -->
+    <dimen name="radius_default">4dp</dimen>
+    <dimen name="radius_lg">8dp</dimen>
+    <dimen name="radius_xl">12dp</dimen>
+
+    <!-- Stroke -->
+    <dimen name="stroke_thin">1dp</dimen>
+    <dimen name="stroke_medium">1.5dp</dimen>
+
+    <!-- Component heights -->
+    <dimen name="input_height">52dp</dimen>
+    <dimen name="button_height">52dp</dimen>
+    <dimen name="logo_size">48dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="dot_size">6dp</dimen>
+    <dimen name="dot_active_width">24dp</dimen>
+
+    <!-- Layout caps -->
+    <dimen name="content_max_width_form">400dp</dimen>
+    <dimen name="content_max_width_card">400dp</dimen>
+    <dimen name="content_max_width_onboarding">360dp</dimen>
+    <dimen name="illustration_max_height">360dp</dimen>
+
+    <!-- Type sizes -->
+    <dimen name="text_display">48sp</dimen>
+    <dimen name="text_h1">32sp</dimen>
+    <dimen name="text_h2">24sp</dimen>
+    <dimen name="text_h3">20sp</dimen>
+    <dimen name="text_body_lg">18sp</dimen>
+    <dimen name="text_body_md">16sp</dimen>
+    <dimen name="text_label_sm">14sp</dimen>
+    <dimen name="text_caption">12sp</dimen>
+
+    <dimen name="screen_padding_horizontal">24dp</dimen>
+    <dimen name="screen_padding_vertical">24dp</dimen>
+    <dimen name="input_corner_radius">12dp</dimen>
+    <dimen name="button_corner_radius">12dp</dimen>
+    <dimen name="card_corner_large">20dp</dimen>
+    <dimen name="card_corner_medium">16dp</dimen>
+    <dimen name="skip_corner_radius">20dp</dimen>
+
+    <dimen name="card_corner_small">14dp</dimen>
+    <dimen name="nav_height">72dp</dimen>
+
+
+
+
+    <dimen name="card_corner_radius">16dp</dimen>
+    <dimen name="badge_padding_horizontal">16dp</dimen>
+    <dimen name="badge_padding_vertical">4dp</dimen>
+    <dimen name="profile_image_size">96dp</dimen>
+</resources>

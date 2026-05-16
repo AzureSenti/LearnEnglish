@@ -12,7 +12,8 @@ pluginManagement {
     }
 }
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+    // Cập nhật lên bản 0.9.0 để tương thích với Gradle 9.x
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.9.0"
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -24,4 +25,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "LearnEnglish"
 include(":app")
- 

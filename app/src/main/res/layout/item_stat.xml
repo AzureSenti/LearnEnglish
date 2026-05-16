@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:background="@drawable/bg_card_white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_margin="4dp">
+
+    <View
+        android:id="@+id/stat_icon_bg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_stat_circle"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/stat_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="15"
+        android:textColor="#191B23"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/stat_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Days\nStreak"
+        android:textAlignment="center"
+        android:textColor="#424754"
+        android:textSize="10sp" />
+</LinearLayout>

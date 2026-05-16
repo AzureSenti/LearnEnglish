@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Placeholder illustration. Replace with the real asset.
+     Suggested generation prompt:
+     "A clean, modern vector-style illustration of a person peacefully reading
+      a digital article on a tablet, minimalist light-filled environment,
+      soft off-whites and gentle blues." -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="#CFE3E1" />
+    <corners android:radius="@dimen/radius_xl" />
+</shape>

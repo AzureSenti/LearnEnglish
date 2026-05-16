@@ -68,4 +68,81 @@
     <color name="badge_yellow_bg">#FFF5D6</color>
     <color name="badge_purple_bg">#EEE9FF</color>
     <color name="nav_inactive">#9AA3B2</color>
+
+
+
+
+
+    <color name="primary">#0058BE</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#D8E2FF</color>
+    <color name="on_primary_container">#FEFCFF</color>
+    <color name="primary_fixed">#D8E2FF</color>
+    <color name="primary_fixed_dim">#ADC6FF</color>
+    <color name="on_primary_fixed">#001A42</color>
+    <color name="on_primary_fixed_variant">#004395</color>
+    <color name="inverse_primary">#ADC6FF</color>
+    <color name="secondary">#006C49</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="secondary_container">#6CF8BB</color>
+    <color name="on_secondary_container">#00714D</color>
+    <color name="secondary_fixed">#6FFBBE</color>
+    <color name="secondary_fixed_dim">#4EDEA3</color>
+    <color name="on_secondary_fixed">#002113</color>
+    <color name="on_secondary_fixed_variant">#005236</color>
+    <color name="tertiary">#4648D4</color>
+    <color name="on_tertiary">#FFFFFF</color>
+    <color name="tertiary_container">#6063EE</color>
+    <color name="on_tertiary_container">#FFFBFF</color>
+    <color name="tertiary_fixed">#E1E0FF</color>
+    <color name="tertiary_fixed_dim">#C0C1FF</color>
+    <color name="on_tertiary_fixed">#07006C</color>
+    <color name="on_tertiary_fixed_variant">#2F2EBE</color>
+    <color name="error">#BA1A1A</color>
+    <color name="on_error">#FFFFFF</color>
+    <color name="error_container">#FFDAD6</color>
+    <color name="on_error_container">#93000A</color>
+    <color name="error_container_20">#33FFDAD6</color>
+    <!--  20% alpha overlay  -->
+    <color name="background">#F9F9FF</color>
+    <color name="on_background">#191B23</color>
+    <color name="surface">#F9F9FF</color>
+    <color name="on_surface">#191B23</color>
+    <color name="surface_dim">#D8D9E3</color>
+    <color name="surface_bright">#F9F9FF</color>
+    <color name="surface_variant">#E1E2EC</color>
+    <color name="on_surface_variant">#424754</color>
+    <color name="surface_tint">#005AC2</color>
+    <color name="inverse_surface">#2E3038</color>
+    <color name="inverse_on_surface">#EFF0FA</color>
+    <color name="surface_container_lowest">#FFFFFF</color>
+    <color name="surface_container_low">#F2F3FD</color>
+    <color name="surface_container">#ECEDF7</color>
+    <color name="surface_container_high">#E6E7F2</color>
+    <color name="surface_container_highest">#E1E2EC</color>
+    <color name="outline">#727785</color>
+    <color name="outline_variant">#C2C6D6</color>
+
+
+
+    <!-- Badges -->
+    <color name="badge_grammar_bg">#D1FAE5</color>
+    <color name="badge_grammar_text">#059669</color>
+    <color name="badge_vocab_bg">#FEF3C7</color>
+    <color name="badge_vocab_text">#D97706</color>
+    <color name="badge_early_bird_bg">#E1E0FF</color>
+    <color name="badge_early_bird_text">#2F2EBE</color>
+
+
+    <color name="streak_bg">#FFF7ED</color>
+    <color name="streak_text">#EA580C</color>
+
+    <color name="card_bg">#ffffff</color>
+    <color name="bar_l1">#EFF6FF</color>
+    <color name="bar_l2">#DBEAFE</color>
+    <color name="bar_l3">#BFDBFE</color>
+    <color name="bar_l4">#60A5FA</color>
+    <color name="bar_l5">#3B82F6</color>
+    <color name="bar_l6">#2563EB</color>
+    <color name="bar_l7">#1E40AF</color>
 </resources>

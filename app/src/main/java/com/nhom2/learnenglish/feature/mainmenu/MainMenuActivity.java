@@ -18,6 +18,7 @@ import com.nhom2.learnenglish.feature.articles.ArticlesActivity;
 import com.nhom2.learnenglish.feature.articles.ArticleDetailActivity;
 import com.nhom2.learnenglish.ui.activity.LibraryActivity;
 import com.nhom2.learnenglish.ui.activity.WordSetDetailActivity;
+import com.nhom2.learnenglish.ui.activity.ProfileActivity;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -81,6 +82,12 @@ public class MainMenuActivity extends AppCompatActivity {
         LinearLayout navLibrary = findViewById(R.id.nav_library);
         if (navLibrary != null) {
             navLibrary.setOnClickListener(v ->   Navigator.INSTANCE.navigateTo(this, LibraryActivity.class));
+        }
+
+        // Bottom Navigation - Profile
+        LinearLayout navProfile = findViewById(R.id.nav_profile);
+        if (navProfile != null) {
+            navProfile.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this, ProfileActivity.class));
         }
     }
 

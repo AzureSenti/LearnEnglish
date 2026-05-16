@@ -14,6 +14,10 @@
 
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".feature.auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +26,11 @@
         </activity>
 
         <activity
-            android:name=".feature.mainmenu.MainMenuActivity"
+            android:name=".feature.auth.RegisterActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".feature.onboarding.OnboardingActivity"
             android:exported="false" />
 
         <activity
@@ -32,6 +40,22 @@
 
         <activity
             android:name=".ui.activity.WordSetDetailActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.ProfileActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".feature.mainmenu.MainMenuActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.LibraryActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".feature.articles.ArticleDetailActivity"
             android:exported="false" />
 
     </application>

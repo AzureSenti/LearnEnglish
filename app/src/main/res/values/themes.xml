@@ -1,17 +1,38 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Theme dùng trong AndroidManifest (@style/Theme.LearnEnglish) -->
     <style name="Base.Theme.LearnEnglish" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/primary_blue_bright</item>
+        <item name="android:statusBarColor">@color/background_screen</item>
+        <item name="android:navigationBarColor">@color/background_screen</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.LearnEnglish" parent="Base.Theme.LearnEnglish" />
 
-    <style name="RoundedTopCorners">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopLeft">16dp</item>
-        <item name="cornerSizeTopRight">16dp</item>
-        <item name="cornerSizeBottomLeft">0dp</item>
-        <item name="cornerSizeBottomRight">0dp</item>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Vocabulary_learning_app" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary_blue_bright</item>
+        <item name="android:statusBarColor">@color/background_screen</item>
+        <item name="android:navigationBarColor">@color/background_screen</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Theme.Vocabulary_learning_app" parent="Base.Theme.Vocabulary_learning_app" />
+
+    <style name="Widget.App.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">@dimen/input_corner_radius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/input_corner_radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/input_corner_radius</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/input_corner_radius</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <item name="android:minHeight">56dp</item>
+    </style>
+
+    <style name="TextAppearance.App.ScreenTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@color/primary_blue</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center</item>
     </style>
 </resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<certificates>
+    <certificatelist>
+        <cert>
+            <encoded_cert>
+                MIIEqDCCA5CgAwIBAgIJANWFuGxBY2FDMA0GCSqGSIb3DQEBBAUAMIGUMQswCQYDVQQGEwJV
+                UzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEQMA4GA1UE
+                ChMHQW5kcm9pZDEQMA4GA1UECxMHQW5kcm9pZDEQMA4GA1UEAxMHQW5kcm9pZDEiMCAGCSqG
+                SIb3DQEJARYTYW5kcm9pZEBhbmRyb2lkLmNvbTAeFw0wODA4MjEyMzEzMzRaFw0zNjAxMDIy
+                MzEzMzRaMIGUMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMN
+                TW91bnRhaW4gVmlldzEQMA4GA1UEChMHQW5kcm9pZDEQMA4GA1UECxMHQW5kcm9pZDEQMA4G
+                A1UEAxMHQW5kcm9pZDEiMCAGCSqGSIb3DQEJARYTYW5kcm9pZEBhbmRyb2lkLmNvbTCCASAw
+                DQYJKoZIhvcNAQEBBQADggENADCCAQgCggEBANbOLggKv+eu51TxhQsXkj3R+j/QF0SFnHtz
+                1H+z8ZWw6bvrWJB4YDfLCqhlpxlLM+Jl9WMXiwx7nn1vS7g4Ih3KdUwH6tEKjJRc+tAe4eM
+                8hfKSrcyP3iHZGQXv0tHfQ==</encoded_cert>
+        </cert>
+    </certificatelist>
+</certificates>

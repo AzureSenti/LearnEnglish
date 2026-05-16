@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
-    tools:context=".ArticleDetailActivity">
+    tools:context="com.nhom2.learnenglish.feature.articles.ArticleDetailActivity">
 
     <!-- Top App Bar -->
     <androidx.appcompat.widget.Toolbar

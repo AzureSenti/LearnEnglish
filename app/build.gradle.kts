@@ -1,21 +1,18 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android) // Thêm dòng này để biên dịch Kotlin
     alias(libs.plugins.ksp)
     alias(libs.plugins.room3)
 }
 
 android {
     namespace = "com.nhom2.learnenglish"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.nhom2.learnenglish"
         minSdk = 25
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -31,17 +28,26 @@ android {
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
+// Cấu hình Java Toolchain để Gradle tự động tải JDK 17 đầy đủ (có jlink)
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 kotlin {
-    compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
-    }
+    jvmToolchain(17)
 }
 
 room3 {
@@ -53,6 +59,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation("com.google.android.gms:play-services-base:18.3.0")
 
     // Room 3
     implementation(libs.room3.runtime)
