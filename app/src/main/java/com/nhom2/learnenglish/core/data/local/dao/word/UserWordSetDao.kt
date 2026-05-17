@@ -1,10 +1,11 @@
-package com.nhom2.learnenglish.core.data.local.dao
+package com.nhom2.learnenglish.core.data.local.dao.word
 
 import androidx.room3.Dao
 import androidx.room3.Insert
 import androidx.room3.OnConflictStrategy
 import androidx.room3.Query
-import com.nhom2.learnenglish.core.data.local.entity.UserWordSetCrossRef
+import com.nhom2.learnenglish.core.data.local.dao.BaseDao
+import com.nhom2.learnenglish.core.data.local.entity.word.UserWordSetCrossRef
 
 @Dao
 interface UserWordSetDao : BaseDao<UserWordSetCrossRef> {

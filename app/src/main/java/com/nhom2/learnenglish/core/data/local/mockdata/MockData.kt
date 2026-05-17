@@ -1,12 +1,15 @@
 package com.nhom2.learnenglish.core.data.local.mockdata
 
 import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity
-import com.nhom2.learnenglish.core.data.local.entity.WordEntity
-import com.nhom2.learnenglish.core.data.local.entity.WordSetCrossRef
-import com.nhom2.learnenglish.core.data.local.entity.WordSetEntity
+import com.nhom2.learnenglish.core.data.local.entity.grammar.GrammarLessonEntity
+import com.nhom2.learnenglish.core.data.local.entity.grammar.GrammarQuestionEntity
+import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSetCrossRef
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity
 
 object MockData {
 
+    // Từ vựng
     val wordSets = listOf(
         WordSetEntity(id = 1, name = "Giao tiếp cơ bản", description = "Các câu chào hỏi và từ vựng thông dụng hàng ngày.", unlockCost = 0),
         WordSetEntity(id = 2, name = "Công nghệ thông tin", description = "Từ vựng chuyên ngành lập trình và phần cứng.", unlockCost = 100),
@@ -55,6 +58,7 @@ object MockData {
             isCompleted = true
         ),
 
+        // Báo
         ArticleEntity(
             title = "China develops ultra-low-cost iron battery that retains 99.4% efficiency for over 16 years",
             content = "Chinese scientists have developed an iron battery 80 times cheaper than lithium that can run for over 6,000 cycles with almost no loss in capacity.\n" +
@@ -73,6 +77,40 @@ object MockData {
             readTime = "5 min read",
             isCompleted = false
         )
+
     )
+
+    // Ngữ pháp
+    val grammarLessons = listOf(
+        GrammarLessonEntity(
+            id = 1,
+            title = "Thì Hiện tại đơn",
+            theoryBasics = "S + V(s/es) + O",
+            usageRules = "1. Diễn tả thói quen. \n2. Diễn tả chân lý hiển nhiên.",
+            examples = "- I play football. \n- The sun rises in the East.",
+            orderIndex = 1
+        )
+    )
+
+    val grammarQuestion = listOf(
+        GrammarQuestionEntity(
+            lessonId = 1,
+            questionType = "MULTIPLE_CHOICE",
+            questionText = "She ___ English very well.",
+            options = "speak,speaks,speaking",
+            correctAnswer = "speaks",
+            explanation = "Chủ ngữ 'She' là ngôi thứ 3 số ít nên động từ phải thêm 's'."
+        ),
+        GrammarQuestionEntity(
+            lessonId = 1,
+            questionType = "FILL_IN_BLANK",
+            questionText = "Water ___ (boil) at 100 degrees Celsius.",
+            options = null,
+            correctAnswer = "boils",
+            explanation = "Sự thật hiển nhiên dùng hiện tại đơn."
+        )
+    )
+
+
 
 }

@@ -49,6 +49,10 @@
             android:name=".feature.wordsets.WordSetDetailActivity"
             android:exported="false" />
 
+        <activity android:name=".feature.grammar.GrammarRoadmapActivity"
+            android:exported="false" />
+
+
     </application>
 
 </manifest>
