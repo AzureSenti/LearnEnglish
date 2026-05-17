@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.nhom2.learnenglish.R;
 import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
-import com.nhom2.learnenglish.ui.activity.LibraryActivity;
-import com.nhom2.learnenglish.ui.activity.WordSetDetailActivity;
+import com.nhom2.learnenglish.feature.wordsets.LibraryActivity;
+import com.nhom2.learnenglish.feature.wordsets.WordSetDetailActivity;
 
 public class ProfileActivity extends AppCompatActivity {
 

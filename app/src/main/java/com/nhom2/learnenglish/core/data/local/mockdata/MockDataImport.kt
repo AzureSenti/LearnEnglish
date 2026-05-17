@@ -20,11 +20,22 @@ object MockDataImport {
         AppExecutors.getInstance().diskIO.execute {
             try {
                 kotlinx.coroutines.runBlocking {
-
+                    // Article
                     db.articleDao().deleteAll()
-
-
                     db.articleDao().insertAll(MockData.articles)
+
+                    // Word and Set
+                    db.wordDao().deleteAll()
+                    db.wordSetDao().deleteAll()
+                    db.wordSetDao().insertAll(MockData.wordSets)
+                    db.wordDao().insertAll(MockData.words)
+                    db.wordSetCrossDao().insertAll(MockData.wordSetRefs)
+                }
+
+                if (onComplete != null) {
+                    AppExecutors.getInstance().mainThread.execute {
+                        onComplete.run()
+                    }
                 }
 
             } catch (e: Exception) {

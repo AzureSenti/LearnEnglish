@@ -61,4 +61,14 @@
     <dimen name="badge_padding_horizontal">16dp</dimen>
     <dimen name="badge_padding_vertical">4dp</dimen>
     <dimen name="profile_image_size">96dp</dimen>
+
+    <!-- Sanctuary dashboard -->
+    <dimen name="sanctuary_card_corner">24dp</dimen>
+    <dimen name="sanctuary_horizontal_padding">24dp</dimen>
+    <dimen name="sanctuary_profile_size">32dp</dimen>
+    <dimen name="sanctuary_icon_container_size">48dp</dimen>
+    <dimen name="sanctuary_goal_button_height">50dp</dimen>
+    <dimen name="sanctuary_chart_bar_width">20dp</dimen>
+    <dimen name="sanctuary_chart_bar_active_width">28dp</dimen>
+    <dimen name="sanctuary_chart_height">120dp</dimen>
 </resources>

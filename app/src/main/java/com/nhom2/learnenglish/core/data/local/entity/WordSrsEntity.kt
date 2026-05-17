@@ -26,7 +26,7 @@ import androidx.room3.PrimaryKey
 )
     ],
     indices = [
-        Index(value = ["word_id"], unique = true),
+        Index(value = ["word_id"]),
         Index(value = ["next_review_date"])
     ]
 )
@@ -42,8 +42,7 @@ data class WordSrsEntity(
     @ColumnInfo(name = "level", defaultValue = "0")
     val level: Int,
 
-
-    @ColumnInfo(name = "next_review_date")
+    @ColumnInfo(name = "next_review_date",defaultValue = "0")
     val nextReviewDate: Long,
 
     @ColumnInfo(name = "last_review_date")

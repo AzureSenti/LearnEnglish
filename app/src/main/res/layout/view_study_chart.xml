@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/space_md">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/study_bars_container"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/sanctuary_chart_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/bar_mon"
+            android:layout_width="@dimen/sanctuary_chart_bar_width"
+            android:layout_height="40dp"
+            android:background="@drawable/bar_chart_inactive"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bar_tue"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/bar_tue"
+            android:layout_width="@dimen/sanctuary_chart_bar_width"
+            android:layout_height="56dp"
+            android:background="@drawable/bar_chart_inactive"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bar_wed"
+            app:layout_constraintStart_toEndOf="@id/bar_mon" />
+
+        <View
+            android:id="@+id/bar_wed"
+            android:layout_width="@dimen/sanctuary_chart_bar_width"
+            android:layout_height="48dp"
+            android:background="@drawable/bar_chart_inactive"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bar_thu"
+            app:layout_constraintStart_toEndOf="@id/bar_tue" />
+
+        <View
+            android:id="@+id/bar_thu"
+            android:layout_width="@dimen/sanctuary_chart_bar_width"
+            android:layout_height="64dp"
+            android:background="@drawable/bar_chart_inactive"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bar_fri"
+            app:layout_constraintStart_toEndOf="@id/bar_wed" />
+
+        <View
+            android:id="@+id/bar_fri"
+            android:layout_width="@dimen/sanctuary_chart_bar_active_width"
+            android:layout_height="88dp"
+            android:background="@drawable/bar_chart_active"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bar_sat"
+            app:layout_constraintStart_toEndOf="@id/bar_thu" />
+
+        <View
+            android:id="@+id/bar_sat"
+            android:layout_width="@dimen/sanctuary_chart_bar_width"
+            android:layout_height="32dp"
+            android:background="@drawable/bar_chart_inactive"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bar_sun"
+            app:layout_constraintStart_toEndOf="@id/bar_fri" />
+
+        <View
+            android:id="@+id/bar_sun"
+            android:layout_width="@dimen/sanctuary_chart_bar_width"
+            android:layout_height="24dp"
+            android:background="@drawable/bar_chart_inactive"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/bar_sat" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/label_mon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/inter"
+        android:text="Mon"
+        android:textColor="@color/sanctuary_text_secondary"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="@id/bar_mon"
+        app:layout_constraintStart_toStartOf="@id/bar_mon"
+        app:layout_constraintTop_toBottomOf="@id/study_bars_container" />
+
+    <TextView
+        android:id="@+id/label_tue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter"
+        android:text="Tue"
+        android:textColor="@color/sanctuary_text_secondary"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="@id/bar_tue"
+        app:layout_constraintStart_toStartOf="@id/bar_tue"
+        app:layout_constraintTop_toTopOf="@id/label_mon" />
+
+    <TextView
+        android:id="@+id/label_wed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter"
+        android:text="Wed"
+        android:textColor="@color/sanctuary_text_secondary"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="@id/bar_wed"
+        app:layout_constraintStart_toStartOf="@id/bar_wed"
+        app:layout_constraintTop_toTopOf="@id/label_mon" />
+
+    <TextView
+        android:id="@+id/label_thu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter"
+        android:text="Thu"
+        android:textColor="@color/sanctuary_text_secondary"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="@id/bar_thu"
+        app:layout_constraintStart_toStartOf="@id/bar_thu"
+        app:layout_constraintTop_toTopOf="@id/label_mon" />
+
+    <TextView
+        android:id="@+id/label_fri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter"
+        android:text="Fri"
+        android:textColor="@color/sanctuary_primary_blue"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/bar_fri"
+        app:layout_constraintStart_toStartOf="@id/bar_fri"
+        app:layout_constraintTop_toTopOf="@id/label_mon" />
+
+    <TextView
+        android:id="@+id/label_sat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter"
+        android:text="Sat"
+        android:textColor="@color/sanctuary_text_secondary"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="@id/bar_sat"
+        app:layout_constraintStart_toStartOf="@id/bar_sat"
+        app:layout_constraintTop_toTopOf="@id/label_mon" />
+
+    <TextView
+        android:id="@+id/label_sun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter"
+        android:text="Sun"
+        android:textColor="@color/sanctuary_text_secondary"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="@id/bar_sun"
+        app:layout_constraintStart_toStartOf="@id/bar_sun"
+        app:layout_constraintTop_toTopOf="@id/label_mon" />
+
+    <TextView
+        android:id="@+id/tv_study_footer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/inter"
+        android:gravity="center"
+        android:text="@string/study_avg"
+        android:textColor="@color/sanctuary_text_secondary"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_mon" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

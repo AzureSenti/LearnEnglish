@@ -3,7 +3,23 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="bg_color">#FBFBFF</color>
+    <color name="bg_color">#F9F9FF</color>
+
+    <!-- Sanctuary dashboard palette -->
+    <color name="sanctuary_background">#F9F9FF</color>
+    <color name="sanctuary_primary_blue">#0058BE</color>
+    <color name="sanctuary_secondary_green">#006C49</color>
+    <color name="sanctuary_accent_orange">#FF9800</color>
+    <color name="sanctuary_streak_background">#FFF5E6</color>
+    <color name="sanctuary_card_background">#FFFFFF</color>
+    <color name="sanctuary_card_stroke">#ECEEF7</color>
+    <color name="sanctuary_text_primary">#191B23</color>
+    <color name="sanctuary_text_secondary">#424754</color>
+    <color name="sanctuary_icon_green_bg">#E8F5EF</color>
+    <color name="sanctuary_icon_blue_bg">#E8F0FE</color>
+    <color name="sanctuary_nav_active_bg">#E8F0FE</color>
+    <color name="sanctuary_bar_inactive">#E1E2EC</color>
+    <color name="sanctuary_bar_memory_inactive">#DBEAFE</color>
 
 
     <color name="blue_primary">#3D7BEE</color>

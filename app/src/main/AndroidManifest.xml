@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -10,7 +12,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.LearnEnglish">
+        android:theme="@style/Theme.LearnEnglish"
+        android:usesCleartextTraffic="true"
+        >
 
         <activity
             android:name=".MainActivity"
@@ -33,13 +37,19 @@
             android:name=".feature.onboarding.OnboardingActivity"
             android:exported="false" />
 
+        <activity android:name=".feature.wordsets.LibraryActivity"
+            android:exported="false" />
+
         <activity
             android:name=".feature.articles.ArticlesActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".feature.articles.ArticleDetailActivity"
+            android:exported="false" />
 
         <activity
-            android:name=".ui.activity.WordSetDetailActivity"
+            android:name=".feature.wordsets.WordSetDetailActivity"
             android:exported="false" />
 
         <activity
@@ -52,10 +62,6 @@
 
         <activity
             android:name=".ui.activity.LibraryActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".feature.articles.ArticleDetailActivity"
             android:exported="false" />
 
     </application>

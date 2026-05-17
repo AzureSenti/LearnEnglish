@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/sanctuary_bar_inactive" />
+    <size
+        android:width="@dimen/sanctuary_profile_size"
+        android:height="@dimen/sanctuary_profile_size" />
+</shape>

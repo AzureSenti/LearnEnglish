@@ -1,9 +1,22 @@
+import java.util.Properties
+import java.io.FileInputStream
+
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android) // Thêm dòng này để biên dịch Kotlin
     alias(libs.plugins.ksp)
     alias(libs.plugins.room3)
 }
+
+
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("application-local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(FileInputStream(localPropertiesFile))
+}
+val baseUrl = localProperties.getProperty("BASE_URL") ?: "http://10.0.2.2:8000"
 
 android {
     namespace = "com.nhom2.learnenglish"
@@ -17,8 +30,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
     buildTypes {
         release {
             isMinifyEnabled = false

@@ -1,6 +1,5 @@
 package com.nhom2.learnenglish.feature.mainmenu;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,11 +12,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.nhom2.learnenglish.R;
+import com.nhom2.learnenglish.core.data.local.mockdata.MockDataImport;
 import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.feature.articles.ArticlesActivity;
-import com.nhom2.learnenglish.feature.articles.ArticleDetailActivity;
-import com.nhom2.learnenglish.ui.activity.LibraryActivity;
-import com.nhom2.learnenglish.ui.activity.WordSetDetailActivity;
+import com.nhom2.learnenglish.feature.wordsets.LibraryActivity;
 import com.nhom2.learnenglish.ui.activity.ProfileActivity;
 
 public class MainMenuActivity extends AppCompatActivity {
@@ -30,6 +28,8 @@ public class MainMenuActivity extends AppCompatActivity {
 
         setupWindowInsets();
         setupNavigation();
+
+        MockDataImport.INSTANCE.importIfNeeded(this, () -> { });
     }
 
     private void setupWindowInsets() {
@@ -44,54 +44,31 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     private void setupNavigation() {
-        // Nút See All trong phần Featured Articles
-        TextView btnSeeAllArticles = findViewById(R.id.btn_see_all_articles);
-        if (btnSeeAllArticles != null) {
-            btnSeeAllArticles.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this,ArticlesActivity.class));
+        TextView btnViewAllGoals = findViewById(R.id.btn_view_all_goals);
+        if (btnViewAllGoals != null) {
+            btnViewAllGoals.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(MainMenuActivity.this, LibraryActivity.class));
         }
 
-        // Card bài báo nổi bật ở trang chủ
-        LinearLayout cardFeaturedArticle = findViewById(R.id.card_featured_article);
-        if (cardFeaturedArticle != null) {
-            cardFeaturedArticle.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this,ArticleDetailActivity.class));
+        LinearLayout navExplore = findViewById(R.id.nav_explore);
+        if (navExplore != null) {
+            navExplore.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(MainMenuActivity.this, ArticlesActivity.class));
         }
 
-        // Word Set: Tech Idioms
-        LinearLayout cardWordSetTech = findViewById(R.id.card_word_set_tech);
-        if (cardWordSetTech != null) {
-            cardWordSetTech.setOnClickListener(v -> {
-                Intent intent = new Intent(this, WordSetDetailActivity.class);
-                intent.putExtra("SET_TITLE", "Tech Idioms");
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            });
-        }
-
-        // Word Set: Daily Phrases
-        LinearLayout cardWordSetDaily = findViewById(R.id.card_word_set_daily);
-        if (cardWordSetDaily != null) {
-            cardWordSetDaily.setOnClickListener(v -> {
-                Intent intent = new Intent(this, WordSetDetailActivity.class);
-                intent.putExtra("SET_TITLE", "Daily Phrases");
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            });
-        }
-
-        // Điều hướng Bottom Navigation - Library
         LinearLayout navLibrary = findViewById(R.id.nav_library);
         if (navLibrary != null) {
-            navLibrary.setOnClickListener(v ->   Navigator.INSTANCE.navigateTo(this, LibraryActivity.class));
+            navLibrary.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(MainMenuActivity.this, LibraryActivity.class));
         }
 
-        // Bottom Navigation - Profile
         LinearLayout navProfile = findViewById(R.id.nav_profile);
         if (navProfile != null) {
-            navProfile.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this, ProfileActivity.class));
+            navProfile.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(MainMenuActivity.this, ProfileActivity.class));
+        }
+
+        View profileAvatar = findViewById(R.id.iv_profile);
+        if (profileAvatar != null) {
+            profileAvatar.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(MainMenuActivity.this, ProfileActivity.class));
         }
     }
-
-
 
     @Override
     protected void onPause() {

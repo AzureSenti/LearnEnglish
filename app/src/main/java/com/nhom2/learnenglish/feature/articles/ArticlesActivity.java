@@ -1,7 +1,6 @@
 package com.nhom2.learnenglish.feature.articles;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -20,7 +19,6 @@ import com.nhom2.learnenglish.core.data.repository.ArticleRepository;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.Navigator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ArticlesActivity extends AppCompatActivity {
@@ -44,25 +42,34 @@ public class ArticlesActivity extends AppCompatActivity {
         setupToolbar();
         setupRecyclerView();
 
-        loadArticleData();
+//        loadArticleData();
     }
 
-    private void setupData() {
-        AppDatabase db = AppDatabase.Companion.getInstance(this);
-        articleRepository = new ArticleRepository(
-                db.articleDao(),
-                AppExecutors.Companion.getInstance()
-        );
-        MockDataImport.INSTANCE.importIfNeeded(this);
-    }
+//    private void setupData() {
+//        AppDatabase db = AppDatabase.Companion.getInstance(this);
+//        articleRepository = new ArticleRepository(
+//                AppExecutors.Companion.getInstance(),
+//                db.articleDao()
+//        );
+//        MockDataImport.INSTANCE.importIfNeeded(this);
+//    }
+private void setupData() {
+    AppDatabase db = AppDatabase.Companion.getInstance(this);
+    articleRepository = new ArticleRepository(
+            AppExecutors.Companion.getInstance(),
+            db.articleDao()
+    );
+
+    // Gọi import và chờ nó xong mới load dữ liệu
+    MockDataImport.INSTANCE.importIfNeeded(this, () -> {
+        loadArticleData(); // Di chuyển vào đây
+    });
+}
 
     private void setupToolbar() {
         ImageView ivBack = findViewById(R.id.iv_back);
         if (ivBack != null) {
-            ivBack.setOnClickListener(v -> {
-                finish();
-                overridePendingTransition(0, 0);
-            });
+            ivBack.setOnClickListener(v -> finish());
         }
     }
 
@@ -71,9 +78,12 @@ public class ArticlesActivity extends AppCompatActivity {
         if (rvArticles != null) {
             rvArticles.setLayoutManager(new LinearLayoutManager(this));
 
-            adapter = new ArticleAdapter( article ->
-                    Navigator.INSTANCE.navigateTo(this, ArticleDetailActivity.class)
-            );
+            // Trong setupRecyclerView()
+            adapter = new ArticleAdapter(article -> {android.content.Intent intent = new android.content.Intent(this, ArticleDetailActivity.class);
+                intent.putExtra("article_id", article.getId()); // Giả sử ArticleEntity có getId()
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            });
             rvArticles.setAdapter(adapter);
         }
     }
@@ -83,7 +93,7 @@ public class ArticlesActivity extends AppCompatActivity {
             try {
                 List<ArticleEntity> list = kotlinx.coroutines.BuildersKt.runBlocking(
                         kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> articleRepository.getAllArticles(continuation)
+                        (scope, continuation) -> articleRepository.getAll(continuation)
                 );
 
                 runOnUiThread(() -> {
@@ -95,5 +105,13 @@ public class ArticlesActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isFinishing()) {
+            overridePendingTransition(0, 0);
+        }
     }
 }
