@@ -16,6 +16,8 @@ data class WordSetEntity(
     val description: String? = null,
 
     @ColumnInfo(name = "unlock_cost", defaultValue = "0")
-    val unlockCost: Int
+    val unlockCost: Int,
 
+    @ColumnInfo(name = "icon_category", defaultValue = "folder")
+    val iconCategory: String = "folder"
 )

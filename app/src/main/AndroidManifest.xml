@@ -61,7 +61,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".ui.activity.LibraryActivity"
+            android:name=".feature.auth.ForgotPasswordActivity"
             android:exported="false" />
 
     </application>

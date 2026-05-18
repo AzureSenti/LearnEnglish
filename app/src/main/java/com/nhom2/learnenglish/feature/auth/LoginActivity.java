@@ -13,24 +13,19 @@ import com.nhom2.learnenglish.R;
 import com.nhom2.learnenglish.core.data.local.AppDatabase;
 import com.nhom2.learnenglish.core.data.local.entity.UserEntity;
 import com.nhom2.learnenglish.core.data.local.mockdata.MockDataImport;
-import com.nhom2.learnenglish.core.data.repository.ArticleRepository;
 import com.nhom2.learnenglish.core.data.repository.UserRepository;
-import com.nhom2.learnenglish.core.network.Auth.AuthApi;
-import com.nhom2.learnenglish.core.network.RetrofitClient;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.core.util.SessionManager;
 import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 import android.widget.Toast;
 public class LoginActivity extends AppCompatActivity {
     private TextInputEditText inputEmail, inputPassword;
     private MaterialButton buttonLogin;
     private MaterialCheckBox checkRemember;
-    private TextView linkForgotPassword, linkSignup, useWithoutLogin;
+    private MaterialButton linkForgotPassword, linkSignup, useWithoutLogin;
     private UserRepository userRepository;
 
     @Override
@@ -62,13 +57,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setupData() {
         SessionManager sessionManager = new SessionManager(this);
-        AuthApi authApi = RetrofitClient.INSTANCE.getInstance().create(AuthApi.class);
         AppDatabase db = AppDatabase.Companion.getInstance(this);
 
         userRepository = new UserRepository(
                 AppExecutors.Companion.getInstance(),
                 db.userDao(),
-                authApi,
                 sessionManager
         );
 
@@ -81,8 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Nút Quên mật khẩu
         linkForgotPassword.setOnClickListener(v -> {
-            Toast.makeText(this, "Chuyển sang trang Quên mật khẩu", Toast.LENGTH_SHORT).show();
-            // TODO: Mở ForgotPasswordActivity
+            Navigator.INSTANCE.navigateTo(this, ForgotPasswordActivity.class);
         });
 
         // Nút Đăng ký
@@ -117,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 UserEntity user = kotlinx.coroutines.BuildersKt.runBlocking(
                         kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> userRepository.login(email, password, continuation)
+                        (scope, continuation) -> userRepository.login(email, password, isRememberMe, continuation)
                 );
 
                 runOnUiThread(() -> {

@@ -4,10 +4,12 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="bg_color">#F9F9FF</color>
+    <color name="sanctuary_surface">#FFFFFF</color>
 
     <!-- Sanctuary dashboard palette -->
     <color name="sanctuary_background">#F9F9FF</color>
     <color name="sanctuary_primary_blue">#0058BE</color>
+    <color name="sanctuary_primary_blue_light">#BFDBFE</color>
     <color name="sanctuary_secondary_green">#006C49</color>
     <color name="sanctuary_accent_orange">#FF9800</color>
     <color name="sanctuary_streak_background">#FFF5E6</color>
@@ -22,7 +24,7 @@
     <color name="sanctuary_bar_memory_inactive">#DBEAFE</color>
 
 
-    <color name="blue_primary">#3D7BEE</color>
+    <color name="blue_primary">#0058BE</color>
     <color name="blue_light">#E8F0FE</color>
 
     <color name="purple_primary">#A665D1</color>
@@ -46,7 +48,7 @@
     <color name="primary_blue_bright">#0056D2</color>
     <color name="title_blue_dark">#0047AB</color>
 
-    <color name="green_primary">#006B44</color>
+    <color name="green_primary">#006C49</color>
     <color name="green_primary_dark">#006847</color>
 
     <color name="text_primary">#1A1A1A</color>

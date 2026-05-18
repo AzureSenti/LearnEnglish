@@ -7,7 +7,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import com.nhom2.learnenglish.core.data.local.AuthPreferences;
+import com.google.firebase.auth.FirebaseAuth;
 import com.nhom2.learnenglish.core.data.local.mockdata.MockDataImport;
 import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.core.util.SessionManager;
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         SessionManager sessionManager = new SessionManager(this);
-        if (sessionManager.isLoggedIn()) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null || sessionManager.isLoggedIn()) {
             Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
         } else {
             Navigator.INSTANCE.navigateTo(this, LoginActivity.class);

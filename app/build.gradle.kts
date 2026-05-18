@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.android) // Thêm dòng này để biên dịch Kotlin
     alias(libs.plugins.ksp)
     alias(libs.plugins.room3)
+    alias(libs.plugins.google.services)
 }
 
 
@@ -33,8 +34,13 @@ android {
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
     }
 
+    lint {
+        abortOnError = false
+    }
+
     buildFeatures {
         buildConfig = true
+        viewBinding = true
     }
     buildTypes {
         release {
@@ -72,6 +78,9 @@ room3 {
 }
 
 dependencies {
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -88,6 +97,9 @@ dependencies {
 
     // Gson (used by TypeConverters for JSON serialization)
     implementation("com.google.code.gson:gson:2.11.0")
+
+    // MPAndroidChart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

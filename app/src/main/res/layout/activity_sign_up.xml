@@ -254,8 +254,9 @@
                         android:textColor="@color/text_muted"
                         android:textSize="14sp" />
 
-                    <TextView
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/link_login"
+                        style="@style/Widget.3English.Button.TextLink"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/log_in_link"

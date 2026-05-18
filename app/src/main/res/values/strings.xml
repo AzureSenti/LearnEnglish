@@ -102,4 +102,42 @@
     <string name="avg_mastery">Average Mastery: Level 4</string>
     <string name="study_time">Study Time</string>
     <string name="study_avg">45 mins average this week</string>
+
+    <!-- Vocabulary CRUD -->
+    <string name="word_set_add_title">Thêm bộ từ vựng</string>
+    <string name="word_set_edit_title">Sửa bộ từ vựng</string>
+    <string name="word_add_title">Thêm từ mới</string>
+    <string name="word_edit_title">Sửa từ</string>
+    <string name="hint_set_name">Tên bộ từ</string>
+    <string name="hint_set_description">Mô tả (tuỳ chọn)</string>
+    <string name="hint_english_word">Từ tiếng Anh</string>
+    <string name="hint_vietnamese_meaning">Nghĩa tiếng Việt</string>
+    <string name="action_save">Lưu</string>
+    <string name="action_close">Đóng</string>
+    <string name="action_edit">Sửa</string>
+    <string name="action_delete">Xóa</string>
+    <string name="error_name_required">Vui lòng nhập tên</string>
+    <string name="error_word_fields_required">Vui lòng nhập đủ từ và nghĩa</string>
+    <string name="delete_word_set_title">Xóa bộ từ vựng?</string>
+    <string name="delete_word_set_message">Bộ \"%1$s\" và các liên kết từ sẽ bị xóa.</string>
+    <string name="delete_word_title">Xóa từ khỏi bộ?</string>
+    <string name="delete_word_message">Từ \"%1$s\" sẽ được gỡ khỏi bộ này.</string>
+    <string name="toast_saved">Đã lưu</string>
+    <string name="toast_deleted">Đã xóa</string>
+    <string name="word_lookup_title">Tra từ</string>
+    <string name="word_not_in_dictionary">Chưa có trong từ điển — hãy thêm từ vào bộ từ vựng.</string>
+    <string name="word_in_dictionary">Có trong từ điển</string>
+    <string name="action_create_set">Create Set</string>
+    <string name="action_add_to_set">Add to Set</string>
+    <string name="label_choose_category">Choose a category</string>
+    <string name="category_travel">Travel</string>
+    <string name="category_food">Food</string>
+    <string name="category_study">Study</string>
+    <string name="category_business">Business</string>
+    <string name="category_tech">Technology</string>
+    <string name="cd_play_pronunciation">Play pronunciation</string>
+    <string name="mastery_level">Mastery Level</string>
+    <string name="mastery_progress">%1$d/%2$d words mastered</string>
+    <string name="word_list_header">Word List</string>
+    <string name="my_word_sets">My Word Sets</string>
 </resources>

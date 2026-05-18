@@ -20,6 +20,9 @@ interface WordSetDao : BaseDao<WordSetEntity> {
     """)
     suspend fun getUnlockedWordSets(userId: Long): List<WordSetEntity>
 
+    @Query("SELECT COUNT(*) FROM word_set_cross_ref WHERE set_id = :setId")
+    suspend fun countWordsInSet(setId: Long): Int
+
     @Query("DELETE FROM word_sets")
     suspend fun deleteAll()
 }

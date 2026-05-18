@@ -52,6 +52,12 @@ interface WordDao : BaseDao<WordEntity> {
     suspend fun getUnlearnedWords(setId: Long, userId: Long, limit: Int = 10): List<WordEntity>
 
 
+    @Query("SELECT * FROM words WHERE LOWER(english_word) = LOWER(:word) LIMIT 1")
+    suspend fun findByEnglishWord(word: String): WordEntity?
+
+    @Query("SELECT * FROM words")
+    suspend fun getAllWords(): List<WordEntity>
+
     @Query("DELETE FROM words")
     suspend fun deleteAll()
 }

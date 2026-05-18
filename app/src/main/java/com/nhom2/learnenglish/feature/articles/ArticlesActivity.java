@@ -17,7 +17,8 @@ import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity;
 import com.nhom2.learnenglish.core.data.local.mockdata.MockDataImport;
 import com.nhom2.learnenglish.core.data.repository.ArticleRepository;
 import com.nhom2.learnenglish.core.util.AppExecutors;
-import com.nhom2.learnenglish.core.util.Navigator;
+import com.nhom2.learnenglish.core.util.BottomNavTab;
+import com.nhom2.learnenglish.core.util.BottomNavigationHelper;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class ArticlesActivity extends AppCompatActivity {
 
         setupData();
         setupToolbar();
+        setupBottomNavigation();
         setupRecyclerView();
 
 //        loadArticleData();
@@ -71,6 +73,10 @@ private void setupData() {
         if (ivBack != null) {
             ivBack.setOnClickListener(v -> finish());
         }
+    }
+
+    private void setupBottomNavigation() {
+        BottomNavigationHelper.setup(this, BottomNavTab.EXPLORE);
     }
 
     private void setupRecyclerView() {

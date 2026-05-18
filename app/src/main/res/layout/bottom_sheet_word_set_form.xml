@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/sanctuary_surface"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/space_xl">
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/space_sm"
+        android:background="@drawable/bg_tag_gray" />
+
+    <ImageView
+        android:id="@+id/iv_illustration"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginHorizontal="@dimen/sanctuary_horizontal_padding"
+        android:layout_marginTop="@dimen/space_lg"
+        android:background="@drawable/bg_sheet_hero"
+        android:contentDescription="@null"
+        android:padding="@dimen/space_xl"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_folder"
+        app:tint="@color/sanctuary_primary_blue" />
+
+    <TextView
+        android:id="@+id/tv_sheet_title"
+        style="@style/TextAppearance.Sanctuary.Lexend.H1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/sanctuary_horizontal_padding"
+        android:layout_marginTop="@dimen/space_lg"
+        android:text="@string/word_set_add_title"
+        android:textSize="22sp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_set_name"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/sanctuary_horizontal_padding"
+        android:layout_marginTop="@dimen/space_lg"
+        android:hint="@string/hint_set_name"
+        app:boxCornerRadiusBottomEnd="16dp"
+        app:boxCornerRadiusBottomStart="16dp"
+        app:boxCornerRadiusTopEnd="16dp"
+        app:boxCornerRadiusTopStart="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_set_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:inputType="textCapSentences"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        style="@style/TextAppearance.Sanctuary.Inter.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/sanctuary_horizontal_padding"
+        android:layout_marginTop="@dimen/space_lg"
+        android:text="@string/label_choose_category"
+        android:textSize="13sp" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_sm"
+        android:clipToPadding="false"
+        android:paddingHorizontal="@dimen/sanctuary_horizontal_padding"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/category_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/cat_travel"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginEnd="@dimen/space_sm"
+                android:background="@drawable/bg_category_chip"
+                android:contentDescription="@string/category_travel"
+                android:padding="12dp"
+                android:src="@drawable/ic_explore"
+                app:tint="@color/sanctuary_primary_blue" />
+
+            <ImageButton
+                android:id="@+id/cat_food"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginEnd="@dimen/space_sm"
+                android:background="@drawable/bg_category_chip"
+                android:contentDescription="@string/category_food"
+                android:padding="12dp"
+                android:src="@drawable/ic_spa"
+                app:tint="@color/sanctuary_primary_blue" />
+
+            <ImageButton
+                android:id="@+id/cat_study"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginEnd="@dimen/space_sm"
+                android:background="@drawable/bg_category_chip"
+                android:contentDescription="@string/category_study"
+                android:padding="12dp"
+                android:src="@drawable/ic_book"
+                app:tint="@color/sanctuary_primary_blue" />
+
+            <ImageButton
+                android:id="@+id/cat_business"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginEnd="@dimen/space_sm"
+                android:background="@drawable/bg_category_chip"
+                android:contentDescription="@string/category_business"
+                android:padding="12dp"
+                android:src="@drawable/ic_chart"
+                app:tint="@color/sanctuary_primary_blue" />
+
+            <ImageButton
+                android:id="@+id/cat_tech"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_category_chip"
+                android:contentDescription="@string/category_tech"
+                android:padding="12dp"
+                android:src="@drawable/ic_vocab"
+                app:tint="@color/sanctuary_primary_blue" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save"
+        style="@style/Widget.Sanctuary.Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/sanctuary_horizontal_padding"
+        android:layout_marginTop="@dimen/space_xl"
+        android:text="@string/action_create_set" />
+
+</LinearLayout>

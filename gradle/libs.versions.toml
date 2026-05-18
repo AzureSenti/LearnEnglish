@@ -10,6 +10,8 @@ material = "1.12.0"
 activity = "1.9.3"
 constraintlayout = "2.2.0"
 room3Runtime = "3.0.0-alpha03"
+googleServices = "4.4.2"
+firebaseBom = "33.6.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -22,8 +24,12 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 room3-runtime = { group = "androidx.room3", name = "room3-runtime", version.ref = "room3Runtime" }
 room3-compiler = { group = "androidx.room3", name = "room3-compiler", version.ref = "room3Runtime" }
 
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room3 = { id = "androidx.room3", version.ref = "room3Runtime" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }

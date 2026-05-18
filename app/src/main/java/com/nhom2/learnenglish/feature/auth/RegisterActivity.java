@@ -3,7 +3,6 @@ package com.nhom2.learnenglish.feature.auth;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,10 +10,18 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.button.MaterialButton;
 import com.nhom2.learnenglish.R;
+import com.nhom2.learnenglish.core.data.local.AppDatabase;
+import com.nhom2.learnenglish.core.data.local.entity.UserEntity;
+import com.nhom2.learnenglish.core.data.repository.UserRepository;
+import com.nhom2.learnenglish.core.util.AppExecutors;
+import com.nhom2.learnenglish.core.util.SessionManager;
 import com.nhom2.learnenglish.feature.onboarding.OnboardingActivity;
 
 public class RegisterActivity extends AppCompatActivity {
+    
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +29,14 @@ public class RegisterActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register);
 
+        setupData();
+
         EditText inputUsername = findViewById(R.id.input_username);
         EditText inputEmail = findViewById(R.id.input_email_signup);
         EditText inputPassword = findViewById(R.id.input_password_signup);
         TextView errorEmail = findViewById(R.id.text_email_error);
-        Button btnSignUp = findViewById(R.id.button_signup);
-        TextView txtLogin = findViewById(R.id.link_login);
+        MaterialButton btnSignUp = findViewById(R.id.button_signup);
+        MaterialButton txtLogin = findViewById(R.id.link_login);
 
         errorEmail.setVisibility(View.GONE);
         inputEmail.setText("");
@@ -35,11 +44,23 @@ public class RegisterActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(v -> attemptRegister(
                 inputUsername.getText() != null ? inputUsername.getText().toString().trim() : "",
                 inputEmail.getText() != null ? inputEmail.getText().toString().trim() : "",
-                inputPassword.getText() != null ? inputPassword.getText().toString() : ""));
+                inputPassword.getText() != null ? inputPassword.getText().toString() : "",
+                btnSignUp));
         txtLogin.setOnClickListener(v -> finish());
     }
 
-    private void attemptRegister(String username, String email, String password) {
+    private void setupData() {
+        SessionManager sessionManager = new SessionManager(this);
+        AppDatabase db = AppDatabase.Companion.getInstance(this);
+
+        userRepository = new UserRepository(
+                AppExecutors.Companion.getInstance(),
+                db.userDao(),
+                sessionManager
+        );
+    }
+
+    private void attemptRegister(String username, String email, String password, MaterialButton btnSignUp) {
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, R.string.error_fill_fields, Toast.LENGTH_SHORT).show();
             return;
@@ -53,7 +74,30 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        openOnboarding();
+        btnSignUp.setEnabled(false);
+        btnSignUp.setText("ĐANG XỬ LÝ...");
+
+        AppExecutors.Companion.getInstance().getNetworkIO().execute(() -> {
+            try {
+                UserEntity user = kotlinx.coroutines.BuildersKt.runBlocking(
+                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
+                        (scope, continuation) -> userRepository.register(email, password, username, true, continuation)
+                );
+
+                runOnUiThread(() -> {
+                    Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                    openOnboarding();
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    btnSignUp.setEnabled(true);
+                    btnSignUp.setText(R.string.signup_action);
+                    Toast.makeText(RegisterActivity.this, "Đăng ký thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+            }
+        });
     }
 
     private void openOnboarding() {
@@ -63,3 +107,4 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 }
+

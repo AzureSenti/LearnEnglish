@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/sanctuary_surface"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/space_xl">
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/space_sm"
+        android:background="@drawable/bg_tag_gray" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginHorizontal="@dimen/sanctuary_horizontal_padding"
+        android:layout_marginTop="@dimen/space_lg"
+        android:background="@drawable/bg_sheet_hero"
+        android:contentDescription="@null"
+        android:padding="@dimen/space_lg"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_vocab"
+        app:tint="@color/sanctuary_primary_blue" />
+
+    <TextView
+        android:id="@+id/tv_sheet_title"
+        style="@style/TextAppearance.Sanctuary.Lexend.H1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/sanctuary_horizontal_padding"
+        android:layout_marginTop="@dimen/space_lg"
+        android:text="@string/word_add_title"
+        android:textSize="22sp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_english"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/sanctuary_horizontal_padding"
+        android:layout_marginTop="@dimen/space_lg"
+        android:hint="@string/hint_english_word"
+        app:boxCornerRadiusBottomEnd="16dp"
+        app:boxCornerRadiusBottomStart="16dp"
+        app:boxCornerRadiusTopEnd="16dp"
+        app:boxCornerRadiusTopStart="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_english"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:inputType="text"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_vietnamese"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/sanctuary_horizontal_padding"
+        android:layout_marginTop="@dimen/space_md"
+        android:hint="@string/hint_vietnamese_meaning"
+        app:boxCornerRadiusBottomEnd="16dp"
+        app:boxCornerRadiusBottomStart="16dp"
+        app:boxCornerRadiusTopEnd="16dp"
+        app:boxCornerRadiusTopStart="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_vietnamese"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:inputType="textCapSentences"
+            android:maxLines="2" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save"
+        style="@style/Widget.Sanctuary.Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/sanctuary_horizontal_padding"
+        android:layout_marginTop="@dimen/space_xl"
+        android:text="@string/action_add_to_set" />
+
+</LinearLayout>

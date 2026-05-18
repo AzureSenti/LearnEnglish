@@ -142,15 +142,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_greeting" />
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_view_all_goals"
+                style="@style/Widget.3English.Button.TextLink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
-                android:fontFamily="@font/inter"
-                android:padding="4dp"
                 android:text="@string/view_all"
                 android:textColor="@color/sanctuary_primary_blue"
                 android:textSize="14sp"
@@ -214,20 +210,13 @@
                     app:layout_constraintStart_toStartOf="@id/tv_daily_review_title"
                     app:layout_constraintTop_toBottomOf="@id/tv_daily_review_title" />
 
-                <TextView
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_start_review"
+                    style="@style/Widget.3English.Button.Sanctuary.Secondary"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/sanctuary_goal_button_height"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/btn_secondary"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:fontFamily="@font/inter"
-                    android:gravity="center"
                     android:text="@string/start_review"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/icon_review_container" />
@@ -289,20 +278,13 @@
                     app:layout_constraintStart_toStartOf="@id/tv_learn_new_title"
                     app:layout_constraintTop_toBottomOf="@id/tv_learn_new_title" />
 
-                <TextView
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_learn_now"
+                    style="@style/Widget.3English.Button.Sanctuary.Primary"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/sanctuary_goal_button_height"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/btn_primary"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:fontFamily="@font/inter"
-                    android:gravity="center"
                     android:text="@string/learn_now"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/icon_learn_container" />

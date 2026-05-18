@@ -3,54 +3,90 @@ package com.nhom2.learnenglish.feature.wordsets;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nhom2.learnenglish.R;
-import com.nhom2.learnenglish.core.data.local.entity.WordSetEntity;
+import com.nhom2.learnenglish.model.WordSet;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class WordSetAdapter extends RecyclerView.Adapter<WordSetAdapter.ViewHolder> {
 
-    private List<WordSetEntity> items = new ArrayList<>();
+    private List<WordSet> items = new ArrayList<>();
     private final OnItemClickListener listener;
+    private final OnMenuClickListener menuListener;
 
     public interface OnItemClickListener {
-        void onItemClick(WordSetEntity item);
+        void onItemClick(WordSet item);
     }
 
-    public WordSetAdapter(OnItemClickListener listener) {
+    public interface OnMenuClickListener {
+        void onMenuClick(WordSet item, View anchor);
+    }
+
+    public WordSetAdapter(OnItemClickListener listener, OnMenuClickListener menuListener) {
         this.listener = listener;
+        this.menuListener = menuListener;
     }
 
-    public void updateData(List<WordSetEntity> newItems) {
-        this.items = newItems;
+    public void updateData(List<WordSet> newItems) {
+        this.items = newItems != null ? newItems : new ArrayList<>();
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_word_set, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_word_set, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        WordSetEntity item = items.get(position);
-        holder.tvSetName.setText(item.getName());
-        // For now, word count is not in entity, we might need another way to get it or just show description
-        holder.tvWordCount.setText(item.getDescription());
-        
+        WordSet item = items.get(position);
+        holder.tvSetName.setText(item.getTitle());
+        holder.tvWordCount.setText(item.getWordCountLabel());
+        holder.ivFolder.setImageResource(resolveCategoryIcon(item.getCategoryIcon()));
+
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onItemClick(item);
             }
         });
+
+        holder.ivMore.setOnClickListener(v -> {
+            if (menuListener != null) {
+                menuListener.onMenuClick(item, v);
+            }
+        });
+    }
+
+    private int resolveCategoryIcon(String category) {
+        if (category == null) {
+            return R.drawable.ic_folder;
+        }
+        switch (category) {
+            case "travel":
+                return R.drawable.ic_explore;
+            case "food":
+                return R.drawable.ic_spa;
+            case "study":
+            case "book":
+                return R.drawable.ic_book;
+            case "business":
+                return R.drawable.ic_chart;
+            case "laptop":
+            case "tech":
+                return R.drawable.ic_vocab;
+            default:
+                return R.drawable.ic_folder;
+        }
     }
 
     @Override
@@ -61,11 +97,15 @@ public class WordSetAdapter extends RecyclerView.Adapter<WordSetAdapter.ViewHold
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvSetName;
         TextView tvWordCount;
+        ImageView ivMore;
+        ImageView ivFolder;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvSetName = itemView.findViewById(R.id.tv_set_name);
             tvWordCount = itemView.findViewById(R.id.tv_word_count);
+            ivMore = itemView.findViewById(R.id.iv_more);
+            ivFolder = itemView.findViewById(R.id.iv_folder);
         }
     }
 }

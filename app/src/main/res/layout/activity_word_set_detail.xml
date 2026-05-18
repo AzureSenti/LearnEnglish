@@ -33,8 +33,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:fontFamily="@font/lexend"
                 android:text="IELTS Vocabulary"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/sanctuary_text_primary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -61,53 +62,60 @@
             android:padding="20dp">
 
             <!-- Mastery Level Card -->
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card_white"
-                android:orientation="vertical"
-                android:padding="20dp">
+                app:cardBackgroundColor="@color/sanctuary_surface"
+                app:cardCornerRadius="@dimen/sanctuary_card_corner"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/sanctuary_card_stroke"
+                app:strokeWidth="0.5dp">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/space_gutter">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Mastery Level"
-                        android:textColor="@color/text_primary"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:text="12/50 words mastered"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-                </RelativeLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mastery_level"
+                            style="@style/TextAppearance.Sanctuary.Lexend.H3" />
 
-                <ProgressBar
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:layout_marginTop="16dp"
-                    android:progress="24"
-                    android:progressTint="@color/green_tag_text"
-                    android:progressBackgroundTint="#F0F0F0" />
-            </LinearLayout>
+                        <TextView
+                            android:id="@+id/tv_mastery_progress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            style="@style/TextAppearance.Sanctuary.Inter.Caption"
+                            tools:text="2/5 words mastered" />
+                    </RelativeLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progress_mastery"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:layout_marginTop="@dimen/space_md"
+                        android:max="100"
+                        android:progress="0"
+                        android:progressBackgroundTint="#F0F0F0"
+                        android:progressTint="@color/sanctuary_secondary_green" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Word List"
-                android:textColor="@color/text_primary"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/word_list_header"
+                style="@style/TextAppearance.Sanctuary.Lexend.H3" />
 
             <!-- Recycler View for Words -->
             <androidx.recyclerview.widget.RecyclerView
@@ -117,7 +125,7 @@
                 android:layout_marginTop="16dp"
                 android:nestedScrollingEnabled="false"
                 tools:itemCount="4"
-                tools:listitem="@layout/item_word" />
+                tools:listitem="@layout/item_word_card" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -129,7 +137,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
         android:src="@drawable/ic_add"
-        app:backgroundTint="#006D4E"
+        app:backgroundTint="@color/sanctuary_secondary_green"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/white" />

@@ -30,8 +30,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Sanctuary"
-                android:textColor="@color/text_primary"
+                android:fontFamily="@font/lexend"
+                android:text="@string/sanctuary_title"
+                android:textColor="@color/sanctuary_text_primary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -64,10 +65,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="My Word Sets"
-                    android:textColor="@color/text_primary"
-                    android:textSize="28sp"
-                    android:textStyle="bold" />
+                    android:text="@string/my_word_sets"
+                    style="@style/TextAppearance.Sanctuary.Lexend.H1"
+                    android:textSize="28sp" />
 
                 <ImageView
                     android:layout_width="24dp"
@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
         android:src="@drawable/ic_add"
-        app:backgroundTint="#006D4E"
+        app:backgroundTint="@color/sanctuary_secondary_green"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/white" />
@@ -175,6 +175,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
             android:gravity="center"
             android:orientation="vertical">
 
