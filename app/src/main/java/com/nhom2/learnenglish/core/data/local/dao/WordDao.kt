@@ -10,8 +10,8 @@ interface WordDao : BaseDao<WordEntity> {
 
     // Lấy tất cả các từ thuộc về một Bộ từ (Set) cụ thể
     @Query("""
-        SELECT w.id, w.english_word, w.vietnamese_meaning, w.audio 
-        FROM words w 
+       SELECT w.* FROM words w 
+
         INNER JOIN word_set_cross_ref ref ON w.id = ref.word_id 
         WHERE ref.set_id = :setId
     """)

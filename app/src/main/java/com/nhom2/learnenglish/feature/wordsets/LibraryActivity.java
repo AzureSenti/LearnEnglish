@@ -37,7 +37,10 @@ public class LibraryActivity extends AppCompatActivity {
         
 
     }
-// cơ chế chờ đổ xong mới load
+
+
+
+    // cơ chế chờ đổ xong mới load
     private void setupData() {
         AppDatabase db = AppDatabase.Companion.getInstance(this);
         wordRepository = new WordRepository(
