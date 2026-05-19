@@ -1,10 +1,10 @@
-package com.nhom2.learnenglish.core.data.local.entity
+package com.nhom2.learnenglish.core.data.local.entity.word
 
 import androidx.room3.ColumnInfo
 import androidx.room3.Entity
 import androidx.room3.ForeignKey
 import androidx.room3.Index
-import androidx.room3.PrimaryKey
+import com.nhom2.learnenglish.core.data.local.entity.UserEntity
 
 
 @Entity(

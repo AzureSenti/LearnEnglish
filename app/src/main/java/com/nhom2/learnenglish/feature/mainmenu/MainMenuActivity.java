@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.nhom2.learnenglish.R;
 import com.nhom2.learnenglish.core.data.local.AppDatabase;
 import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity;
-import com.nhom2.learnenglish.core.data.local.entity.WordSetEntity;
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity;
 import com.nhom2.learnenglish.core.data.local.mockdata.MockDataImport;
 import com.nhom2.learnenglish.core.data.repository.ArticleRepository;
 import com.nhom2.learnenglish.core.data.repository.WordRepository;
@@ -23,6 +23,7 @@ import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.feature.articles.ArticlesActivity;
 import com.nhom2.learnenglish.feature.articles.ArticleDetailActivity;
+import com.nhom2.learnenglish.feature.grammar.GrammarRoadmapActivity;
 import com.nhom2.learnenglish.feature.wordsets.LibraryActivity;
 import com.nhom2.learnenglish.feature.wordsets.WordSetDetailActivity;
 
@@ -45,7 +46,7 @@ public class MainMenuActivity extends AppCompatActivity {
         loadFeaturedArticle();
         MockDataImport.INSTANCE.importIfNeeded(this, () -> {
             loadFeaturedArticle();
-            loadRecentWordSets(); // Thêm hàm này
+            loadRecentWordSets();
         });
     }
 
@@ -124,6 +125,7 @@ public class MainMenuActivity extends AppCompatActivity {
             btnSeeAllArticles.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this,ArticlesActivity.class));
         }
 
+
         // Word Set: Tech Idioms
 //        LinearLayout cardWordSetTech = findViewById(R.id.card_word_set_tech);
 //        if (cardWordSetTech != null) {
@@ -151,6 +153,13 @@ public class MainMenuActivity extends AppCompatActivity {
         TextView btnViewAllWordSets = findViewById(R.id.btn_view_all_word_sets); // Bạn nên đặt ID này cho chữ "View All"
         if (btnViewAllWordSets != null) {
             btnViewAllWordSets.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this, LibraryActivity.class));
+        }
+
+        LinearLayout cardGrammar = findViewById(R.id.card_grammar);
+        if (cardGrammar != null) {
+            cardGrammar.setOnClickListener(v -> {
+                Navigator.INSTANCE.navigateTo(this, GrammarRoadmapActivity.class);
+            });
         }
     }
 

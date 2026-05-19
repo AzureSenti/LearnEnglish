@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nhom2.learnenglish.R;
-import com.nhom2.learnenglish.core.data.local.entity.WordSetEntity;
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity;
 
 import java.util.ArrayList;
 import java.util.List;

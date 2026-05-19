@@ -49,6 +49,17 @@
             android:name=".feature.wordsets.WordSetDetailActivity"
             android:exported="false" />
 
+        <!-- Grammar -->
+        <activity android:name=".feature.grammar.GrammarRoadmapActivity"
+            android:exported="false" />
+
+        <activity android:name=".feature.grammar.GrammarTheoryActivity"
+            android:exported="false" />
+
+        <activity android:name=".feature.grammar.GrammarQuizActivity"
+            android:exported="false" />
+
+
     </application>
 
 </manifest>
