@@ -1,10 +1,10 @@
-package com.nhom2.learnenglish.core.data.local.entity
+package com.nhom2.learnenglish.core.data.local.entity.word
 
 import androidx.room3.ColumnInfo
 import androidx.room3.Entity
 import androidx.room3.ForeignKey
 import androidx.room3.Index
-import androidx.room3.PrimaryKey
+import com.nhom2.learnenglish.core.data.local.entity.UserEntity
 
 
 @Entity(
@@ -26,7 +26,7 @@ import androidx.room3.PrimaryKey
 )
     ],
     indices = [
-        Index(value = ["word_id"], unique = true),
+        Index(value = ["word_id"]),
         Index(value = ["next_review_date"])
     ]
 )
@@ -42,8 +42,7 @@ data class WordSrsEntity(
     @ColumnInfo(name = "level", defaultValue = "0")
     val level: Int,
 
-
-    @ColumnInfo(name = "next_review_date")
+    @ColumnInfo(name = "next_review_date",defaultValue = "0")
     val nextReviewDate: Long,
 
     @ColumnInfo(name = "last_review_date")

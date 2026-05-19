@@ -36,4 +36,9 @@ class SessionManager(context: Context) {
     fun logout() {
         prefs.edit().clear().apply()
     }
+
+    fun getCurrentUserId(): Long {
+        return prefs.getLong("current_user_id", -1);
+    }
+
 }
