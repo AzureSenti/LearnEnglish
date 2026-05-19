@@ -38,7 +38,7 @@ class UserRepository(
         return userEntity
     }
 
-    suspend fun ensureLocalUserExists(): UserEntity {
+    fun ensureLocalUserExists(): UserEntity {
         var localUser = userDao.getById(LOCAL_USER_ID)
 
         if (localUser == null) {

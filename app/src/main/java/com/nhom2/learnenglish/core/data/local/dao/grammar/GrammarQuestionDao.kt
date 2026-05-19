@@ -9,9 +9,9 @@ import com.nhom2.learnenglish.core.data.local.entity.grammar.GrammarQuestionEnti
 interface GrammarQuestionDao : BaseDao<GrammarQuestionEntity> {
 
     @Query("SELECT * FROM grammar_questions WHERE lesson_id = :lessonId")
-    suspend fun getQuestionsByLessonId(lessonId: Long): List<GrammarQuestionEntity>
+    fun getQuestionsByLessonId(lessonId: Long): List<GrammarQuestionEntity>
 
     @Query("DELETE FROM grammar_questions")
-    suspend fun deleteAll()
+    fun deleteAll()
 
 }

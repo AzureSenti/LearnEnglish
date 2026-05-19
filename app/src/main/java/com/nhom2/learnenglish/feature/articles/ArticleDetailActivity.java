@@ -44,10 +44,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
     private void loadArticleDetail(long id) {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                ArticleEntity article = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> articleRepository.getById(id, continuation)
-                );
+                ArticleEntity article =  articleRepository.getById(id);
 
                 if (article != null) {
                     runOnUiThread(() -> {

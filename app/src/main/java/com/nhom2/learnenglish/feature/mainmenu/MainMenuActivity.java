@@ -1,5 +1,6 @@
 package com.nhom2.learnenglish.feature.mainmenu;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -64,6 +65,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 AppExecutors.Companion.getInstance()
         );
     }
+    @SuppressLint("SetTextI18n")
     private void updateWordSetUI(WordSetEntity set, int index) {
         int cardId = (index == 1) ? R.id.card_word_set_1 : R.id.card_word_set_2;
         int titleId = (index == 1) ? R.id.tv_word_set_title_1 : R.id.tv_word_set_title_2;
@@ -90,10 +92,7 @@ public class MainMenuActivity extends AppCompatActivity {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
                 // Lấy danh sách bộ từ (mặc định lấy 2 cái đầu tiên làm Recent)
-                List<WordSetEntity> list = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> wordRepository.getAllSets(continuation)
-                );
+                List<WordSetEntity> list = wordRepository.getAllSets();
 
                 runOnUiThread(() -> {
                     if (list != null && list.size() >= 2) {
@@ -122,7 +121,7 @@ public class MainMenuActivity extends AppCompatActivity {
         // Nút See All trong phần Featured Articles
         TextView btnSeeAllArticles = findViewById(R.id.btn_see_all_articles);
         if (btnSeeAllArticles != null) {
-            btnSeeAllArticles.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this,ArticlesActivity.class));
+            btnSeeAllArticles.setOnClickListener(v -> Navigator.navigateTo(this,ArticlesActivity.class));
         }
 
 
@@ -152,14 +151,12 @@ public class MainMenuActivity extends AppCompatActivity {
         // Trong setupNavigation()
         TextView btnViewAllWordSets = findViewById(R.id.btn_view_all_word_sets); // Bạn nên đặt ID này cho chữ "View All"
         if (btnViewAllWordSets != null) {
-            btnViewAllWordSets.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this, LibraryActivity.class));
+            btnViewAllWordSets.setOnClickListener(v -> Navigator.navigateTo(this, LibraryActivity.class));
         }
 
         LinearLayout cardGrammar = findViewById(R.id.card_grammar);
         if (cardGrammar != null) {
-            cardGrammar.setOnClickListener(v -> {
-                Navigator.INSTANCE.navigateTo(this, GrammarRoadmapActivity.class);
-            });
+            cardGrammar.setOnClickListener(v -> Navigator.navigateTo(this, GrammarRoadmapActivity.class));
         }
     }
 
@@ -167,10 +164,7 @@ public class MainMenuActivity extends AppCompatActivity {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
                 // Lấy danh sách bài báo từ Repository
-                List<ArticleEntity> articles = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> articleRepository.getAll(continuation)
-                );
+                List<ArticleEntity> articles = articleRepository.getAll();
 
                 if (articles != null && !articles.isEmpty()) {
                     // Lấy bài báo đầu tiên làm Featured Article

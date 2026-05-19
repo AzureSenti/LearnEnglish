@@ -11,10 +11,10 @@ class ArticleRepository (
     private val articleDao: ArticleDao
 ) : BaseRepository(executors) {
 
-    suspend fun getAll(): List<ArticleEntity> {
+    fun getAll(): List<ArticleEntity> {
         return articleDao.getAll()
     }
 
-    suspend fun getById(id: Long): ArticleEntity? = articleDao.getById(id)
+    fun getById(id: Long): ArticleEntity? = articleDao.getById(id)
 
 }

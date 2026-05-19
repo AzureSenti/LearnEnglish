@@ -1,10 +1,8 @@
 package com.nhom2.learnenglish.feature.grammar;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -86,10 +84,7 @@ public class GrammarRoadmapActivity extends AppCompatActivity implements Grammar
 
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                List<GrammarLessonWithStatus> roadmapData = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> grammarRepository.getGrammarRoadmap(currentUserId, continuation)
-                );
+                List<GrammarLessonWithStatus> roadmapData = grammarRepository.getGrammarRoadmap(currentUserId);
 
                 runOnUiThread(() -> grammarAdapter.updateData(roadmapData));
             } catch (Exception e) {

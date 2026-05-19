@@ -19,7 +19,7 @@ class GrammarRepository(
     /**
      * 1. LẤY BẢN ĐỒ LỘ TRÌNH (Danh sách bài học kèm Trạng thái khóa/mở)
      */
-    suspend fun getGrammarRoadmap(userId: Long): List<GrammarLessonWithStatus> {
+    fun getGrammarRoadmap(userId: Long): List<GrammarLessonWithStatus> {
         val lessons = lessonDao.getAllLessons()
         val progressList = progressDao.getAllProgressForUser(userId)
 
@@ -56,11 +56,11 @@ class GrammarRepository(
     /**
      * 2. LẤY CHI TIẾT ĐỂ HỌC
      */
-    suspend fun getLessonTheory(lessonId: Long): GrammarLessonEntity? {
+    fun getLessonTheory(lessonId: Long): GrammarLessonEntity? {
         return lessonDao.getLessonById(lessonId)
     }
 
-    suspend fun getLessonQuestions(lessonId: Long): List<GrammarQuestionEntity> {
+    fun getLessonQuestions(lessonId: Long): List<GrammarQuestionEntity> {
         return questionDao.getQuestionsByLessonId(lessonId)
     }
 
@@ -69,7 +69,7 @@ class GrammarRepository(
      */
 
     // Gọi khi User bấm nút "Đã hiểu / Tiếp tục" ở cuối trang Lý thuyết
-    suspend fun markTheoryAsCompleted(userId: Long, lessonId: Long) {
+    fun markTheoryAsCompleted(userId: Long, lessonId: Long) {
         val progress = progressDao.getProgress(userId, lessonId)
             ?: UserGrammarProgress(userId = userId, lessonId = lessonId)
 
@@ -77,7 +77,7 @@ class GrammarRepository(
     }
 
     // Gọi khi User nộp bài Trắc nghiệm
-    suspend fun submitQuizResult(userId: Long, lessonId: Long, score: Int, isPassed: Boolean) {
+    fun submitQuizResult(userId: Long, lessonId: Long, score: Int, isPassed: Boolean) {
         val progress = progressDao.getProgress(userId, lessonId)
             ?: UserGrammarProgress(userId = userId, lessonId = lessonId)
 

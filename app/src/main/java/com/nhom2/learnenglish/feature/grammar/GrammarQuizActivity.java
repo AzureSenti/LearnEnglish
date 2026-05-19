@@ -32,7 +32,6 @@ public class GrammarQuizActivity extends AppCompatActivity {
     private RadioGroup radioGroupOptions;
     private TextInputLayout layoutFillBlank;
     private TextInputEditText inputAnswer;
-    private Button btnSubmitAnswer;
 
     private GrammarRepository grammarRepository;
     private SessionManager sessionManager;
@@ -62,7 +61,7 @@ public class GrammarQuizActivity extends AppCompatActivity {
         radioGroupOptions = findViewById(R.id.radio_group_options);
         layoutFillBlank = findViewById(R.id.layout_fill_blank);
         inputAnswer = findViewById(R.id.input_answer);
-        btnSubmitAnswer = findViewById(R.id.btn_submit_answer);
+        Button btnSubmitAnswer = findViewById(R.id.btn_submit_answer);
 
         btnSubmitAnswer.setOnClickListener(v -> checkAnswer());
     }
@@ -78,10 +77,7 @@ public class GrammarQuizActivity extends AppCompatActivity {
     private void loadQuestions() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                questions = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> grammarRepository.getLessonQuestions(lessonId, continuation)
-                );
+                questions = grammarRepository.getLessonQuestions(lessonId);
 
                 runOnUiThread(() -> {
                     if (questions.isEmpty()) {
@@ -170,10 +166,7 @@ public class GrammarQuizActivity extends AppCompatActivity {
 
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> grammarRepository.submitQuizResult(currentUserId, lessonId, score, isPassed, continuation)
-                );
+                grammarRepository.submitQuizResult(currentUserId, lessonId, score, isPassed);
 
                 runOnUiThread(() -> {
                     String msg = isPassed ? "Chúc mừng! Bạn đã hoàn thành bài học." : "Bạn cần làm đúng hết để qua bài. Điểm: " + score;

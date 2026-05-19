@@ -21,7 +21,6 @@ import com.nhom2.learnenglish.feature.wordsets.LibraryActivity;
 public class GrammarTheoryActivity extends AppCompatActivity {
 
     private TextView tvTitle, tvBasics, tvUsage, tvExamples;
-    private Button btnContinue;
     private GrammarRepository grammarRepository;
     private SessionManager sessionManager;
     private long lessonId = -1;
@@ -52,7 +51,7 @@ public class GrammarTheoryActivity extends AppCompatActivity {
         tvBasics = findViewById(R.id.tv_basics);
         tvUsage = findViewById(R.id.tv_usage);
         tvExamples = findViewById(R.id.tv_examples);
-        btnContinue = findViewById(R.id.btn_continue);
+        Button btnContinue = findViewById(R.id.btn_continue);
 
         btnContinue.setOnClickListener(v -> markTheoryDoneAndContinue());
     }
@@ -68,10 +67,7 @@ public class GrammarTheoryActivity extends AppCompatActivity {
     private void loadTheory() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                GrammarLessonEntity lesson = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> grammarRepository.getLessonTheory(lessonId, continuation)
-                );
+                GrammarLessonEntity lesson = grammarRepository.getLessonTheory(lessonId);
 
                 if (lesson != null) {
                     runOnUiThread(() -> {
@@ -92,11 +88,8 @@ public class GrammarTheoryActivity extends AppCompatActivity {
 
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                // Đánh dấu hoàn thành lý thuyết
-                kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> grammarRepository.markTheoryAsCompleted(currentUserId, lessonId, continuation)
-                );
+
+                grammarRepository.markTheoryAsCompleted(currentUserId, lessonId);
 
                 runOnUiThread(() -> {
                     // Chuyển sang trang Quiz

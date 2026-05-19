@@ -10,12 +10,12 @@ interface GrammarLessonDao : BaseDao<GrammarLessonEntity> {
 
     // Lấy tất cả bài học, sắp xếp theo Lộ trình (orderIndex)
     @Query("SELECT * FROM grammar_lessons ORDER BY order_index ASC")
-    suspend fun getAllLessons(): List<GrammarLessonEntity>
+    fun getAllLessons(): List<GrammarLessonEntity>
 
     @Query("SELECT * FROM grammar_lessons WHERE id = :id")
-    suspend fun getLessonById(id: Long): GrammarLessonEntity?
+    fun getLessonById(id: Long): GrammarLessonEntity?
 
     @Query("DELETE FROM grammar_lessons")
-    suspend fun deleteAll()
+    fun deleteAll()
 
 }

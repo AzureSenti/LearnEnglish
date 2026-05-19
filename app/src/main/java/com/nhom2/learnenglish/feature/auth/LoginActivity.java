@@ -13,7 +13,6 @@ import com.nhom2.learnenglish.R;
 import com.nhom2.learnenglish.core.data.local.AppDatabase;
 import com.nhom2.learnenglish.core.data.local.entity.UserEntity;
 import com.nhom2.learnenglish.core.data.local.mockdata.MockDataImport;
-import com.nhom2.learnenglish.core.data.repository.ArticleRepository;
 import com.nhom2.learnenglish.core.data.repository.UserRepository;
 import com.nhom2.learnenglish.core.network.Auth.AuthApi;
 import com.nhom2.learnenglish.core.network.RetrofitClient;
@@ -22,7 +21,6 @@ import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.core.util.SessionManager;
 import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -125,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
 
                     Toast.makeText(LoginActivity.this, "Chào mừng trở lại!", Toast.LENGTH_SHORT).show();
-                    Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
+                    Navigator.navigateTo(this, MainMenuActivity.class);
                 });
 
             } catch (Exception e) {
@@ -145,16 +143,13 @@ public class LoginActivity extends AppCompatActivity {
         SessionManager sessionManager = new SessionManager(this);
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> userRepository.ensureLocalUserExists(continuation)
-                );
+                userRepository.ensureLocalUserExists();
 
                 sessionManager.activateGuestMode();
 
                 runOnUiThread(() -> {
                     Toast.makeText(this, "Chế độ ngoại tuyến: Tiến độ sẽ lưu tại máy", Toast.LENGTH_LONG).show();
-                    Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
+                    Navigator.navigateTo(this, MainMenuActivity.class);
 
                     finish();
                 });
