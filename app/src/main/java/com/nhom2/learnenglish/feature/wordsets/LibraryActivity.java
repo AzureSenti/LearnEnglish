@@ -90,7 +90,7 @@ public class LibraryActivity extends AppCompatActivity {
             try {
                 List<WordSetEntity> list = kotlinx.coroutines.BuildersKt.runBlocking(
                         kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> wordRepository.getAllSets(continuation)
+                        (scope, continuation) -> wordRepository.getAllSets()
                 );
 
                 runOnUiThread(() -> {
