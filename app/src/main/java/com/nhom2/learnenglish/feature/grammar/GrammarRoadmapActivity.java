@@ -2,12 +2,14 @@ package com.nhom2.learnenglish.feature.grammar;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,7 +18,10 @@ import com.nhom2.learnenglish.core.data.local.AppDatabase;
 import com.nhom2.learnenglish.core.data.local.model.GrammarLessonWithStatus;
 import com.nhom2.learnenglish.core.data.repository.GrammarRepository;
 import com.nhom2.learnenglish.core.util.AppExecutors;
+import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.core.util.SessionManager;
+import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
+import com.nhom2.learnenglish.feature.wordsets.LibraryActivity;
 
 import java.util.List;
 
@@ -33,36 +38,35 @@ public class GrammarRoadmapActivity extends AppCompatActivity implements Grammar
         setContentView(R.layout.activity_grammar_roadmap);
 
         initViews();
-        setupToolbar();
         setupRepository();
         setupRecyclerView();
+        setupBottomNav();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Tải lại dữ liệu mỗi khi quay lại màn hình này để cập nhật dấu tích xanh mới nhất
         loadGrammarRoadmapData();
     }
 
     private void initViews() {
-        rvGrammarRoadmap = findViewById(R.id.rv_grammar_roadmap);
-    }
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
-    private void setupToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar_grammar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
+        rvGrammarRoadmap = findViewById(R.id.rv_grammar_roadmap);
+
+        ImageView ivBack = findViewById(R.id.iv_back);
+        if (ivBack != null) {
+            ivBack.setOnClickListener(v -> finish());
         }
     }
 
     private void setupRepository() {
         AppDatabase db = AppDatabase.Companion.getInstance(this);
         sessionManager = new SessionManager(this);
-
-        // Khởi tạo các DAO tương ứng và truyền vào Repository
         grammarRepository = new GrammarRepository(
                 db.grammarLessonDao(),
                 db.grammarQuestionDao(),
@@ -80,36 +84,42 @@ public class GrammarRoadmapActivity extends AppCompatActivity implements Grammar
     private void loadGrammarRoadmapData() {
         long currentUserId = sessionManager.getCurrentUserId();
 
-        // Đẩy tác vụ truy vấn Database xuống Disk IO Thread ngầm
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                // Sử dụng cầu nối runBlocking để gọi hàm ngắt (suspend) của cấu trúc Kotlin từ Java
                 List<GrammarLessonWithStatus> roadmapData = kotlinx.coroutines.BuildersKt.runBlocking(
                         kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
                         (scope, continuation) -> grammarRepository.getGrammarRoadmap(currentUserId, continuation)
                 );
 
-                // Sau khi lấy được dữ liệu, quay về Main Thread để cập nhật giao diện người dùng
                 runOnUiThread(() -> grammarAdapter.updateData(roadmapData));
-
             } catch (Exception e) {
                 e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(GrammarRoadmapActivity.this,
-                        "Không thể tải dữ liệu lộ trình học tập", Toast.LENGTH_SHORT).show());
             }
         });
     }
 
     @Override
     public void onLessonClick(long lessonId) {
+        Bundle bundle = new Bundle();
+        bundle.putLong("LESSON_ID", lessonId);
+        Navigator.navigateTo(this, GrammarTheoryActivity.class, bundle);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish(); // Quay lại màn hình trước đó khi bấm nút back trên toolbar
-            return true;
+    private void setupBottomNav() {
+        LinearLayout navExplore = findViewById(R.id.nav_explore);
+        LinearLayout navLibrary = findViewById(R.id.nav_library);
+
+        if (navExplore != null) {
+            navExplore.setOnClickListener(v -> {
+                Navigator.navigateTo(this, MainMenuActivity.class);
+                finishAffinity(); // Xóa stack để về trang chủ mượt hơn
+            });
         }
-        return super.onOptionsItemSelected(item);
+        if (navLibrary != null) {
+            navLibrary.setOnClickListener(v -> {
+                Navigator.navigateTo(this, LibraryActivity.class);
+                finish();
+            });
+        }
     }
 }

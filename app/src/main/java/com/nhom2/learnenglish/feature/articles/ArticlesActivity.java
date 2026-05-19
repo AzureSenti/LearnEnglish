@@ -79,10 +79,15 @@ private void setupData() {
             rvArticles.setLayoutManager(new LinearLayoutManager(this));
 
             // Trong setupRecyclerView()
-            adapter = new ArticleAdapter(article -> {android.content.Intent intent = new android.content.Intent(this, ArticleDetailActivity.class);
-                intent.putExtra("article_id", article.getId()); // Giả sử ArticleEntity có getId()
-                startActivity(intent);
-                overridePendingTransition(0, 0);
+            adapter = new ArticleAdapter(article ->
+            {
+                Bundle bundle = new Bundle();
+                bundle.putLong("article_id", article.getId());
+                Navigator.INSTANCE.navigateTo(this, ArticleDetailActivity.class, bundle);
+                //android.content.Intent intent = new android.content.Intent(this, ArticleDetailActivity.class);
+                //intent.putExtra("article_id", article.getId());
+                //startActivity(intent);
+                //overridePendingTransition(0, 0);
             });
             rvArticles.setAdapter(adapter);
         }

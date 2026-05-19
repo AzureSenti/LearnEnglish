@@ -41,5 +41,5 @@ data class GrammarQuestionEntity(
     val correctAnswer: String,
 
     @ColumnInfo(name = "explanation")
-    val explanation: String?
+    val explanation: String? = null
 )

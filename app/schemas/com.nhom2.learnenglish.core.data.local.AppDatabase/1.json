@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "719d78ddc33ea60d707fcf3d85142428",
+    "identityHash": "6b682aa74ccbcc773de4c01f6a0c2a54",
     "entities": [
       {
         "tableName": "users",
@@ -596,7 +596,7 @@
       },
       {
         "tableName": "user_grammar_progress",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `lesson_id` INTEGER NOT NULL, `is_theory_completed` INTEGER NOT NULL, `is_quiz_passed` INTEGER NOT NULL, `score` INTEGER NOT NULL, PRIMARY KEY(`user_id`, `lesson_id`), FOREIGN KEY(`user_id`) REFERENCES `users`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`lesson_id`) REFERENCES `grammar_lessons`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `lesson_id` INTEGER NOT NULL, `is_theory_completed` INTEGER NOT NULL, `is_quiz_passed` INTEGER NOT NULL, `score` INTEGER NOT NULL, PRIMARY KEY(`user_id`, `lesson_id`), FOREIGN KEY(`lesson_id`) REFERENCES `grammar_lessons`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "userId",
@@ -658,17 +658,6 @@
         ],
         "foreignKeys": [
           {
-            "table": "users",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "user_id"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          },
-          {
             "table": "grammar_lessons",
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
@@ -684,7 +673,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '719d78ddc33ea60d707fcf3d85142428')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6b682aa74ccbcc773de4c01f6a0c2a54')"
     ]
   }
 }
