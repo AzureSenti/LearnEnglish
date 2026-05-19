@@ -49,9 +49,8 @@ public class LibraryActivity extends AppCompatActivity {
         );
 
         // Đảm bảo dữ liệu đã được import xong mới load
-        MockDataImport.INSTANCE.importIfNeeded(this, () -> {
-            loadWordSetData(); // Di chuyển vào đây
-        });
+        // Di chuyển vào đây
+        MockDataImport.INSTANCE.importIfNeeded(this, this::loadWordSetData);
     }
 
     private void setupBackNavigation() {
@@ -88,10 +87,7 @@ public class LibraryActivity extends AppCompatActivity {
     private void loadWordSetData() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                List<WordSetEntity> list = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> wordRepository.getAllSets()
-                );
+                List<WordSetEntity> list = wordRepository.getAllSets();
 
                 runOnUiThread(() -> {
                     if (adapter != null) {
@@ -105,7 +101,7 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     private void moveToExplore() {
-        Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
+        Navigator.navigateTo(this, MainMenuActivity.class);
     }
 
     @Override
