@@ -1,4 +1,6 @@
-package com.nhom2.learnenglish.core.data.repository
+package com.nhom2.learnenglish.core.data.repository;
+
+
 
 import com.nhom2.learnenglish.core.data.local.dao.UserWordSetDao
 import com.nhom2.learnenglish.core.data.local.dao.WordDao
@@ -10,16 +12,15 @@ import com.nhom2.learnenglish.core.data.local.entity.WordSetEntity
 import com.nhom2.learnenglish.core.data.local.entity.WordSrsEntity
 import com.nhom2.learnenglish.core.data.local.model.WordWithProgress
 import com.nhom2.learnenglish.core.util.AppExecutors
+import kotlinx.coroutines.runBlocking
 
-class WordRepository(
+class wordRespotoryTest1(
     private val wordDao: WordDao,
     private val wordSetDao: WordSetDao,
     private val wordSrsDao: WordSrsDao,
     private val userWordSetDao: UserWordSetDao,
     executors: AppExecutors = AppExecutors.getInstance()
 ) : BaseRepository(executors) {
-
-
 
     suspend fun getAllSets(): List<WordSetEntity> {
         return wordSetDao.getAllSets()
@@ -42,10 +43,8 @@ class WordRepository(
         }
     }
 
-
     suspend fun getWordListWithProgress(setId: Long, userId: Long): List<WordWithProgress> {
         val rawList = wordDao.getWordsWithProgressBySet(setId, userId)
-
         return rawList.map { item ->
             if (item.level == null) {
                 item.copy(level = 0)
@@ -56,13 +55,13 @@ class WordRepository(
     }
 
     suspend fun unlockWordSet(userId: Long, setId: Long): Boolean {
-        try {
+        return try {
             val crossRef = UserWordSetCrossRef(userId = userId, setId = setId)
             userWordSetDao.unlockSet(crossRef)
-            return true
+            true
         } catch (e: Exception) {
-            e.printStackTrace();
-            return false
+            e.printStackTrace()
+            false
         }
     }
 
@@ -75,7 +74,6 @@ class WordRepository(
         val currentTime = System.currentTimeMillis()
 
         if (existingSrs == null) {
-
             val initialLevel = if (isCorrect) 1 else 0
             val interval = calculateInterval(initialLevel)
 
@@ -115,4 +113,28 @@ class WordRepository(
         }
         return minutes * 60 * 1000L
     }
+
+    // =========================================================================
+    // CÁC HÀM CẦU NỐI ĐỂ BÊN JAVA GỌI (Tránh bị lỗi cannot find symbol / suspend)
+    // =========================================================================
+
+    fun getWordsForReviewForJava(userId: Long): List<WordEntity> = runBlocking {
+        getWordsForReview(userId)
+    }
+
+    fun getNewWordsToLearnForJava(userId: Long, setId: Long): List<WordEntity> = runBlocking {
+        getNewWordsToLearn(userId, setId)
+    }
+
+    fun getWordsInSetForJava(setId: Long): List<WordEntity> = runBlocking {
+        getWordsInSet(setId)
+    }
+
+    fun processWordLearningForJava(userId: Long, wordId: Long, isCorrect: Boolean) = runBlocking {
+        processWordLearning(userId, wordId, isCorrect)
+    }
+
+//    fun getAllWordsForJava(): List<WordEntity> = runBlocking {
+//        wordDao.getAllWords()
+//    }
 }

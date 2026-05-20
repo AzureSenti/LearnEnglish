@@ -24,4 +24,7 @@
     <string name="log_in_link">Log In</string>
     <string name="error_email_registered">This email is already registered</string>
     <string name="use_without_login">Use without login?</string>
+<!-- game   -->
+    <string name="game_correct">Chính xác!</string>
+    <string name="game_incorrect_template">Sai rồi! Đáp án đúng là: %1$s</string>
 </resources>
