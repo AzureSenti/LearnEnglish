@@ -13,7 +13,6 @@ import com.nhom2.learnenglish.R;
 import com.nhom2.learnenglish.core.data.local.AppDatabase;
 import com.nhom2.learnenglish.core.data.local.entity.UserEntity;
 import com.nhom2.learnenglish.core.data.local.mockdata.MockDataImport;
-import com.nhom2.learnenglish.core.data.repository.ArticleRepository;
 import com.nhom2.learnenglish.core.data.repository.UserRepository;
 import com.nhom2.learnenglish.core.network.Auth.AuthApi;
 import com.nhom2.learnenglish.core.network.RetrofitClient;
@@ -22,7 +21,6 @@ import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.core.util.SessionManager;
 import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+
         setContentView(R.layout.activity_login);
 
         initViews();
@@ -46,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        EdgeToEdge.enable(this);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -93,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         useWithoutLogin.setOnClickListener(v -> {
-            Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
+            activateGuestMode();
         });
 
     }
@@ -125,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
 
                     Toast.makeText(LoginActivity.this, "Chào mừng trở lại!", Toast.LENGTH_SHORT).show();
-                    Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
+                    Navigator.navigateTo(this, MainMenuActivity.class);
                 });
 
             } catch (Exception e) {
@@ -137,6 +136,26 @@ public class LoginActivity extends AppCompatActivity {
 
                     Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không đúng!", Toast.LENGTH_LONG).show();
                 });
+            }
+        });
+    }
+
+    private void activateGuestMode() {
+        SessionManager sessionManager = new SessionManager(this);
+        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+            try {
+                userRepository.ensureLocalUserExists();
+
+                sessionManager.activateGuestMode();
+
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Chế độ ngoại tuyến: Tiến độ sẽ lưu tại máy", Toast.LENGTH_LONG).show();
+                    Navigator.navigateTo(this, MainMenuActivity.class);
+
+                    finish();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

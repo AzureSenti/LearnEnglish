@@ -15,11 +15,14 @@ class UserRepository(
     private val sessionManager: SessionManager
     ) : BaseRepository(executors) {
 
+    companion object {
+        const val LOCAL_USER_ID = -1L
+    }
 
     suspend fun login(username: String, password: String) : UserEntity {
         val response = authApi.login(LoginRequest(username, password))
 
-        sessionManager.saveAuthToken(response.token)
+        sessionManager.createLoginSession(response.token, response.userId)
 
         val userEntity = UserEntity(
             userId = response.userId,
@@ -35,4 +38,18 @@ class UserRepository(
         return userEntity
     }
 
+    fun ensureLocalUserExists(): UserEntity {
+        var localUser = userDao.getById(LOCAL_USER_ID)
+
+        if (localUser == null) {
+            localUser = UserEntity(
+                id = LOCAL_USER_ID,
+                userId = LOCAL_USER_ID,
+                fullName = "Local User",
+                coins = 0,
+            )
+            userDao.insert(localUser)
+        }
+        return localUser
+    }
 }

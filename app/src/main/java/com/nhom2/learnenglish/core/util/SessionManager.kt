@@ -17,10 +17,18 @@ class SessionManager(context: Context) {
         return prefs.getLong("user_id", 1L)
     }
 
-    fun saveAuthToken(token: String) {
+    fun createLoginSession(token: String, userId: Long) {
         prefs.edit()
             .putString("auth_token", token)
             .putBoolean("is_logged_in", true)
+            .putLong("current_user_id", userId)
+            .apply()
+    }
+
+    fun activateGuestMode() {
+        prefs.edit()
+            .putBoolean("is_logged_in", false)
+            .putLong("current_user_id", -1L)
             .apply()
     }
 
@@ -32,7 +40,12 @@ class SessionManager(context: Context) {
         return prefs.getBoolean("is_logged_in", false)
     }
 
+    fun getCurrentUserId(): Long {
+        return prefs.getLong("current_user_id", -1L)
+    }
+
     fun logout() {
         prefs.edit().clear().apply()
     }
+
 }

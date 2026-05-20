@@ -1,5 +1,6 @@
 package com.nhom2.learnenglish.feature.mainmenu;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.nhom2.learnenglish.R;
 import com.nhom2.learnenglish.core.data.local.AppDatabase;
 import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity;
-import com.nhom2.learnenglish.core.data.local.entity.WordSetEntity;
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity;
 import com.nhom2.learnenglish.core.data.local.mockdata.MockDataImport;
 import com.nhom2.learnenglish.core.data.repository.ArticleRepository;
 import com.nhom2.learnenglish.core.data.repository.WordRepository;
@@ -23,6 +24,7 @@ import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.feature.articles.ArticlesActivity;
 import com.nhom2.learnenglish.feature.articles.ArticleDetailActivity;
+import com.nhom2.learnenglish.feature.grammar.GrammarRoadmapActivity;
 import com.nhom2.learnenglish.feature.wordsets.LibraryActivity;
 import com.nhom2.learnenglish.feature.wordsets.WordSetDetailActivity;
 
@@ -45,7 +47,7 @@ public class MainMenuActivity extends AppCompatActivity {
         loadFeaturedArticle();
         MockDataImport.INSTANCE.importIfNeeded(this, () -> {
             loadFeaturedArticle();
-            loadRecentWordSets(); // Thêm hàm này
+            loadRecentWordSets();
         });
     }
 
@@ -63,6 +65,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 AppExecutors.Companion.getInstance()
         );
     }
+    @SuppressLint("SetTextI18n")
     private void updateWordSetUI(WordSetEntity set, int index) {
         int cardId = (index == 1) ? R.id.card_word_set_1 : R.id.card_word_set_2;
         int titleId = (index == 1) ? R.id.tv_word_set_title_1 : R.id.tv_word_set_title_2;
@@ -89,10 +92,7 @@ public class MainMenuActivity extends AppCompatActivity {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
                 // Lấy danh sách bộ từ (mặc định lấy 2 cái đầu tiên làm Recent)
-                List<WordSetEntity> list = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> wordRepository.getAllSets(continuation)
-                );
+                List<WordSetEntity> list = wordRepository.getAllSets();
 
                 runOnUiThread(() -> {
                     if (list != null && list.size() >= 2) {
@@ -121,15 +121,42 @@ public class MainMenuActivity extends AppCompatActivity {
         // Nút See All trong phần Featured Articles
         TextView btnSeeAllArticles = findViewById(R.id.btn_see_all_articles);
         if (btnSeeAllArticles != null) {
-            btnSeeAllArticles.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this,ArticlesActivity.class));
+            btnSeeAllArticles.setOnClickListener(v -> Navigator.navigateTo(this,ArticlesActivity.class));
         }
 
+
+        // Word Set: Tech Idioms
+//        LinearLayout cardWordSetTech = findViewById(R.id.card_word_set_tech);
+//        if (cardWordSetTech != null) {
+//            cardWordSetTech.setOnClickListener(v -> {
+//                Intent intent = new Intent(this, WordSetDetailActivity.class);
+//                intent.putExtra("SET_TITLE", "Tech Idioms");
+//                startActivity(intent);
+//                overridePendingTransition(0, 0);
+//            });
+//        }
+//
+//        // Word Set: Daily Phrases
+//        LinearLayout cardWordSetDaily = findViewById(R.id.card_word_set_daily);
+//        if (cardWordSetDaily != null) {
+//            cardWordSetDaily.setOnClickListener(v -> {
+//                Intent intent = new Intent(this, WordSetDetailActivity.class);
+//                intent.putExtra("SET_TITLE", "Daily Phrases");
+//                startActivity(intent);
+//                overridePendingTransition(0, 0);
+//            });
+//        }
 
         // Điều hướng Bottom Navigation - Library
         // Trong setupNavigation()
         TextView btnViewAllWordSets = findViewById(R.id.btn_view_all_word_sets); // Bạn nên đặt ID này cho chữ "View All"
         if (btnViewAllWordSets != null) {
-            btnViewAllWordSets.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this, LibraryActivity.class));
+            btnViewAllWordSets.setOnClickListener(v -> Navigator.navigateTo(this, LibraryActivity.class));
+        }
+
+        LinearLayout cardGrammar = findViewById(R.id.card_grammar);
+        if (cardGrammar != null) {
+            cardGrammar.setOnClickListener(v -> Navigator.navigateTo(this, GrammarRoadmapActivity.class));
         }
     }
 
@@ -137,10 +164,7 @@ public class MainMenuActivity extends AppCompatActivity {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
                 // Lấy danh sách bài báo từ Repository
-                List<ArticleEntity> articles = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> articleRepository.getAll(continuation)
-                );
+                List<ArticleEntity> articles = articleRepository.getAll();
 
                 if (articles != null && !articles.isEmpty()) {
                     // Lấy bài báo đầu tiên làm Featured Article

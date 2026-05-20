@@ -1,22 +1,27 @@
-package com.nhom2.learnenglish.core.data.local.dao
+package com.nhom2.learnenglish.core.data.local.dao.word
 
 import androidx.room3.Dao
 import androidx.room3.Query
-import com.nhom2.learnenglish.core.data.local.entity.WordEntity
+import com.nhom2.learnenglish.core.data.local.dao.BaseDao
+import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity
 import com.nhom2.learnenglish.core.data.local.model.WordWithProgress
 
 @Dao
 interface WordDao : BaseDao<WordEntity> {
 
+    @Query("SELECT * FROM words")
+    fun getAll(): List<WordEntity>
+
+    @Query("SELECT * FROM words WHERE id = :id")
+    fun getById(id: Long): WordEntity?
+
     // Lấy tất cả các từ thuộc về một Bộ từ (Set) cụ thể
     @Query("""
-       SELECT w.* FROM words w 
-
+        SELECT w.* FROM words w 
         INNER JOIN word_set_cross_ref ref ON w.id = ref.word_id 
         WHERE ref.set_id = :setId
     """)
-    suspend fun getWordsBySetId(setId: Long): List<WordEntity>
-
+    fun getWordsBySetId(setId: Long): List<WordEntity>
 
     // Lấy danh sách các từ ĐẾN HẠN ÔN TẬP của một User cụ thể
     @Query("""
@@ -26,7 +31,7 @@ interface WordDao : BaseDao<WordEntity> {
         ORDER BY srs.next_review_date ASC
         LIMIT :limit
     """)
-    suspend fun getWordsDueForReview(userId: Long, currentTime: Long, limit: Int = 20): List<WordEntity>
+    fun getWordsDueForReview(userId: Long, currentTime: Long, limit: Int = 20): List<WordEntity>
 
     // Từ với tiến trình
     @Query("""
@@ -41,7 +46,7 @@ interface WordDao : BaseDao<WordEntity> {
         LEFT JOIN word_srs srs ON w.id = srs.word_id AND srs.user_id = :userId
         WHERE ref.set_id = :setId
     """)
-    suspend fun getWordsWithProgressBySet(setId: Long, userId: Long): List<WordWithProgress>
+    fun getWordsWithProgressBySet(setId: Long, userId: Long): List<WordWithProgress>
 
     // Từ chưa học
     @Query("""
@@ -51,9 +56,9 @@ interface WordDao : BaseDao<WordEntity> {
         WHERE ref.set_id = :setId AND srs.word_id IS NULL
         LIMIT :limit
     """)
-    suspend fun getUnlearnedWords(setId: Long, userId: Long, limit: Int = 10): List<WordEntity>
+    fun getUnlearnedWords(setId: Long, userId: Long, limit: Int = 10): List<WordEntity>
 
 
     @Query("DELETE FROM words")
-    suspend fun deleteAll()
+    fun deleteAll()
 }

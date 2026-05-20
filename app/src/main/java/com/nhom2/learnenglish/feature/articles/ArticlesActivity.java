@@ -61,9 +61,8 @@ private void setupData() {
     );
 
     // Gọi import và chờ nó xong mới load dữ liệu
-    MockDataImport.INSTANCE.importIfNeeded(this, () -> {
-        loadArticleData(); // Di chuyển vào đây
-    });
+    // Di chuyển vào đây
+    MockDataImport.INSTANCE.importIfNeeded(this, this::loadArticleData);
 }
 
     private void setupToolbar() {
@@ -79,10 +78,15 @@ private void setupData() {
             rvArticles.setLayoutManager(new LinearLayoutManager(this));
 
             // Trong setupRecyclerView()
-            adapter = new ArticleAdapter(article -> {android.content.Intent intent = new android.content.Intent(this, ArticleDetailActivity.class);
-                intent.putExtra("article_id", article.getId()); // Giả sử ArticleEntity có getId()
-                startActivity(intent);
-                overridePendingTransition(0, 0);
+            adapter = new ArticleAdapter(article ->
+            {
+                Bundle bundle = new Bundle();
+                bundle.putLong("article_id", article.getId());
+                Navigator.navigateTo(this, ArticleDetailActivity.class, bundle);
+                //android.content.Intent intent = new android.content.Intent(this, ArticleDetailActivity.class);
+                //intent.putExtra("article_id", article.getId());
+                //startActivity(intent);
+                //overridePendingTransition(0, 0);
             });
             rvArticles.setAdapter(adapter);
         }
@@ -91,11 +95,7 @@ private void setupData() {
     private void loadArticleData() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                List<ArticleEntity> list = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> articleRepository.getAll(continuation)
-                );
-
+                List<ArticleEntity> list = articleRepository.getAll();
                 runOnUiThread(() -> {
                     if (adapter != null) {
                         adapter.updateData(list);

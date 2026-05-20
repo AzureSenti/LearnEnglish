@@ -7,11 +7,11 @@ import com.nhom2.learnenglish.core.data.local.entity.UserEntity
 @Dao
 interface UserDao : BaseDao<UserEntity> {
     @Query("SELECT * FROM users LIMIT 1")
-    suspend fun getActiveUser(): UserEntity?
+    fun getActiveUser(): UserEntity?
 
     @Query("SELECT * FROM users WHERE id = :id")
-    suspend fun getById(id: Long): UserEntity?
+    fun getById(id: Long): UserEntity?
 
     @Query("DELETE FROM users")
-    suspend fun deleteAll()
+    fun deleteAll()
 }

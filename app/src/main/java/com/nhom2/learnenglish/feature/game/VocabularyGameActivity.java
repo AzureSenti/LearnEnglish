@@ -21,13 +21,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.nhom2.learnenglish.R;
 import com.nhom2.learnenglish.core.data.local.AppDatabase;
-import com.nhom2.learnenglish.core.data.local.entity.WordEntity;
-import com.nhom2.learnenglish.core.data.repository.wordRespotoryTest1;
+import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity;
+import com.nhom2.learnenglish.core.data.repository.WordRepository;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.SessionManager;
 import com.nhom2.learnenglish.model.Question;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,12 +46,17 @@ public class VocabularyGameActivity extends AppCompatActivity {
     private TextInputEditText etAnswer;
     private TextView tvFeedback;
 
-    private wordRespotoryTest1 wordRepository;
+    private WordRepository wordRepository;
     private SessionManager sessionManager;
-    private List<Question> questionList = new ArrayList<>();
     private TextToSpeech tts;
 
-    private int currentQuestionIndex = 0;
+    // Trạng thái hàng đợi từ vựng
+    private List<WordEntity> wordQueue = new ArrayList<>();
+    private List<WordEntity> allWords = new ArrayList<>();
+    private int currentWordIndex = 0;
+    private boolean isCurrentWordInGame2 = false; // false = Game 1 (Trắc nghiệm), true = Game 2 (Gõ từ)
+    private Question currentQuestion;
+
     private int score = 0;
     private boolean isAnswerRevealed = false;
     private GameOptionAdapter adapter;
@@ -63,7 +69,6 @@ public class VocabularyGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vocabulary_game);
 
         sessionManager = new SessionManager(this);
-        // Try-Catch ở đây để phòng trường hợp hàm getUserId bên SessionManager bị lỗi chưa viết xong
         try {
             long currentUserId = sessionManager.getUserId();
             if (currentUserId != -1L) {
@@ -88,10 +93,8 @@ public class VocabularyGameActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!isAnswerRevealed && !questionList.isEmpty() && currentQuestionIndex < questionList.size()) {
-                    if (questionList.get(currentQuestionIndex).getType() == Question.Type.FILL_IN_BLANK) {
-                        btnContinue.setEnabled(s.toString().trim().length() > 0);
-                    }
+                if (!isAnswerRevealed && currentQuestion != null && currentQuestion.getType() == Question.Type.FILL_IN_BLANK) {
+                    btnContinue.setEnabled(s.toString().trim().length() > 0);
                 }
             }
             @Override
@@ -118,8 +121,7 @@ public class VocabularyGameActivity extends AppCompatActivity {
 
     private void setupRepository() {
         AppDatabase db = AppDatabase.Companion.getInstance(this);
-        // FIX: Đã xóa tham số db.wordSetCrossDao() bị thừa, giờ chỉ còn đúng 5 tham số
-        wordRepository = new wordRespotoryTest1(
+        wordRepository = new WordRepository(
                 db.wordDao(),
                 db.wordSetDao(),
                 db.wordSrsDao(),
@@ -141,27 +143,33 @@ public class VocabularyGameActivity extends AppCompatActivity {
 
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                List<WordEntity> targetWords = new ArrayList<>();
+                // 1. Dùng biến tạm để lấy dữ liệu từ DB
+                List<WordEntity> tempWords = new ArrayList<>();
 
-                // FIX: Dùng các hàm ForJava để lấy dữ liệu đồng bộ
                 if ("REVIEW".equals(gameMode)) {
-                    targetWords = wordRepository.getWordsForReviewForJava(userId);
+                    tempWords = wordRepository.getWordsForReview(userId);
                 } else if (setId != -1L) {
                     if ("LEARN_NEW".equals(gameMode)) {
-                        targetWords = wordRepository.getNewWordsToLearnForJava(userId, setId);
+                        tempWords = wordRepository.getNewWordsToLearn(userId, setId);
                     } else {
-                        targetWords = wordRepository.getWordsInSetForJava(setId);
+                        tempWords = wordRepository.getWordsInSet(setId);
                     }
                 }
 
-                List<WordEntity> allWords = wordRepository.getAllWordsForJava();
-                List<Question> generated = GameLogicHelper.generateQuestions(targetWords, allWords, 20);
+                allWords = wordRepository.getAllWords();
+
+                // 2. Gán vào một biến final để sử dụng an toàn bên trong luồng MainThread
+                final List<WordEntity> finalTargetWords = tempWords;
 
                 AppExecutors.Companion.getInstance().getMainThread().execute(() -> {
-                    if (generated != null && !generated.isEmpty()) {
-                        questionList = generated;
-                        progressBar.setMax(questionList.size());
-                        showQuestion(0);
+                    if (finalTargetWords != null && !finalTargetWords.isEmpty()) {
+                        Collections.shuffle(finalTargetWords);
+
+                        // Giới hạn 10 từ mỗi lượt học
+                        wordQueue = finalTargetWords.size() > 10 ? finalTargetWords.subList(0, 10) : finalTargetWords;
+
+                        progressBar.setMax(wordQueue.size());
+                        showNextGame();
                     } else {
                         String msg = "Không có từ vựng nào để thực hiện!";
                         if ("REVIEW".equals(gameMode)) {
@@ -169,38 +177,47 @@ public class VocabularyGameActivity extends AppCompatActivity {
                         } else if ("LEARN_NEW".equals(gameMode)) {
                             msg = "Bạn đã học hết từ vựng mới trong bộ này!";
                         }
-                        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                        Toast.makeText(VocabularyGameActivity.this, msg, Toast.LENGTH_LONG).show();
                         finish();
                     }
                 });
             } catch (Exception e) {
                 e.printStackTrace();
                 AppExecutors.Companion.getInstance().getMainThread().execute(() -> {
-                    Toast.makeText(this, "Lỗi khi tải dữ liệu game", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VocabularyGameActivity.this, "Lỗi khi tải dữ liệu game", Toast.LENGTH_SHORT).show();
                     finish();
                 });
             }
         });
     }
 
-    private void showQuestion(int index) {
-        Question question = questionList.get(index);
+    private void showNextGame() {
+        if (currentWordIndex >= wordQueue.size()) {
+            finishGame();
+            return;
+        }
+
+        WordEntity currentWord = wordQueue.get(currentWordIndex);
         isAnswerRevealed = false;
         btnContinue.setText("KIỂM TRA");
         btnContinue.setEnabled(false);
-        progressBar.setProgress(index);
+        progressBar.setProgress(currentWordIndex);
 
-        if (question.getType() == Question.Type.MULTIPLE_CHOICE) {
-            tvWord.setText(question.getTargetWord().getEnglishWord());
+        if (!isCurrentWordInGame2) {
+            // Game 1: Trắc nghiệm
+            currentQuestion = GameLogicHelper.generateMultipleChoice(currentWord, allWords);
+            tvWord.setText(currentQuestion.getTargetWord().getEnglishWord());
             rvOptions.setVisibility(View.VISIBLE);
             layoutFillBlank.setVisibility(View.GONE);
 
-            adapter = new GameOptionAdapter(question.getOptions(), question.getCorrectOptionIndex(), position -> {
+            adapter = new GameOptionAdapter(currentQuestion.getOptions(), currentQuestion.getCorrectOptionIndex(), position -> {
                 btnContinue.setEnabled(true);
             });
             rvOptions.setAdapter(adapter);
         } else {
-            tvWord.setText(question.getTargetWord().getVietnameseMeaning());
+            // Game 2: Gõ từ
+            currentQuestion = GameLogicHelper.generateFillInBlank(currentWord);
+            tvWord.setText(currentQuestion.getTargetWord().getVietnameseMeaning());
             rvOptions.setVisibility(View.GONE);
             layoutFillBlank.setVisibility(View.VISIBLE);
 
@@ -213,7 +230,7 @@ public class VocabularyGameActivity extends AppCompatActivity {
 
         btnSpeak.setOnClickListener(v -> {
             if (tts != null) {
-                tts.speak(question.getTargetWord().getEnglishWord(), TextToSpeech.QUEUE_FLUSH, null, null);
+                tts.speak(currentQuestion.getTargetWord().getEnglishWord(), TextToSpeech.QUEUE_FLUSH, null, null);
             }
         });
     }
@@ -223,9 +240,7 @@ public class VocabularyGameActivity extends AppCompatActivity {
         if (currentTime - lastClickTime < 600) return;
         lastClickTime = currentTime;
 
-        if (questionList.isEmpty() || currentQuestionIndex >= questionList.size()) return;
-
-        Question currentQuestion = questionList.get(currentQuestionIndex);
+        if (wordQueue.isEmpty() || currentWordIndex >= wordQueue.size()) return;
 
         if (!isAnswerRevealed) {
             boolean isCorrect;
@@ -238,25 +253,44 @@ public class VocabularyGameActivity extends AppCompatActivity {
                 showFillBlankFeedback(isCorrect, correctAnswer);
             }
 
-            if (isCorrect) score++;
-
-            boolean finalIsCorrect = isCorrect;
-            AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
-                // FIX: Dùng hàm ForJava để lưu DB
-                wordRepository.processWordLearningForJava(userId, currentQuestion.getTargetWord().getId(), finalIsCorrect);
-            });
+            // Cơ chế Logic 1-2 & Fail-fast
+            if (!isCurrentWordInGame2) {
+                // Đang ở Game 1
+                if (isCorrect) {
+                    // Đúng Game 1 -> Sang Game 2
+                    isCurrentWordInGame2 = true;
+                } else {
+                    // Fail-fast: Sai Game 1 -> Lưu sai và sang từ tiếp theo
+                    saveProgress(currentQuestion.getTargetWord().getId(), false);
+                    currentWordIndex++;
+                    isCurrentWordInGame2 = false; // Đặt lại cho từ mới
+                }
+            } else {
+                // Đang ở Game 2
+                if (isCorrect) {
+                    // Đúng Game 2 (tức là đã qua Game 1) -> Thuộc từ
+                    score++;
+                    saveProgress(currentQuestion.getTargetWord().getId(), true);
+                } else {
+                    // Sai Game 2 -> Lưu sai
+                    saveProgress(currentQuestion.getTargetWord().getId(), false);
+                }
+                currentWordIndex++;
+                isCurrentWordInGame2 = false; // Đặt lại cho từ mới
+            }
 
             isAnswerRevealed = true;
             btnContinue.setText("TIẾP TỤC");
             btnContinue.setEnabled(true);
         } else {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questionList.size()) {
-                showQuestion(currentQuestionIndex);
-            } else {
-                finishGame();
-            }
+            showNextGame();
         }
+    }
+
+    private void saveProgress(long wordId, boolean isMastered) {
+        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+            wordRepository.processWordLearning(userId, wordId, isMastered); //
+        });
     }
 
     private void showFillBlankFeedback(boolean isCorrect, String correctAnswer) {
@@ -275,8 +309,8 @@ public class VocabularyGameActivity extends AppCompatActivity {
     }
 
     private void finishGame() {
-        progressBar.setProgress(questionList.size());
-        Toast.makeText(this, "Hoàn thành! Điểm: " + score + "/" + questionList.size(), Toast.LENGTH_LONG).show();
+        progressBar.setProgress(wordQueue.size());
+        Toast.makeText(this, "Hoàn thành! Đạt: " + score + "/" + wordQueue.size() + " từ.", Toast.LENGTH_LONG).show();
         finish();
     }
 

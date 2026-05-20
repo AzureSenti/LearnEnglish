@@ -79,10 +79,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
                 // Giả định userId = -1 để lấy tất cả từ (chưa lọc theo user cụ thể trong mock data này)
-                List<WordWithProgress> list = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> wordRepository.getWordListWithProgress(setId, -1L, continuation)
-                );
+                List<WordWithProgress> list =  wordRepository.getWordListWithProgress(setId, -1L);
 
                 runOnUiThread(() -> {
                     if (adapter != null) {
