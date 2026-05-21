@@ -103,6 +103,42 @@
                     android:progressTint="@color/green_tag_text"
                     android:progressBackgroundTint="#F0F0F0" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLearnNew"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:padding="12dp"
+                    android:text="Học từ mới"
+                    android:textSize="14sp"
+                    app:icon="@drawable/ic_learn"
+                    app:iconGravity="textStart"
+                    app:cornerRadius="12dp"
+                    android:backgroundTint="#006D4E" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnReview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:padding="12dp"
+                    android:text="Ôn tập"
+                    android:textSize="14sp"
+                    app:icon="@drawable/ic_book"
+                    app:iconGravity="textStart"
+                    app:cornerRadius="12dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:textColor="#006D4E"
+                    app:strokeColor="#006D4E" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"

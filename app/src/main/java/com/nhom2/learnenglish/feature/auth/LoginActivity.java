@@ -91,7 +91,11 @@ public class LoginActivity extends AppCompatActivity {
             // TODO: Mở SignupActivity
         });
 
+//        useWithoutLogin.setOnClickListener(v -> {
+//            activateGuestMode();
+//        });
         useWithoutLogin.setOnClickListener(v -> {
+            Toast.makeText(this, "Đang xử lý đăng nhập ẩn...", Toast.LENGTH_SHORT).show();
             activateGuestMode();
         });
 
@@ -156,6 +160,9 @@ public class LoginActivity extends AppCompatActivity {
                 });
             } catch (Exception e) {
                 e.printStackTrace();
+                runOnUiThread(() -> {
+                    Toast.makeText(LoginActivity.this, "Lỗi hệ thống: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
             }
         });
     }

@@ -53,14 +53,14 @@ public class VocabularyGameActivity extends AppCompatActivity {
     // Trạng thái hàng đợi từ vựng
     private List<WordEntity> wordQueue = new ArrayList<>();
     private List<WordEntity> allWords = new ArrayList<>();
-    private int currentWordIndex = 0;
+    private int totalWordsInSession = 0; // Quản lý tổng số từ của màn học
     private boolean isCurrentWordInGame2 = false; // false = Game 1 (Trắc nghiệm), true = Game 2 (Gõ từ)
     private Question currentQuestion;
 
     private int score = 0;
     private boolean isAnswerRevealed = false;
     private GameOptionAdapter adapter;
-    private long userId = 1L;
+    private long userId = -1L; // Đặt mặc định là tài khoản ngoại tuyến/local
     private long lastClickTime = 0;
 
     @Override
@@ -70,12 +70,12 @@ public class VocabularyGameActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         try {
-            long currentUserId = sessionManager.getUserId();
+            long currentUserId = sessionManager.getCurrentUserId();
             if (currentUserId != -1L) {
                 userId = currentUserId;
             }
         } catch (Exception e) {
-            userId = 1L;
+            userId = -1L;
         }
 
         initViews();
@@ -132,8 +132,13 @@ public class VocabularyGameActivity extends AppCompatActivity {
 
     private void setupTTS() {
         tts = new TextToSpeech(this, status -> {
-            if (status != TextToSpeech.ERROR) {
-                tts.setLanguage(Locale.US);
+            if (status == TextToSpeech.SUCCESS) {
+                int result = tts.setLanguage(Locale.US);
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    if (btnSpeak != null) {
+                        btnSpeak.setVisibility(View.GONE);
+                    }
+                }
             }
         });
     }
@@ -143,32 +148,36 @@ public class VocabularyGameActivity extends AppCompatActivity {
 
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                // 1. Dùng biến tạm để lấy dữ liệu từ DB
                 List<WordEntity> tempWords = new ArrayList<>();
 
                 if ("REVIEW".equals(gameMode)) {
                     tempWords = wordRepository.getWordsForReview(userId);
                 } else if (setId != -1L) {
                     if ("LEARN_NEW".equals(gameMode)) {
+                        // Nếu là học từ mới -> Chỉ lấy từ chưa học
                         tempWords = wordRepository.getNewWordsToLearn(userId, setId);
                     } else {
+                        // Mặc định -> Lấy tất cả từ trong Set
                         tempWords = wordRepository.getWordsInSet(setId);
                     }
                 }
 
                 allWords = wordRepository.getAllWords();
 
-                // 2. Gán vào một biến final để sử dụng an toàn bên trong luồng MainThread
                 final List<WordEntity> finalTargetWords = tempWords;
 
                 AppExecutors.Companion.getInstance().getMainThread().execute(() -> {
+                    // Phòng tránh lỗi khi người dùng bấm thoát trước khi luồng ngầm chạy xong
+                    if (isFinishing() || isDestroyed()) return;
+
                     if (finalTargetWords != null && !finalTargetWords.isEmpty()) {
                         Collections.shuffle(finalTargetWords);
 
-                        // Giới hạn 10 từ mỗi lượt học
-                        wordQueue = finalTargetWords.size() > 10 ? finalTargetWords.subList(0, 10) : finalTargetWords;
+                        List<WordEntity> selected = finalTargetWords.size() > 10 ? finalTargetWords.subList(0, 10) : finalTargetWords;
+                        wordQueue = new ArrayList<>(selected);
+                        totalWordsInSession = wordQueue.size();
 
-                        progressBar.setMax(wordQueue.size());
+                        progressBar.setMax(totalWordsInSession);
                         showNextGame();
                     } else {
                         String msg = "Không có từ vựng nào để thực hiện!";
@@ -184,6 +193,7 @@ public class VocabularyGameActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
                 AppExecutors.Companion.getInstance().getMainThread().execute(() -> {
+                    if (isFinishing() || isDestroyed()) return;
                     Toast.makeText(VocabularyGameActivity.this, "Lỗi khi tải dữ liệu game", Toast.LENGTH_SHORT).show();
                     finish();
                 });
@@ -192,19 +202,21 @@ public class VocabularyGameActivity extends AppCompatActivity {
     }
 
     private void showNextGame() {
-        if (currentWordIndex >= wordQueue.size()) {
+        if (wordQueue.isEmpty()) {
             finishGame();
             return;
         }
 
-        WordEntity currentWord = wordQueue.get(currentWordIndex);
+        WordEntity currentWord = wordQueue.get(0);
         isAnswerRevealed = false;
         btnContinue.setText("KIỂM TRA");
         btnContinue.setEnabled(false);
-        progressBar.setProgress(currentWordIndex);
+
+        progressBar.setProgress(totalWordsInSession - wordQueue.size());
 
         if (!isCurrentWordInGame2) {
             // Game 1: Trắc nghiệm
+            hideKeyboard(); // Ẩn bàn phím ảo nhằm tránh che khuất đáp án trắc nghiệm
             currentQuestion = GameLogicHelper.generateMultipleChoice(currentWord, allWords);
             tvWord.setText(currentQuestion.getTargetWord().getEnglishWord());
             rvOptions.setVisibility(View.VISIBLE);
@@ -240,56 +252,59 @@ public class VocabularyGameActivity extends AppCompatActivity {
         if (currentTime - lastClickTime < 600) return;
         lastClickTime = currentTime;
 
-        if (wordQueue.isEmpty() || currentWordIndex >= wordQueue.size()) return;
-
-        if (!isAnswerRevealed) {
-            boolean isCorrect;
-            if (currentQuestion.getType() == Question.Type.MULTIPLE_CHOICE) {
-                isCorrect = adapter.checkAnswer();
-            } else {
-                String userAnswer = etAnswer.getText().toString().trim();
-                String correctAnswer = currentQuestion.getTargetWord().getEnglishWord().trim();
-                isCorrect = userAnswer.equalsIgnoreCase(correctAnswer);
-                showFillBlankFeedback(isCorrect, correctAnswer);
-            }
-
-            // Cơ chế Logic 1-2 & Fail-fast
-            if (!isCurrentWordInGame2) {
-                // Đang ở Game 1
-                if (isCorrect) {
-                    // Đúng Game 1 -> Sang Game 2
-                    isCurrentWordInGame2 = true;
-                } else {
-                    // Fail-fast: Sai Game 1 -> Lưu sai và sang từ tiếp theo
-                    saveProgress(currentQuestion.getTargetWord().getId(), false);
-                    currentWordIndex++;
-                    isCurrentWordInGame2 = false; // Đặt lại cho từ mới
-                }
-            } else {
-                // Đang ở Game 2
-                if (isCorrect) {
-                    // Đúng Game 2 (tức là đã qua Game 1) -> Thuộc từ
-                    score++;
-                    saveProgress(currentQuestion.getTargetWord().getId(), true);
-                } else {
-                    // Sai Game 2 -> Lưu sai
-                    saveProgress(currentQuestion.getTargetWord().getId(), false);
-                }
-                currentWordIndex++;
-                isCurrentWordInGame2 = false; // Đặt lại cho từ mới
-            }
-
-            isAnswerRevealed = true;
-            btnContinue.setText("TIẾP TỤC");
-            btnContinue.setEnabled(true);
-        } else {
+        if (isAnswerRevealed) {
             showNextGame();
+            return;
         }
+
+        if (wordQueue.isEmpty()) return;
+
+        boolean isCorrect;
+        if (currentQuestion.getType() == Question.Type.MULTIPLE_CHOICE) {
+            isCorrect = adapter.checkAnswer();
+        } else {
+            String userAnswer = etAnswer.getText().toString().trim();
+            String correctAnswer = currentQuestion.getTargetWord().getEnglishWord().trim();
+            isCorrect = userAnswer.equalsIgnoreCase(correctAnswer);
+            showFillBlankFeedback(isCorrect, correctAnswer);
+        }
+
+        WordEntity currentWord = wordQueue.get(0);
+
+        if (!isCurrentWordInGame2) {
+            if (isCorrect) {
+                isCurrentWordInGame2 = true;
+            } else {
+                saveProgress(currentWord.getId(), false);
+                wordQueue.remove(0);
+                wordQueue.add(currentWord);
+                isCurrentWordInGame2 = false;
+            }
+        } else {
+            if (isCorrect) {
+                score++;
+                saveProgress(currentWord.getId(), true);
+                wordQueue.remove(0);
+            } else {
+                saveProgress(currentWord.getId(), false);
+                wordQueue.remove(0);
+                wordQueue.add(currentWord);
+            }
+            isCurrentWordInGame2 = false;
+        }
+
+        isAnswerRevealed = true;
+        btnContinue.setText("TIẾP TỤC");
+        btnContinue.setEnabled(true);
     }
 
     private void saveProgress(long wordId, boolean isMastered) {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
-            wordRepository.processWordLearning(userId, wordId, isMastered); //
+            try {
+                wordRepository.processWordLearning(userId, wordId, isMastered);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -308,9 +323,19 @@ public class VocabularyGameActivity extends AppCompatActivity {
         etAnswer.setEnabled(false);
     }
 
+    private void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        }
+    }
+
     private void finishGame() {
-        progressBar.setProgress(wordQueue.size());
-        Toast.makeText(this, "Hoàn thành! Đạt: " + score + "/" + wordQueue.size() + " từ.", Toast.LENGTH_LONG).show();
+        progressBar.setProgress(totalWordsInSession);
+        Toast.makeText(this, "Hoàn thành! Bạn đã thuộc " + score + " từ.", Toast.LENGTH_LONG).show();
         finish();
     }
 

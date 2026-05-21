@@ -12,8 +12,7 @@ public class Question {
     private int correctOptionIndex;
     private Type type;
 
-    public Question(com.nhom2.learnenglish.core.data.local.entity.word.WordEntity targetWord, Object options, int correctOptionIndex, Type type) {
-    }
+
 
     // Định nghĩa 2 loại câu hỏi: Trắc nghiệm và Điền từ
     public enum Type {

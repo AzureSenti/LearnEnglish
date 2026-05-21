@@ -158,6 +158,10 @@ public class MainMenuActivity extends AppCompatActivity {
         if (cardGrammar != null) {
             cardGrammar.setOnClickListener(v -> Navigator.navigateTo(this, GrammarRoadmapActivity.class));
         }
+        LinearLayout navLibrary = findViewById(R.id.nav_library);
+        if (navLibrary != null) {
+            navLibrary.setOnClickListener(v -> Navigator.navigateTo(this, LibraryActivity.class));
+        }
     }
 
     private void loadFeaturedArticle() {
