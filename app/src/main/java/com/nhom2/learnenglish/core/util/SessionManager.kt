@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 class SessionManager(context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences("user_session", Context.MODE_PRIVATE)
 
+
+
     fun createLoginSession(token: String, userId: Long) {
         prefs.edit()
             .putString("auth_token", token)
