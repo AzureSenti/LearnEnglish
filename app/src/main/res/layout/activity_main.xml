@@ -304,7 +304,10 @@
                     android:text="View All"
                     android:textColor="@color/blue_primary"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground" />
             </RelativeLayout>
 
             <LinearLayout
@@ -411,10 +414,11 @@
         <LinearLayout
             android:id="@+id/nav_explore"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -446,10 +450,11 @@
         <LinearLayout
             android:id="@+id/nav_library"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -470,8 +475,11 @@
         <LinearLayout
             android:id="@+id/nav_learn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -491,8 +499,11 @@
         <LinearLayout
             android:id="@+id/nav_profile"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center"
             android:orientation="vertical">
 

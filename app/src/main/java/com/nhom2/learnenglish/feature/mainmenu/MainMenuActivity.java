@@ -25,6 +25,7 @@ import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.feature.articles.ArticlesActivity;
 import com.nhom2.learnenglish.feature.articles.ArticleDetailActivity;
 import com.nhom2.learnenglish.feature.grammar.GrammarRoadmapActivity;
+import com.nhom2.learnenglish.feature.profile.ProfileActivity;
 import com.nhom2.learnenglish.feature.wordsets.LibraryActivity;
 import com.nhom2.learnenglish.feature.wordsets.WordSetDetailActivity;
 
@@ -65,6 +66,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 AppExecutors.Companion.getInstance()
         );
     }
+
     @SuppressLint("SetTextI18n")
     private void updateWordSetUI(WordSetEntity set, int index) {
         int cardId = (index == 1) ? R.id.card_word_set_1 : R.id.card_word_set_2;
@@ -76,7 +78,7 @@ public class MainMenuActivity extends AppCompatActivity {
         TextView tvCount = findViewById(countId);
 
         if (tvTitle != null) tvTitle.setText(set.getName());
-        if (tvCount != null) tvCount.setText("5 words"); // Mock data hiện tại mỗi set có 5 từ
+        if (tvCount != null) tvCount.setText("5 words");
 
         if (card != null) {
             card.setOnClickListener(v -> {
@@ -88,12 +90,11 @@ public class MainMenuActivity extends AppCompatActivity {
             });
         }
     }
+
     private void loadRecentWordSets() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                // Lấy danh sách bộ từ (mặc định lấy 2 cái đầu tiên làm Recent)
                 List<WordSetEntity> list = wordRepository.getAllSets();
-
                 runOnUiThread(() -> {
                     if (list != null && list.size() >= 2) {
                         updateWordSetUI(list.get(0), 1);
@@ -118,62 +119,57 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     private void setupNavigation() {
-        // Nút See All trong phần Featured Articles
+        // --- Featured Articles ---
         TextView btnSeeAllArticles = findViewById(R.id.btn_see_all_articles);
         if (btnSeeAllArticles != null) {
-            btnSeeAllArticles.setOnClickListener(v -> Navigator.navigateTo(this,ArticlesActivity.class));
+            btnSeeAllArticles.setOnClickListener(v -> Navigator.navigateTo(this, ArticlesActivity.class));
         }
 
-
-        // Word Set: Tech Idioms
-//        LinearLayout cardWordSetTech = findViewById(R.id.card_word_set_tech);
-//        if (cardWordSetTech != null) {
-//            cardWordSetTech.setOnClickListener(v -> {
-//                Intent intent = new Intent(this, WordSetDetailActivity.class);
-//                intent.putExtra("SET_TITLE", "Tech Idioms");
-//                startActivity(intent);
-//                overridePendingTransition(0, 0);
-//            });
-//        }
-//
-//        // Word Set: Daily Phrases
-//        LinearLayout cardWordSetDaily = findViewById(R.id.card_word_set_daily);
-//        if (cardWordSetDaily != null) {
-//            cardWordSetDaily.setOnClickListener(v -> {
-//                Intent intent = new Intent(this, WordSetDetailActivity.class);
-//                intent.putExtra("SET_TITLE", "Daily Phrases");
-//                startActivity(intent);
-//                overridePendingTransition(0, 0);
-//            });
-//        }
-
-        // Điều hướng Bottom Navigation - Library
-        // Trong setupNavigation()
-        TextView btnViewAllWordSets = findViewById(R.id.btn_view_all_word_sets); // Bạn nên đặt ID này cho chữ "View All"
+        // --- Recent Word Sets ---
+        TextView btnViewAllWordSets = findViewById(R.id.btn_view_all_word_sets);
         if (btnViewAllWordSets != null) {
             btnViewAllWordSets.setOnClickListener(v -> Navigator.navigateTo(this, LibraryActivity.class));
         }
 
-        LinearLayout cardGrammar = findViewById(R.id.card_grammar);
-        if (cardGrammar != null) {
-            cardGrammar.setOnClickListener(v -> Navigator.navigateTo(this, GrammarRoadmapActivity.class));
+        // --- Bottom Navigation ---
+        
+        // 1. Explore (Chính nó - hiện tại đang active)
+        LinearLayout navExplore = findViewById(R.id.nav_explore);
+        if (navExplore != null) {
+            navExplore.setOnClickListener(null); 
         }
+
+        // 2. Library
         LinearLayout navLibrary = findViewById(R.id.nav_library);
         if (navLibrary != null) {
             navLibrary.setOnClickListener(v -> Navigator.navigateTo(this, LibraryActivity.class));
+        }
+
+        // 3. Learn (Ngữ pháp)
+        LinearLayout navLearn = findViewById(R.id.nav_learn);
+        if (navLearn != null) {
+            navLearn.setOnClickListener(v -> Navigator.navigateTo(this, GrammarRoadmapActivity.class));
+        }
+
+        // 4. Profile
+        LinearLayout navProfile = findViewById(R.id.nav_profile);
+        if (navProfile != null) {
+            navProfile.setOnClickListener(v -> Navigator.navigateTo(this, ProfileActivity.class));
+        }
+
+        // Nút Ngữ pháp ở phần Categories giữa màn hình
+        LinearLayout cardGrammar = findViewById(R.id.card_grammar);
+        if (cardGrammar != null) {
+            cardGrammar.setOnClickListener(v -> Navigator.navigateTo(this, GrammarRoadmapActivity.class));
         }
     }
 
     private void loadFeaturedArticle() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                // Lấy danh sách bài báo từ Repository
                 List<ArticleEntity> articles = articleRepository.getAll();
-
                 if (articles != null && !articles.isEmpty()) {
-                    // Lấy bài báo đầu tiên làm Featured Article
                     ArticleEntity featured = articles.get(0);
-
                     runOnUiThread(() -> updateFeaturedUI(featured));
                 }
             } catch (Exception e) {
@@ -193,7 +189,6 @@ public class MainMenuActivity extends AppCompatActivity {
         if (tvCategory != null) tvCategory.setText(article.getCategory());
         if (tvTitle != null) tvTitle.setText(article.getTitle());
 
-        // Cắt bớt content để làm description
         if (tvDesc != null) {
             String desc = article.getContent();
             if (desc != null && desc.length() > 100) {
@@ -202,7 +197,6 @@ public class MainMenuActivity extends AppCompatActivity {
             tvDesc.setText(desc);
         }
 
-        // Cập nhật sự kiện click với ID thực tế
         if (cardFeaturedArticle != null) {
             cardFeaturedArticle.setOnClickListener(v -> {
                 Intent intent = new Intent(this, ArticleDetailActivity.class);

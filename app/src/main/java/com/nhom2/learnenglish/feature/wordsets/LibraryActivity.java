@@ -16,7 +16,9 @@ import com.nhom2.learnenglish.core.data.local.mockdata.MockDataImport;
 import com.nhom2.learnenglish.core.data.repository.WordRepository;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.Navigator;
+import com.nhom2.learnenglish.feature.grammar.GrammarRoadmapActivity;
 import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
+import com.nhom2.learnenglish.feature.profile.ProfileActivity;
 
 import java.util.List;
 
@@ -34,13 +36,8 @@ public class LibraryActivity extends AppCompatActivity {
         setupBackNavigation();
         setupBottomNavigation();
         setupRecyclerView();
-        
-
     }
 
-
-
-    // cơ chế chờ đổ xong mới load
     private void setupData() {
         AppDatabase db = AppDatabase.Companion.getInstance(this);
         wordRepository = new WordRepository(
@@ -51,8 +48,6 @@ public class LibraryActivity extends AppCompatActivity {
                 AppExecutors.Companion.getInstance()
         );
 
-        // Đảm bảo dữ liệu đã được import xong mới load
-        // Di chuyển vào đây
         MockDataImport.INSTANCE.importIfNeeded(this, this::loadWordSetData);
     }
 
@@ -60,15 +55,28 @@ public class LibraryActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                moveToExplore();
+                Navigator.navigateTo(LibraryActivity.this, MainMenuActivity.class);
             }
         });
     }
 
     private void setupBottomNavigation() {
+        // Điều hướng sang Explore
         LinearLayout navExplore = findViewById(R.id.nav_explore);
         if (navExplore != null) {
-            navExplore.setOnClickListener(v -> moveToExplore());
+            navExplore.setOnClickListener(v -> Navigator.navigateTo(this, MainMenuActivity.class));
+        }
+
+        // Điều hướng sang Learn
+        LinearLayout navLearn = findViewById(R.id.nav_learn);
+        if (navLearn != null) {
+            navLearn.setOnClickListener(v -> Navigator.navigateTo(this, GrammarRoadmapActivity.class));
+        }
+
+        // Điều hướng sang Profile
+        LinearLayout navProfile = findViewById(R.id.nav_profile);
+        if (navProfile != null) {
+            navProfile.setOnClickListener(v -> Navigator.navigateTo(this, ProfileActivity.class));
         }
     }
 
@@ -91,7 +99,6 @@ public class LibraryActivity extends AppCompatActivity {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
                 List<WordSetEntity> list = wordRepository.getAllSets();
-
                 runOnUiThread(() -> {
                     if (adapter != null) {
                         adapter.updateData(list);
@@ -101,10 +108,6 @@ public class LibraryActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
-    }
-
-    private void moveToExplore() {
-        Navigator.navigateTo(this, MainMenuActivity.class);
     }
 
     @Override

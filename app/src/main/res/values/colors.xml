@@ -5,7 +5,6 @@
 
     <color name="bg_color">#FBFBFF</color>
 
-
     <color name="blue_primary">#3D7BEE</color>
     <color name="blue_light">#E8F0FE</color>
 
@@ -64,8 +63,16 @@
     <color name="stat_blue_bg">#EEF4FF</color>
     <color name="stat_yellow_bg">#FFF5D6</color>
     <color name="stat_purple_bg">#F0E9FF</color>
+
+    <!-- Badges Backgrounds -->
     <color name="badge_green_bg">#DFF7EA</color>
     <color name="badge_yellow_bg">#FFF5D6</color>
     <color name="badge_purple_bg">#EEE9FF</color>
+
+    <!-- Badges Text/Icon Colors -->
+    <color name="badge_green_text">#059669</color>
+    <color name="badge_yellow_text">#D97706</color>
+    <color name="badge_purple_text">#7C3AED</color>
+
     <color name="nav_inactive">#9AA3B2</color>
 </resources>
