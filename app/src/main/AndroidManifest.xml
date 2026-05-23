@@ -24,6 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".feature.game.VocabularyGameActivity"
             android:exported="false" />
@@ -36,6 +37,9 @@
             android:name=".feature.auth.LoginActivity"
             android:exported="false" />
         <activity android:name=".feature.wordsets.LibraryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.profile.ProfileActivity"
             android:exported="false" />
 
 
