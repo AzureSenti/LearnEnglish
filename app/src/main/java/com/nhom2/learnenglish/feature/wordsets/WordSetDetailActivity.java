@@ -3,6 +3,7 @@ package com.nhom2.learnenglish.feature.wordsets;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -25,6 +26,8 @@ import java.util.List;
 public class WordSetDetailActivity extends AppCompatActivity {
     private MaterialButton btnLearnNew;
     private MaterialButton btnReview;
+    private TextView tvMasteryProgress;
+    private ProgressBar pbMasteryProgress;
 
     private WordRepository wordRepository;
     private SessionManager sessionManager; // THÊM SESSION MANAGER
@@ -99,6 +102,8 @@ public class WordSetDetailActivity extends AppCompatActivity {
     private void setupToolbar() {
         ImageView ivBack = findViewById(R.id.iv_back);
         TextView tvTitle = findViewById(R.id.tv_title);
+        tvMasteryProgress = findViewById(R.id.tv_mastery_progress_text);
+        pbMasteryProgress = findViewById(R.id.pb_mastery_progress);
 
         String title = getIntent().getStringExtra("SET_TITLE");
         if (title != null) {
@@ -122,12 +127,29 @@ public class WordSetDetailActivity extends AppCompatActivity {
     private void loadWords() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                // Đã truyền đúng userId thay vì -1L để lấy chính xác tiến độ học của user này
                 List<WordWithProgress> list = wordRepository.getWordListWithProgress(setId, userId);
+
+                // Tính toán tiến độ
+                int masteredCount = 0;
+                for (WordWithProgress word : list) {
+                    // Giả định từ có level > 0 là đã học thuộc (mastered)
+                    if (word.getLevel() != null && word.getLevel() > 0) {
+                        masteredCount++;
+                    }
+                }
+
+                final int finalMasteredCount = masteredCount;
+                final int totalWords = list.size();
 
                 runOnUiThread(() -> {
                     if (adapter != null) {
                         adapter.updateData(list);
+                    }
+                    // Cập nhật UI cho Progress Bar
+                    if (tvMasteryProgress != null && pbMasteryProgress != null) {
+                        tvMasteryProgress.setText(finalMasteredCount + "/" + totalWords + " words mastered");
+                        pbMasteryProgress.setMax(totalWords > 0 ? totalWords : 1);
+                        pbMasteryProgress.setProgress(finalMasteredCount);
                     }
                 });
             } catch (Exception e) {
