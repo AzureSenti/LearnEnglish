@@ -85,21 +85,23 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tv_mastery_progress_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:text="12/50 words mastered"
+                        tools:text="0/0 words mastered"
                         android:textColor="@color/text_secondary"
                         android:textSize="12sp" />
                 </RelativeLayout>
 
                 <ProgressBar
+                    android:id="@+id/pb_mastery_progress"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="8dp"
                     android:layout_marginTop="16dp"
-                    android:progress="24"
+                    android:progress="0"
                     android:progressTint="@color/green_tag_text"
                     android:progressBackgroundTint="#F0F0F0" />
             </LinearLayout>
