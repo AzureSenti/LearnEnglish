@@ -31,9 +31,19 @@ object MockDataImport {
 
                     db.wordDao().deleteAll()
                     db.wordSetDao().deleteAll()
+                    db.wordSetCrossDao().deleteAll()
                     db.wordSetDao().insertAll(MockData.wordSets)
                     db.wordDao().insertAll(MockData.words)
                     db.wordSetCrossDao().insertAll(MockData.wordSetRefs)
+
+                    // Grammar
+                    db.grammarLessonDao().deleteAll()
+                    db.grammarQuestionDao().deleteAll()
+
+                    db.grammarLessonDao().insertAll(MockData.grammarLessons)
+                    db.grammarQuestionDao().insertAll(MockData.grammarQuestion)
+
+
                 }
 
                 prefs.edit().putBoolean(KEY_DB_SEEDED, true).apply()

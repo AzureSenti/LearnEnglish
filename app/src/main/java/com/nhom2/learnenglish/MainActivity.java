@@ -25,7 +25,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         SessionManager sessionManager = new SessionManager(this);
-        if (FirebaseAuth.getInstance().getCurrentUser() != null || sessionManager.isLoggedIn()) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            if (sessionManager.isRemembered()) {
+                Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
+            } else {
+                FirebaseAuth.getInstance().signOut();
+                Navigator.INSTANCE.navigateTo(this, LoginActivity.class);
+            }
+        } else if (sessionManager.isLoggedIn()) {
             Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
         } else {
             Navigator.INSTANCE.navigateTo(this, LoginActivity.class);

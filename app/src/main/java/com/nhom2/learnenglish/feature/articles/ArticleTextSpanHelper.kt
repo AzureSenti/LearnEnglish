@@ -10,7 +10,7 @@ import android.text.style.ForegroundColorSpan
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.nhom2.learnenglish.R
-import com.nhom2.learnenglish.core.data.local.entity.WordEntity
+import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity
 import java.util.regex.Pattern
 
 /**

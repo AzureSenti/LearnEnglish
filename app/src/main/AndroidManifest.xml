@@ -18,10 +18,6 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".feature.auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +26,19 @@
         </activity>
 
         <activity
+            android:name=".feature.mainmenu.MainMenuActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".feature.auth.LoginActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".feature.auth.RegisterActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".feature.auth.ForgotPasswordActivity"
             android:exported="false" />
 
         <activity
@@ -56,13 +64,16 @@
             android:name=".ui.activity.ProfileActivity"
             android:exported="false" />
 
-        <activity
-            android:name=".feature.mainmenu.MainMenuActivity"
+        <!-- Grammar -->
+        <activity android:name=".feature.grammar.GrammarRoadmapActivity"
             android:exported="false" />
 
-        <activity
-            android:name=".feature.auth.ForgotPasswordActivity"
+        <activity android:name=".feature.grammar.GrammarTheoryActivity"
             android:exported="false" />
+
+        <activity android:name=".feature.grammar.GrammarQuizActivity"
+            android:exported="false" />
+
 
     </application>
 

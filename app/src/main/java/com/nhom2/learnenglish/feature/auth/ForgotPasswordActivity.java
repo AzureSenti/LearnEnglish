@@ -11,6 +11,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.nhom2.learnenglish.R;
 import com.nhom2.learnenglish.core.data.local.AppDatabase;
 import com.nhom2.learnenglish.core.data.repository.UserRepository;
+import com.nhom2.learnenglish.core.network.Auth.AuthApi;
+import com.nhom2.learnenglish.core.network.RetrofitClient;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.SessionManager;
 
@@ -40,10 +42,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private void setupData() {
         SessionManager sessionManager = new SessionManager(this);
         AppDatabase db = AppDatabase.Companion.getInstance(this);
+        AuthApi authApi = RetrofitClient.INSTANCE.getInstance().create(AuthApi.class);
 
         userRepository = new UserRepository(
                 AppExecutors.Companion.getInstance(),
                 db.userDao(),
+                authApi,
                 sessionManager
         );
     }

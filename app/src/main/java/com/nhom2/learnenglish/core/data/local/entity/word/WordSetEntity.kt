@@ -1,4 +1,4 @@
-package com.nhom2.learnenglish.core.data.local.entity
+package com.nhom2.learnenglish.core.data.local.entity.word
 
 import androidx.room3.ColumnInfo
 import androidx.room3.Entity

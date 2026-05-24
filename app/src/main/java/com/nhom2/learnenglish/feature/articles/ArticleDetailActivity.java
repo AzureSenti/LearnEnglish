@@ -10,12 +10,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.nhom2.learnenglish.R;
 import com.nhom2.learnenglish.core.data.local.AppDatabase;
 import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity;
-import com.nhom2.learnenglish.core.data.local.entity.WordEntity;
+import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity;
 import com.nhom2.learnenglish.core.data.repository.ArticleRepository;
 import com.nhom2.learnenglish.core.data.repository.WordRepository;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.ui.bottomsheet.WordLookupBottomSheet;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ArticleDetailActivity extends AppCompatActivity {
@@ -41,7 +43,6 @@ public class ArticleDetailActivity extends AppCompatActivity {
                 db.wordSetDao(),
                 db.wordSrsDao(),
                 db.userWordSetDao(),
-                db.wordSetCrossDao(),
                 AppExecutors.Companion.getInstance()
         );
 
@@ -57,15 +58,19 @@ public class ArticleDetailActivity extends AppCompatActivity {
     private void loadArticleDetail(long id) {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                ArticleEntity article = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> articleRepository.getById(id, continuation)
-                );
+                // Fetch article (not a suspend function)
+                ArticleEntity article = articleRepository.getById(id);
 
-                Map<String, WordEntity> vocabularyMap = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> wordRepository.buildVocabularyLookupMap(continuation)
-                );
+                // Fetch all words (not a suspend function)
+                List<WordEntity> allWords = wordRepository.getAllWords();
+                
+                // Build vocabulary map for lookup
+                Map<String, WordEntity> vocabularyMap = new HashMap<>();
+                if (allWords != null) {
+                    for (WordEntity word : allWords) {
+                        vocabularyMap.put(word.getEnglishWord().toLowerCase(), word);
+                    }
+                }
 
                 if (article != null) {
                     runOnUiThread(() -> {
@@ -96,7 +101,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
                 vocabularyMap,
                 true,
                 (word, entity) -> {
-                    showWordLookup(word, entity);
+                    showWordLookup(word, (WordEntity) entity);
                     return kotlin.Unit.INSTANCE;
                 }
         );

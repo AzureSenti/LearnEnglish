@@ -21,10 +21,10 @@ data class UserEntity(
     val fullName: String,
 
     @ColumnInfo(name = "avatar_url")
-    val avatarUrl: String,
+    val avatarUrl: String? = null,
 
     @ColumnInfo(name = "email")
-    val email: String,
+    val email: String? = null,
 
     @ColumnInfo(name = "coins")
     val coins: Int,

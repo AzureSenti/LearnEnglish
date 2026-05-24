@@ -1,4 +1,4 @@
-package com.nhom2.learnenglish.core.data.local.entity
+package com.nhom2.learnenglish.core.data.local.entity.word
 
 import androidx.room3.ColumnInfo
 import androidx.room3.Entity
@@ -6,13 +6,13 @@ import androidx.room3.ForeignKey
 import androidx.room3.Index
 
 @Entity(
-    tableName = "user_word_set_cross_ref",
-    primaryKeys = ["user_id", "set_id"],
+    tableName = "word_set_cross_ref",
+    primaryKeys = ["word_id", "set_id"],
     foreignKeys = [
         ForeignKey(
-            entity = UserEntity::class,
+            entity = WordEntity::class,
             parentColumns = ["id"],
-            childColumns = ["user_id"],
+            childColumns = ["word_id"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
@@ -23,17 +23,15 @@ import androidx.room3.Index
         )
     ],
     indices = [
-        Index(value = ["user_id"]),
+        Index(value = ["word_id"]),
         Index(value = ["set_id"])
     ]
 )
-data class UserWordSetCrossRef(
-    @ColumnInfo(name = "user_id")
-    val userId: Long,
+data class WordSetCrossRef(
+    @ColumnInfo(name = "word_id")
+    val wordId: Long,
 
     @ColumnInfo(name = "set_id")
-    val setId: Long,
-
-    @ColumnInfo(name = "unlocked_at")
-    val unlockedAt: Long? = System.currentTimeMillis()
+    val setId: Long
 )
+

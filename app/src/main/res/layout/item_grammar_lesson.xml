@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    app:strokeColor="@color/border_light"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_container"
+        android:layout_width="match_parent"
+        android:background="@drawable/bg_card_white"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <FrameLayout
+            android:id="@+id/frame_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_circle_light_blue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_order_index"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/primary_blue"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="1" />
+
+            <ImageView
+                android:id="@+id/iv_locked"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_lock_outline"
+                android:visibility="gone"
+                app:tint="@color/text_muted" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_lesson_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/frame_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Thì Hiện tại đơn" />
+
+        <ImageView
+            android:id="@+id/iv_theory_done"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_check_circle"
+            app:layout_constraintStart_toStartOf="@id/tv_lesson_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_lesson_title"
+            app:tint="@color/text_muted" />
+
+        <TextView
+            android:id="@+id/tv_theory_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="Lý thuyết"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_theory_done"
+            app:layout_constraintStart_toEndOf="@id/iv_theory_done"
+            app:layout_constraintTop_toTopOf="@id/iv_theory_done" />
+
+        <ImageView
+            android:id="@+id/iv_quiz_done"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_check_circle"
+            app:layout_constraintStart_toEndOf="@id/tv_theory_label"
+            app:layout_constraintTop_toTopOf="@id/iv_theory_done"
+            app:tint="@color/text_muted" />
+
+        <TextView
+            android:id="@+id/tv_quiz_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="Bài tập"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_quiz_done"
+            app:layout_constraintStart_toEndOf="@id/iv_quiz_done"
+            app:layout_constraintTop_toTopOf="@id/iv_quiz_done" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

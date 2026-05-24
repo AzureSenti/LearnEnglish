@@ -2,51 +2,44 @@ package com.nhom2.learnenglish.feature.wordsets;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.nhom2.learnenglish.R;
 import com.nhom2.learnenglish.core.data.local.AppDatabase;
-import com.nhom2.learnenglish.core.data.local.entity.WordSetEntity;
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity;
 import com.nhom2.learnenglish.core.data.local.mockdata.MockDataImport;
 import com.nhom2.learnenglish.core.data.repository.WordRepository;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.BottomNavTab;
 import com.nhom2.learnenglish.core.util.BottomNavigationHelper;
 import com.nhom2.learnenglish.core.util.Navigator;
-import com.nhom2.learnenglish.databinding.ActivityLibraryBinding;
 import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
-import com.nhom2.learnenglish.model.WordSet;
-import com.nhom2.learnenglish.model.WordSetMapper;
-import com.nhom2.learnenglish.ui.bottomsheet.WordSetFormBottomSheetDialog;
 
 import java.util.List;
-import java.util.Map;
 
 public class LibraryActivity extends AppCompatActivity {
 
-    private ActivityLibraryBinding binding;
     private WordRepository wordRepository;
     private WordSetAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityLibraryBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_library);
 
         setupData();
         setupBackNavigation();
         setupBottomNavigation();
         setupRecyclerView();
-        setupFab();
+        setupAddButton();
     }
 
     private void setupData() {
@@ -56,15 +49,10 @@ public class LibraryActivity extends AppCompatActivity {
                 db.wordSetDao(),
                 db.wordSrsDao(),
                 db.userWordSetDao(),
-                db.wordSetCrossDao(),
                 AppExecutors.Companion.getInstance()
         );
 
         MockDataImport.INSTANCE.importIfNeeded(this, this::loadWordSetData);
-    }
-
-    private void setupFab() {
-        binding.fabAdd.setOnClickListener(v -> showWordSetForm(null));
     }
 
     private void setupBackNavigation() {
@@ -77,141 +65,88 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     private void setupBottomNavigation() {
+        // Sử dụng helper để đồng nhất việc điều hướng
         BottomNavigationHelper.setup(this, BottomNavTab.LIBRARY);
     }
 
     private void setupRecyclerView() {
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-        binding.rvWordSets.setLayoutManager(layoutManager);
-        binding.rvWordSets.setItemAnimator(new DefaultItemAnimator());
-
-        adapter = new WordSetAdapter(
-                item -> {
-                    Intent intent = new Intent(this, WordSetDetailActivity.class);
-                    intent.putExtra(WordSetDetailActivity.EXTRA_SET_ID, item.getId());
-                    intent.putExtra(WordSetDetailActivity.EXTRA_SET_TITLE, item.getTitle());
+        RecyclerView rvWordSets = findViewById(R.id.rv_word_sets);
+        if (rvWordSets != null) {
+            rvWordSets.setLayoutManager(new GridLayoutManager(this, 2));
+            adapter = new WordSetAdapter(new WordSetAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(WordSetEntity item) {
+                    Intent intent = new Intent(LibraryActivity.this, WordSetDetailActivity.class);
+                    intent.putExtra("SET_ID", item.getId());
+                    intent.putExtra("SET_TITLE", item.getName());
                     startActivity(intent);
                     overridePendingTransition(0, 0);
-                },
-                this::showWordSetMenu
-        );
-        binding.rvWordSets.setAdapter(adapter);
-    }
-
-    private void showWordSetMenu(WordSet item, View anchor) {
-        PopupMenu popup = new PopupMenu(this, anchor);
-        popup.getMenuInflater().inflate(R.menu.menu_word_set, popup.getMenu());
-        popup.setOnMenuItemClickListener(menuItem -> {
-            int id = menuItem.getItemId();
-            if (id == R.id.action_edit) {
-                showWordSetForm(item);
-                return true;
-            }
-            if (id == R.id.action_delete) {
-                confirmDeleteWordSet(item);
-                return true;
-            }
-            return false;
-        });
-        popup.show();
-    }
-
-    private void showWordSetForm(WordSet existing) {
-        WordSetFormBottomSheetDialog sheet = existing == null
-                ? WordSetFormBottomSheetDialog.newInstanceForAdd()
-                : WordSetFormBottomSheetDialog.newInstanceForEdit(
-                        existing.getId(),
-                        existing.getTitle(),
-                        existing.getDescription(),
-                        existing.getCategoryIcon()
-                );
-        sheet.setListener((name, description, iconCategory, existingId) ->
-                saveWordSet(name, iconCategory, existingId));
-        sheet.show(getSupportFragmentManager(), "word_set_form");
-    }
-
-    private void saveWordSet(String name, String iconCategory, Long existingId) {
-        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
-            try {
-                if (existingId == null) {
-                    kotlinx.coroutines.BuildersKt.runBlocking(
-                            kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                            (scope, continuation) -> wordRepository.createWordSet(
-                                    name, null, iconCategory, continuation)
-                    );
-                } else {
-                    WordSetEntity current = kotlinx.coroutines.BuildersKt.runBlocking(
-                            kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                            (scope, continuation) -> wordRepository.getSetById(existingId, continuation)
-                    );
-                    if (current != null) {
-                        WordSetEntity updated = new WordSetEntity(
-                                current.getId(),
-                                name,
-                                current.getDescription(),
-                                current.getUnlockCost(),
-                                iconCategory
-                        );
-                        kotlinx.coroutines.BuildersKt.runBlocking(
-                                kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                                (scope, continuation) -> {
-                                    wordRepository.updateWordSet(updated, continuation);
-                                    return kotlin.Unit.INSTANCE;
-                                }
-                        );
-                    }
                 }
+
+                @Override
+                public void onItemLongClick(WordSetEntity item) {
+                    confirmDeleteWordSet(item);
+                }
+            });
+            rvWordSets.setAdapter(adapter);
+        }
+    }
+
+    private void setupAddButton() {
+        FloatingActionButton fabAdd = findViewById(R.id.fab_add);
+        if (fabAdd != null) {
+            fabAdd.setOnClickListener(v -> showAddWordSetDialog());
+        }
+    }
+
+    private void showAddWordSetDialog() {
+        WordSetFormBottomSheetDialog dialog = WordSetFormBottomSheetDialog.newInstanceForAdd();
+        dialog.setListener((name, description, iconCategory, existingId) -> saveNewWordSet(name, description, iconCategory));
+        dialog.show(getSupportFragmentManager(), "WordSetFormDialog");
+    }
+
+    private void saveNewWordSet(String name, String description, String iconCategory) {
+        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+            try {
+                wordRepository.createWordSet(name, description, iconCategory);
                 runOnUiThread(() -> {
-                    Toast.makeText(this, R.string.toast_saved, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LibraryActivity.this, "Tạo bộ từ mới thành công", Toast.LENGTH_SHORT).show();
                     loadWordSetData();
                 });
             } catch (Exception e) {
                 e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(LibraryActivity.this, "Không thể tạo bộ từ mới", Toast.LENGTH_SHORT).show());
             }
         });
     }
 
-    private void confirmDeleteWordSet(WordSet item) {
+    private void confirmDeleteWordSet(WordSetEntity item) {
         new AlertDialog.Builder(this)
-                .setTitle(R.string.delete_word_set_title)
-                .setMessage(getString(R.string.delete_word_set_message, item.getTitle()))
-                .setPositiveButton(R.string.action_delete, (d, w) -> deleteWordSet(item.getId()))
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
+            .setTitle("Xóa bộ từ")
+            .setMessage("Bạn có muốn xóa bộ từ này không?")
+            .setPositiveButton("Xóa", (dialog, which) -> deleteWordSet(item))
+            .setNegativeButton("Hủy", null)
+            .show();
     }
 
-    private void deleteWordSet(long setId) {
+    private void deleteWordSet(WordSetEntity item) {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
-            try {
-                kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> {
-                            wordRepository.deleteWordSet(setId, continuation);
-                            return kotlin.Unit.INSTANCE;
-                        }
-                );
-                runOnUiThread(() -> {
-                    Toast.makeText(this, R.string.toast_deleted, Toast.LENGTH_SHORT).show();
+            boolean deleted = wordRepository.deleteWordSet(item);
+            runOnUiThread(() -> {
+                if (deleted) {
+                    Toast.makeText(LibraryActivity.this, "Xóa bộ từ thành công", Toast.LENGTH_SHORT).show();
                     loadWordSetData();
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                } else {
+                    Toast.makeText(LibraryActivity.this, "Không thể xóa bộ từ", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 
     private void loadWordSetData() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                List<WordSetEntity> entities = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> wordRepository.getAllSets(continuation)
-                );
-                Map<Long, Integer> counts = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> wordRepository.getWordCountsBySet(continuation)
-                );
-                List<WordSet> list = WordSetMapper.fromEntities(entities, counts);
+                List<WordSetEntity> list = wordRepository.getAllSets();
 
                 runOnUiThread(() -> {
                     if (adapter != null) {
@@ -225,7 +160,7 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     private void moveToLearnHome() {
-        Navigator.INSTANCE.navigateTo(this, MainMenuActivity.class);
+        Navigator.navigateTo(this, MainMenuActivity.class);
     }
 
     @Override

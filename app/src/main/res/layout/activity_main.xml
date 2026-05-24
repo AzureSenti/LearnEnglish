@@ -5,363 +5,408 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sanctuary_background"
+    android:background="@color/bg_color"
     tools:context=".feature.mainmenu.MainMenuActivity">
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/scroll_content"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:fillViewport="true"
-        android:overScrollMode="never"
-        app:layout_constraintBottom_toTopOf="@id/bottom_nav"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/sanctuary_horizontal_padding"
-            android:paddingTop="@dimen/space_md"
-            android:paddingEnd="@dimen/sanctuary_horizontal_padding"
-            android:paddingBottom="@dimen/space_lg">
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            <!-- Top bar -->
-            <ImageView
-                android:id="@+id/btn_menu"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:contentDescription="@string/cd_menu"
-                android:src="@drawable/ic_menu"
-                app:layout_constraintBottom_toBottomOf="@id/tv_app_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tv_app_title"
-                app:tint="@color/sanctuary_text_primary" />
+            <!-- Header -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_app_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:fontFamily="@font/lexend"
-                android:text="@string/sanctuary_title"
-                android:textColor="@color/sanctuary_primary_blue"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/btn_menu"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/tv_greeting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hi, User!"
+                    android:textColor="@color/text_primary"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
-            <LinearLayout
-                android:id="@+id/streak_badge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:background="@drawable/bg_streak_pill"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="10dp"
-                android:paddingTop="6dp"
-                android:paddingEnd="12dp"
-                android:paddingBottom="6dp"
-                app:layout_constraintBottom_toBottomOf="@id/tv_app_title"
-                app:layout_constraintEnd_toStartOf="@id/iv_profile"
-                app:layout_constraintTop_toTopOf="@id/tv_app_title">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/bg_streak"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp">
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_flame"
-                    app:tint="@color/sanctuary_accent_orange" />
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_fire" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="15\nDays"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:fontFamily="@font/inter"
-                    android:text="15"
-                    android:textColor="@color/sanctuary_text_primary"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:layout_below="@id/tv_greeting"
+                    android:layout_marginTop="8dp"
+                    android:text="Ready to expand your\nvocabulary today?"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <!-- Search Bar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_search"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_search" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
+                    android:background="@null"
+                    android:hint="Search vocabulary..."
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:textSize="14sp" />
             </LinearLayout>
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/iv_profile"
-                android:layout_width="@dimen/sanctuary_profile_size"
-                android:layout_height="@dimen/sanctuary_profile_size"
-                android:contentDescription="@string/cd_profile"
-                android:scaleType="centerCrop"
-                android:src="@drawable/profile_placeholder"
-                app:layout_constraintBottom_toBottomOf="@id/tv_app_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tv_app_title"
-                app:shapeAppearanceOverlay="@style/CircleImage"
-                app:strokeColor="@color/sanctuary_card_stroke"
-                app:strokeWidth="1dp" />
-
-            <!-- Greeting -->
+            <!-- Learning Categories -->
             <TextView
-                android:id="@+id/tv_welcome_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/inter"
-                android:text="@string/welcome_back"
-                android:textColor="@color/sanctuary_text_secondary"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_app_title" />
+                android:layout_marginTop="32dp"
+                android:text="Learning Categories"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_greeting"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/lexend"
-                android:text="@string/greeting"
-                android:textColor="@color/sanctuary_text_primary"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_welcome_back" />
-
-            <!-- Today's Goals header -->
-            <TextView
-                android:id="@+id/tv_goals_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/lexend"
-                android:text="@string/todays_goals"
-                android:textColor="@color/sanctuary_text_primary"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_greeting" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_view_all_goals"
-                style="@style/Widget.3English.Button.TextLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/view_all"
-                android:textColor="@color/sanctuary_primary_blue"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/tv_goals_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tv_goals_title" />
-
-            <!-- Daily Review card -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/card_daily_review"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/card_bg"
-                android:padding="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_goals_title">
+                android:orientation="horizontal">
 
-                <FrameLayout
-                    android:id="@+id/icon_review_container"
-                    android:layout_width="@dimen/sanctuary_icon_container_size"
-                    android:layout_height="@dimen/sanctuary_icon_container_size"
-                    android:background="@drawable/bg_icon_container_green"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_card_white"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <View
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_active_nav"
+                        android:backgroundTint="@color/blue_light" />
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_rebase_edit" />
-                </FrameLayout>
+                        android:layout_marginTop="-36dp"
+                        android:src="@drawable/ic_book" />
 
-                <TextView
-                    android:id="@+id/tv_daily_review_title"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Đọc truyện"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/card_grammar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:fontFamily="@font/lexend"
-                    android:text="@string/daily_review"
-                    android:textColor="@color/sanctuary_text_primary"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/icon_review_container"
-                    app:layout_constraintTop_toTopOf="@id/icon_review_container" />
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_card_white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/tv_daily_review_subtitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:fontFamily="@font/inter"
-                    android:text="@string/words_due"
-                    android:textColor="@color/sanctuary_text_secondary"
-                    android:textSize="13sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/tv_daily_review_title"
-                    app:layout_constraintTop_toBottomOf="@id/tv_daily_review_title" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_start_review"
-                    style="@style/Widget.3English.Button.Sanctuary.Secondary"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/sanctuary_goal_button_height"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/start_review"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/icon_review_container" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!-- Learn New card -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/card_learn_new"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/card_bg"
-                android:padding="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/card_daily_review">
-
-                <FrameLayout
-                    android:id="@+id/icon_learn_container"
-                    android:layout_width="@dimen/sanctuary_icon_container_size"
-                    android:layout_height="@dimen/sanctuary_icon_container_size"
-                    android:background="@drawable/bg_icon_container_blue"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    <View
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_active_nav"
+                        android:backgroundTint="@color/purple_light" />
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_add_circle" />
-                </FrameLayout>
+                        android:layout_marginTop="-36dp"
+                        android:src="@drawable/ic_grammar" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Ngữ pháp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Featured Articles Header -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp">
 
                 <TextView
-                    android:id="@+id/tv_learn_new_title"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:fontFamily="@font/lexend"
-                    android:text="@string/learn_new"
-                    android:textColor="@color/sanctuary_text_primary"
+                    android:text="Featured Articles"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/icon_learn_container"
-                    app:layout_constraintTop_toTopOf="@id/icon_learn_container" />
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_learn_new_subtitle"
+                    android:id="@+id/btn_see_all_articles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="See All"
+                    android:textColor="@color/blue_primary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground" />
+            </RelativeLayout>
+
+            <!-- Featured Article Card -->
+            <LinearLayout
+                android:id="@+id/card_featured_article"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_card_white"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_featured_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:scaleType="centerCrop"
+                    android:src="@android:color/darker_gray"
+                    app:shapeAppearanceOverlay="@style/RoundedTopCorners" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_featured_level"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_tag_green"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="4dp"
+                            tools:text="B2 intermediate"
+                            android:textColor="@color/green_tag_text"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/tv_featured_category"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:background="@drawable/bg_tag_purple"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="4dp"
+                            tools:text="Culture"
+                            android:textColor="@color/purple_tag_text"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_featured_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        tools:text="Mastering Small Talk in Professional Settings"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_featured_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        tools:text="Learn the essential phrases and cultural nuances to navigate networking events..."
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Recent Word Sets Header -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Recent Word Sets"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btn_view_all_word_sets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="View All"
+                    android:textColor="@color/blue_primary"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/card_word_set_1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:fontFamily="@font/inter"
-                    android:text="@string/new_words"
-                    android:textColor="@color/sanctuary_text_secondary"
-                    android:textSize="13sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/tv_learn_new_title"
-                    app:layout_constraintTop_toBottomOf="@id/tv_learn_new_title" />
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_card_white"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_learn_now"
-                    style="@style/Widget.3English.Button.Sanctuary.Primary"
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_folder"
+                        app:tint="#D0D0D0" />
+
+                    <TextView
+                        android:id="@+id/tv_word_set_title_1"
+                        android:text="Loading..."
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_word_count_1"
+                        android:text="0 words"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/card_word_set_2"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/sanctuary_goal_button_height"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/learn_now"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/icon_learn_container" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_card_white"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_folder"
+                        app:tint="#D0D0D0" />
 
-            <!-- Memory Levels -->
-            <TextView
-                android:id="@+id/tv_memory_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/lexend"
-                android:text="@string/memory_levels"
-                android:textColor="@color/sanctuary_text_primary"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/card_learn_new" />
+                    <TextView
+                        android:id="@+id/tv_word_set_title_2"
+                        android:text="Loading..."
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
 
-            <FrameLayout
-                android:id="@+id/card_memory_chart"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/card_bg"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_memory_title">
+                    <TextView
+                        android:id="@+id/tv_word_count_2"
+                        android:text="0 words"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="10sp" />
+                </LinearLayout>
+            </LinearLayout>
 
-                <include layout="@layout/view_memory_chart" />
-            </FrameLayout>
-
-            <!-- Study Time -->
-            <TextView
-                android:id="@+id/tv_study_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:fontFamily="@font/lexend"
-                android:text="@string/study_time"
-                android:textColor="@color/sanctuary_text_primary"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/card_memory_chart" />
-
-            <FrameLayout
-                android:id="@+id/card_study_chart"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/card_bg"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_study_title">
-
-                <include layout="@layout/view_study_chart" />
-            </FrameLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/bottom_nav"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/nav_height"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
         android:background="@color/white"
         android:elevation="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:id="@+id/nav_explore"
@@ -376,16 +421,14 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:contentDescription="@string/nav_explore"
                 android:src="@drawable/ic_explore"
-                app:tint="@color/sanctuary_text_secondary" />
+                app:tint="@color/text_secondary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/inter"
-                android:text="@string/nav_explore"
-                android:textColor="@color/sanctuary_text_secondary"
+                android:text="Explore"
+                android:textColor="@color/text_secondary"
                 android:textSize="10sp" />
         </LinearLayout>
 
@@ -402,16 +445,14 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:contentDescription="@string/nav_library"
                 android:src="@drawable/ic_library"
-                app:tint="@color/sanctuary_text_secondary" />
+                app:tint="@color/text_secondary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/inter"
-                android:text="@string/nav_library"
-                android:textColor="@color/sanctuary_text_secondary"
+                android:text="Library"
+                android:textColor="@color/text_secondary"
                 android:textSize="10sp" />
         </LinearLayout>
 
@@ -420,13 +461,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
             android:gravity="center"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_nav_active_pill"
+                android:background="@drawable/bg_active_nav"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp"
@@ -435,16 +478,14 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:contentDescription="@string/nav_learn"
                     android:src="@drawable/ic_learn"
-                    app:tint="@color/sanctuary_primary_blue" />
+                    app:tint="@color/blue_primary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter"
-                    android:text="@string/nav_learn"
-                    android:textColor="@color/sanctuary_primary_blue"
+                    android:text="Learn"
+                    android:textColor="@color/blue_primary"
                     android:textSize="10sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -463,18 +504,17 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:contentDescription="@string/nav_profile"
                 android:src="@drawable/ic_profile"
-                app:tint="@color/sanctuary_text_secondary" />
+                app:tint="@color/text_secondary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/inter"
-                android:text="@string/nav_profile"
-                android:textColor="@color/sanctuary_text_secondary"
+                android:text="Profile"
+                android:textColor="@color/text_secondary"
                 android:textSize="10sp" />
         </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

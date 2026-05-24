@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.nhom2.learnenglish.R
-import com.nhom2.learnenglish.core.data.local.entity.WordEntity
+import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity
 
 class WordLookupBottomSheet : BottomSheetDialogFragment() {
 

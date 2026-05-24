@@ -7,20 +7,24 @@ import androidx.room3.RoomDatabase
 import androidx.room3.TypeConverters
 import com.nhom2.learnenglish.core.data.local.dao.ArticleDao
 import com.nhom2.learnenglish.core.data.local.dao.UserDao
-import com.nhom2.learnenglish.core.data.local.dao.UserWordSetDao
-import com.nhom2.learnenglish.core.data.local.dao.WordDao
-import com.nhom2.learnenglish.core.data.local.dao.StudyHistoryDao
-import com.nhom2.learnenglish.core.data.local.dao.WordSrsDao
-import com.nhom2.learnenglish.core.data.local.dao.WordSetDao
-import com.nhom2.learnenglish.core.data.local.dao.WordSetCrossDao
+import com.nhom2.learnenglish.core.data.local.dao.grammar.GrammarLessonDao
+import com.nhom2.learnenglish.core.data.local.dao.grammar.GrammarQuestionDao
+import com.nhom2.learnenglish.core.data.local.dao.grammar.UserGrammarProgressDao
+import com.nhom2.learnenglish.core.data.local.dao.word.UserWordSetDao
+import com.nhom2.learnenglish.core.data.local.dao.word.WordDao
+import com.nhom2.learnenglish.core.data.local.dao.word.WordSetCrossDao
+import com.nhom2.learnenglish.core.data.local.dao.word.WordSetDao
+import com.nhom2.learnenglish.core.data.local.dao.word.WordSrsDao
 import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity
-import com.nhom2.learnenglish.core.data.local.entity.StudyHistoryEntity
 import com.nhom2.learnenglish.core.data.local.entity.UserEntity
-import com.nhom2.learnenglish.core.data.local.entity.UserWordSetCrossRef
-import com.nhom2.learnenglish.core.data.local.entity.WordEntity
-import com.nhom2.learnenglish.core.data.local.entity.WordSetCrossRef
-import com.nhom2.learnenglish.core.data.local.entity.WordSetEntity
-import com.nhom2.learnenglish.core.data.local.entity.WordSrsEntity
+import com.nhom2.learnenglish.core.data.local.entity.grammar.GrammarLessonEntity
+import com.nhom2.learnenglish.core.data.local.entity.grammar.GrammarQuestionEntity
+import com.nhom2.learnenglish.core.data.local.entity.grammar.UserGrammarProgress
+import com.nhom2.learnenglish.core.data.local.entity.word.UserWordSetCrossRef
+import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSetCrossRef
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSrsEntity
 
 @Database(
     entities = [
@@ -31,10 +35,12 @@ import com.nhom2.learnenglish.core.data.local.entity.WordSrsEntity
         WordSetEntity::class,
         WordSetCrossRef::class,
         ArticleEntity::class,
-        StudyHistoryEntity::class,
+        GrammarLessonEntity::class,
+        GrammarQuestionEntity::class,
+        UserGrammarProgress::class
 
     ],
-    version = 3,
+    version = 1,
     exportSchema = true
 )
 
@@ -47,7 +53,10 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun wordSrsDao(): WordSrsDao
     abstract fun userWordSetDao(): UserWordSetDao
     abstract fun wordSetCrossDao(): WordSetCrossDao
-    abstract fun studyHistoryDao(): StudyHistoryDao
+
+    abstract fun grammarLessonDao(): GrammarLessonDao
+    abstract fun grammarQuestionDao(): GrammarQuestionDao
+    abstract fun userGrammarProgressDao(): UserGrammarProgressDao
 
     companion object {
         private const val DATABASE_NAME = "learn_english_db"
