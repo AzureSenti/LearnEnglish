@@ -21,10 +21,6 @@ import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.SessionManager;
 import com.nhom2.learnenglish.feature.onboarding.OnboardingActivity;
 
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.EmptyCoroutineContext;
-import kotlinx.coroutines.BuildersKt;
-
 public class RegisterActivity extends AppCompatActivity {
     
     private UserRepository userRepository;
@@ -45,8 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
         MaterialButton txtLogin = findViewById(R.id.link_login);
 
         if (errorEmail != null) errorEmail.setVisibility(View.GONE);
-        if (inputEmail != null) inputEmail.setText("");
-
+        
         btnSignUp.setOnClickListener(v -> attemptRegister(
                 inputUsername.getText() != null ? inputUsername.getText().toString().trim() : "",
                 inputEmail.getText() != null ? inputEmail.getText().toString().trim() : "",
@@ -77,24 +72,20 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.error_email_invalid, Toast.LENGTH_SHORT).show();
             return;
         }
-        if (password.length() < 8) {
-            Toast.makeText(this, R.string.error_password_short, Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         btnSignUp.setEnabled(false);
         btnSignUp.setText("ĐANG XỬ LÝ...");
 
         AppExecutors.Companion.getInstance().getNetworkIO().execute(() -> {
             try {
-                // GIẢ LẬP: Chờ 2 giây để xem UI
+                // GIẢ LẬP: Chờ 2 giây để test UI Loading
                 Thread.sleep(2000);
 
-                // Tạm thời comment vì UserRepository chưa có hàm register
+                // Tạm thời khóa code gọi UserRepository vì chưa có hàm register trong Core
                 /*
-                UserEntity user = (UserEntity) BuildersKt.runBlocking(
-                        EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> userRepository.register(email, password, username, true, (Continuation<? super UserEntity>) continuation)
+                UserEntity user = (UserEntity) kotlinx.coroutines.BuildersKt.runBlocking(
+                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
+                        (scope, continuation) -> userRepository.register(email, password, username, true, (kotlin.coroutines.Continuation<? super UserEntity>) continuation)
                 );
                 */
 
@@ -104,7 +95,6 @@ public class RegisterActivity extends AppCompatActivity {
                 });
 
             } catch (Exception e) {
-                e.printStackTrace();
                 runOnUiThread(() -> {
                     btnSignUp.setEnabled(true);
                     btnSignUp.setText(R.string.signup_action);
