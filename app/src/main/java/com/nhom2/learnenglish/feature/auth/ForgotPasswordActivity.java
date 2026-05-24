@@ -72,24 +72,28 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         
         String email = inputEmail.getText().toString().trim();
 
-        // Tối ưu điều kiện kiểm tra
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, R.string.error_email_invalid, Toast.LENGTH_SHORT).show();
             return;
         }
 
         buttonReset.setEnabled(false);
-        buttonReset.setText(getString(R.string.processing)); // Dùng resource string nếu có, hoặc giữ nguyên nếu chưa có
+        buttonReset.setText("ĐANG XỬ LÝ...");
 
         AppExecutors.Companion.getInstance().getNetworkIO().execute(() -> {
             try {
-                // Lưu ý: resetPassword phải được thêm vào UserRepository.kt ở phần Core
+                // GIẢ LẬP: Chờ 2 giây để test hiệu ứng UI loading
+                Thread.sleep(2000);
+
+                // Tạm thời comment code thật vì UserRepository chưa có hàm resetPassword
+                /*
                 BuildersKt.runBlocking(EmptyCoroutineContext.INSTANCE, (scope, continuation) -> 
                     userRepository.resetPassword(email, (Continuation<? super Unit>) continuation)
                 );
+                */
 
                 runOnUiThread(() -> {
-                    Toast.makeText(ForgotPasswordActivity.this, "Vui lòng kiểm tra email để đặt lại mật khẩu.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ForgotPasswordActivity.this, "GIẢ LẬP: Vui lòng kiểm tra email để đặt lại mật khẩu.", Toast.LENGTH_LONG).show();
                     finish();
                 });
 

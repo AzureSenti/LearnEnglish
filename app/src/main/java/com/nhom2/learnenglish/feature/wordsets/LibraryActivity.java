@@ -18,7 +18,7 @@ import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.feature.grammar.GrammarRoadmapActivity;
 import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
-import com.nhom2.learnenglish.feature.profile.ProfileActivity;
+import com.nhom2.learnenglish.ui.activity.ProfileActivity;
 
 import java.util.List;
 
@@ -61,19 +61,16 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     private void setupBottomNavigation() {
-        // Điều hướng sang Explore
         LinearLayout navExplore = findViewById(R.id.nav_explore);
         if (navExplore != null) {
             navExplore.setOnClickListener(v -> Navigator.navigateTo(this, MainMenuActivity.class));
         }
 
-        // Điều hướng sang Learn
         LinearLayout navLearn = findViewById(R.id.nav_learn);
         if (navLearn != null) {
             navLearn.setOnClickListener(v -> Navigator.navigateTo(this, GrammarRoadmapActivity.class));
         }
 
-        // Điều hướng sang Profile
         LinearLayout navProfile = findViewById(R.id.nav_profile);
         if (navProfile != null) {
             navProfile.setOnClickListener(v -> Navigator.navigateTo(this, ProfileActivity.class));
@@ -84,13 +81,24 @@ public class LibraryActivity extends AppCompatActivity {
         RecyclerView rvWordSets = findViewById(R.id.rv_word_sets);
         if (rvWordSets != null) {
             rvWordSets.setLayoutManager(new GridLayoutManager(this, 2));
-            adapter = new WordSetAdapter(item -> {
-                Intent intent = new Intent(this, WordSetDetailActivity.class);
-                intent.putExtra("SET_ID", item.getId());
-                intent.putExtra("SET_TITLE", item.getName());
-                startActivity(intent);
-                overridePendingTransition(0, 0);
+            
+            // Sử dụng Anonymous Inner Class vì OnItemClickListener có 2 phương thức
+            adapter = new WordSetAdapter(new WordSetAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(WordSetEntity item) {
+                    Intent intent = new Intent(LibraryActivity.this, WordSetDetailActivity.class);
+                    intent.putExtra("SET_ID", item.getId());
+                    intent.putExtra("SET_TITLE", item.getName());
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                }
+
+                @Override
+                public void onItemLongClick(WordSetEntity item) {
+                    // Xử lý khi nhấn giữ nếu cần
+                }
             });
+
             rvWordSets.setAdapter(adapter);
         }
     }

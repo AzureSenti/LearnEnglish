@@ -73,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.error_fill_fields, Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!email.contains("@")) {
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, R.string.error_email_invalid, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -87,14 +87,19 @@ public class RegisterActivity extends AppCompatActivity {
 
         AppExecutors.Companion.getInstance().getNetworkIO().execute(() -> {
             try {
-                // Sửa lỗi: Ép kiểu UserEntity và Continuation cho đúng chữ ký hàm suspend của Kotlin
+                // GIẢ LẬP: Chờ 2 giây để xem UI
+                Thread.sleep(2000);
+
+                // Tạm thời comment vì UserRepository chưa có hàm register
+                /*
                 UserEntity user = (UserEntity) BuildersKt.runBlocking(
                         EmptyCoroutineContext.INSTANCE,
                         (scope, continuation) -> userRepository.register(email, password, username, true, (Continuation<? super UserEntity>) continuation)
                 );
+                */
 
                 runOnUiThread(() -> {
-                    Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "GIẢ LẬP: Đăng ký thành công!", Toast.LENGTH_SHORT).show();
                     openOnboarding();
                 });
 
@@ -103,7 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     btnSignUp.setEnabled(true);
                     btnSignUp.setText(R.string.signup_action);
-                    Toast.makeText(RegisterActivity.this, "Đăng ký thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
             }
         });

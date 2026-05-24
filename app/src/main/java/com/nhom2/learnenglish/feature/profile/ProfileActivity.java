@@ -50,6 +50,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadUserProfileData() {
+        // Tạm ẩn phần gọi database để test UI vì nó thuộc core module
+        /*
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
                 UserEntity user = database.userDao().getById(currentUserId);
@@ -69,22 +71,32 @@ public class ProfileActivity extends AppCompatActivity {
                 Log.e("ProfileActivity", "Lỗi tải dữ liệu người dùng", e);
             }
         });
+        */
+        
+        // Gán dữ liệu giả để kiểm tra giao diện
+        binding.tvUsername.setText("Tên Người Dùng Mẫu");
+        binding.tvUserEmail.setText("nguoidung@example.com");
+        binding.tvUserEmail.setVisibility(android.view.View.VISIBLE);
+        binding.tvStreakCount.setText("15");
+        binding.tvWordsMasteredCount.setText("450");
+        binding.tvStudyTimeCount.setText("12h");
+        binding.tvLevel.setText("C1 Advanced");
     }
 
     private void setupBottomNavigation() {
         // Điều hướng sang Explore
         if (binding.navExplore != null) {
-            binding.navExplore.setOnClickListener(v -> Navigator.navigateTo(this, MainMenuActivity.class));
+            binding.navExplore.setOnClickListener(v -> Navigator.navigateTo(ProfileActivity.this, MainMenuActivity.class));
         }
 
         // Điều hướng sang Library
         if (binding.navLibrary != null) {
-            binding.navLibrary.setOnClickListener(v -> Navigator.navigateTo(this, LibraryActivity.class));
+            binding.navLibrary.setOnClickListener(v -> Navigator.navigateTo(ProfileActivity.this, LibraryActivity.class));
         }
 
         // Điều hướng sang Learn (Ngữ pháp)
         if (binding.navLearn != null) {
-            binding.navLearn.setOnClickListener(v -> Navigator.navigateTo(this, GrammarRoadmapActivity.class));
+            binding.navLearn.setOnClickListener(v -> Navigator.navigateTo(ProfileActivity.this, GrammarRoadmapActivity.class));
         }
 
         // Đang ở Profile nên không cần set listener cho navProfile

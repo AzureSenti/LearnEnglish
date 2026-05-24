@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
 
                     Toast.makeText(LoginActivity.this, "Chào mừng trở lại!", Toast.LENGTH_SHORT).show();
-                    Navigator.navigateTo(this, MainMenuActivity.class);
+                    Navigator.navigateTo(LoginActivity.this, MainMenuActivity.class);
                 });
 
             } catch (Exception e) {
@@ -153,8 +153,8 @@ public class LoginActivity extends AppCompatActivity {
                 sessionManager.activateGuestMode();
 
                 runOnUiThread(() -> {
-                    Toast.makeText(this, "Chế độ ngoại tuyến: Tiến độ sẽ lưu tại máy", Toast.LENGTH_LONG).show();
-                    Navigator.navigateTo(this, MainMenuActivity.class);
+                        Toast.makeText(LoginActivity.this, "Chế độ ngoại tuyến: Tiến độ sẽ lưu tại máy", Toast.LENGTH_LONG).show();
+                        Navigator.navigateTo(LoginActivity.this, MainMenuActivity.class);
 
                     finish();
                 });
