@@ -1,3 +1,4 @@
+
 package com.nhom2.learnenglish.core.data.local.entity.word
 
 import androidx.room3.ColumnInfo
@@ -23,7 +24,7 @@ import com.nhom2.learnenglish.core.data.local.entity.UserEntity
             parentColumns = ["id"],
             childColumns = ["user_id"],
             onDelete = ForeignKey.CASCADE
-)
+        )
     ],
     indices = [
         Index(value = ["word_id"]),

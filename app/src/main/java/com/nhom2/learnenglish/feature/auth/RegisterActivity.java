@@ -21,6 +21,10 @@ import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.SessionManager;
 import com.nhom2.learnenglish.feature.onboarding.OnboardingActivity;
 
+import kotlin.coroutines.Continuation;
+import kotlin.coroutines.EmptyCoroutineContext;
+import kotlinx.coroutines.BuildersKt;
+
 public class RegisterActivity extends AppCompatActivity {
     
     private UserRepository userRepository;
@@ -40,8 +44,8 @@ public class RegisterActivity extends AppCompatActivity {
         MaterialButton btnSignUp = findViewById(R.id.button_signup);
         MaterialButton txtLogin = findViewById(R.id.link_login);
 
-        errorEmail.setVisibility(View.GONE);
-        inputEmail.setText("");
+        if (errorEmail != null) errorEmail.setVisibility(View.GONE);
+        if (inputEmail != null) inputEmail.setText("");
 
         btnSignUp.setOnClickListener(v -> attemptRegister(
                 inputUsername.getText() != null ? inputUsername.getText().toString().trim() : "",
@@ -83,9 +87,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         AppExecutors.Companion.getInstance().getNetworkIO().execute(() -> {
             try {
-                UserEntity user = kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> userRepository.register(email, password, username, true, continuation)
+                // Sửa lỗi: Ép kiểu UserEntity và Continuation cho đúng chữ ký hàm suspend của Kotlin
+                UserEntity user = (UserEntity) BuildersKt.runBlocking(
+                        EmptyCoroutineContext.INSTANCE,
+                        (scope, continuation) -> userRepository.register(email, password, username, true, (Continuation<? super UserEntity>) continuation)
                 );
 
                 runOnUiThread(() -> {

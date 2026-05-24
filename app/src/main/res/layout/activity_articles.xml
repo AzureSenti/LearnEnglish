@@ -17,14 +17,17 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingEnd="16dp">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/iv_back"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_centerVertical="true"
+                android:padding="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_menu_revert"
                 app:tint="@color/text_primary" />
 
@@ -130,46 +133,39 @@
     </HorizontalScrollView>
 
     <!-- Articles List -->
-
-    <!-- Bottom Navigation (Consistent with activity_library.xml but adapted to image) -->
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_articles"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@id/bottom_nav"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/hsv_categories"
         app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="-49dp"
+        tools:layout_editor_absoluteX="0dp"
         tools:listitem="@layout/item_article" />
 
     <LinearLayout
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/nav_height"
+        android:layout_height="70dp"
         android:background="@color/white"
         android:elevation="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
+        <!-- Lessons (Active) -->
         <LinearLayout
-            android:id="@+id/nav_explore"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:clickable="true"
-            android:focusable="true"
             android:gravity="center"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_nav_active_pill"
+                android:background="@drawable/bg_active_nav"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp"
@@ -178,96 +174,79 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:contentDescription="@string/nav_explore"
                     android:src="@drawable/ic_explore"
-                    app:tint="@color/sanctuary_primary_blue" />
+                    app:tint="@color/blue_primary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter"
-                    android:text="@string/nav_explore"
-                    android:textColor="@color/sanctuary_primary_blue"
+                    android:text="Lessons"
+                    android:textColor="@color/blue_primary"
                     android:textSize="10sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/nav_library"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:clickable="true"
-            android:focusable="true"
             android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:contentDescription="@string/nav_library"
-                android:src="@drawable/ic_library"
-                app:tint="@color/sanctuary_text_secondary" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter"
-                android:text="@string/nav_library"
-                android:textColor="@color/sanctuary_text_secondary"
-                android:textSize="10sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/nav_learn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:contentDescription="@string/nav_learn"
                 android:src="@drawable/ic_learn"
-                app:tint="@color/sanctuary_text_secondary" />
+                app:tint="@color/text_secondary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/inter"
-                android:text="@string/nav_learn"
-                android:textColor="@color/sanctuary_text_secondary"
+                android:text="Practice"
+                android:textColor="@color/text_secondary"
                 android:textSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/nav_profile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:clickable="true"
-            android:focusable="true"
             android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:contentDescription="@string/nav_profile"
-                android:src="@drawable/ic_profile"
-                app:tint="@color/sanctuary_text_secondary" />
+                android:src="@drawable/ic_grammar"
+                app:tint="@color/text_secondary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/inter"
-                android:text="@string/nav_profile"
-                android:textColor="@color/sanctuary_text_secondary"
+                android:text="Progress"
+                android:textColor="@color/text_secondary"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_profile"
+                app:tint="@color/text_secondary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:textColor="@color/text_secondary"
                 android:textSize="10sp" />
         </LinearLayout>
 

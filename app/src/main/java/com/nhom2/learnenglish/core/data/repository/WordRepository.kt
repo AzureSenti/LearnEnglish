@@ -23,29 +23,6 @@ class WordRepository(
         return wordSetDao.getAllSets()
     }
 
-    fun getWordSetById(id: Long): WordSetEntity? {
-        return wordSetDao.getSetById(id)
-    }
-
-    fun createWordSet(name: String, description: String?, iconCategory: String): Long {
-        val newSet = WordSetEntity(
-            name = name,
-            description = description,
-            unlockCost = 0,
-            iconCategory = iconCategory
-        )
-        return wordSetDao.insert(newSet)
-    }
-
-    fun deleteWordSet(wordSet: WordSetEntity): Boolean {
-        return try {
-            wordSetDao.delete(wordSet) > 0
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false
-        }
-    }
-
     fun getWordsInSet(setId: Long): List<WordEntity> {
         return wordDao.getWordsBySetId(setId)
     }
@@ -125,16 +102,17 @@ class WordRepository(
     }
 
     private fun calculateInterval(level: Int): Long {
+        // THỜI GIAN TEST (Tính bằng phút)
         val minutes: Long = when (level) {
-            0 -> 10
-            1 -> 60 * 12
-            2 -> 60 * 24
-            3 -> 60 * 24 * 3
-            4 -> 60 * 24 * 7
-            5 -> 60 * 24 * 14
-            else -> 60 * 24 * 30
+            0 -> 1  // Sai hoặc chưa thuộc: Chờ 1 phút để ôn lại
+            1 -> 1  // Thuộc level 1: Chờ 1 phút (thay vì 12 tiếng)
+            2 -> 2  // Thuộc level 2: Chờ 2 phút (thay vì 1 ngày)
+            3 -> 3  // Thuộc level 3: Chờ 3 phút (thay vì 3 ngày)
+            4 -> 4  // Thuộc level 4: Chờ 4 phút (thay vì 7 ngày)
+            5 -> 5  // Thuộc level 5: Chờ 5 phút (thay vì 14 ngày)
+            else -> 6 // Từ level 6 trở lên: Chờ 6 phút (thay vì 30 ngày)
         }
-        return minutes * 60 * 1000L
+        return minutes * 60 * 1000L // Nhân với 60 * 1000 để đổi từ phút sang milliseconds
     }
 
     fun getAllWords(): List<WordEntity> {
@@ -144,5 +122,7 @@ class WordRepository(
     fun getWordById(wordId: Long): WordEntity? {
         return wordDao.getById(wordId)
     }
+
+
 
 }

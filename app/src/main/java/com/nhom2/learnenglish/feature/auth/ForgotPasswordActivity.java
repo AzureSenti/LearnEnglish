@@ -16,6 +16,11 @@ import com.nhom2.learnenglish.core.network.RetrofitClient;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.SessionManager;
 
+import kotlin.Unit;
+import kotlin.coroutines.Continuation;
+import kotlinx.coroutines.BuildersKt;
+import kotlin.coroutines.EmptyCoroutineContext;
+
 public class ForgotPasswordActivity extends AppCompatActivity {
 
     private TextInputEditText inputEmail;
@@ -29,14 +34,15 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_forgot_password);
 
+        initViews();
+        setupData();
+        setupClickListeners();
+    }
+
+    private void initViews() {
         inputEmail = findViewById(R.id.input_email_forgot);
         buttonReset = findViewById(R.id.button_reset_password);
         buttonBack = findViewById(R.id.button_back_to_login);
-
-        setupData();
-
-        buttonReset.setOnClickListener(v -> performReset());
-        buttonBack.setOnClickListener(v -> finish());
     }
 
     private void setupData() {
@@ -52,22 +58,34 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         );
     }
 
-    private void performReset() {
-        String email = inputEmail.getText() != null ? inputEmail.getText().toString().trim() : "";
+    private void setupClickListeners() {
+        if (buttonReset != null) {
+            buttonReset.setOnClickListener(v -> performReset());
+        }
+        if (buttonBack != null) {
+            buttonBack.setOnClickListener(v -> finish());
+        }
+    }
 
-        if (email.isEmpty() || !email.contains("@")) {
+    private void performReset() {
+        if (inputEmail == null || inputEmail.getText() == null) return;
+        
+        String email = inputEmail.getText().toString().trim();
+
+        // Tối ưu điều kiện kiểm tra
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, R.string.error_email_invalid, Toast.LENGTH_SHORT).show();
             return;
         }
 
         buttonReset.setEnabled(false);
-        buttonReset.setText("ĐANG XỬ LÝ...");
+        buttonReset.setText(getString(R.string.processing)); // Dùng resource string nếu có, hoặc giữ nguyên nếu chưa có
 
         AppExecutors.Companion.getInstance().getNetworkIO().execute(() -> {
             try {
-                kotlinx.coroutines.BuildersKt.runBlocking(
-                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> userRepository.resetPassword(email, continuation)
+                // Lưu ý: resetPassword phải được thêm vào UserRepository.kt ở phần Core
+                BuildersKt.runBlocking(EmptyCoroutineContext.INSTANCE, (scope, continuation) -> 
+                    userRepository.resetPassword(email, (Continuation<? super Unit>) continuation)
                 );
 
                 runOnUiThread(() -> {
@@ -76,7 +94,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 });
 
             } catch (Exception e) {
-                e.printStackTrace();
                 runOnUiThread(() -> {
                     buttonReset.setEnabled(true);
                     buttonReset.setText("Gửi yêu cầu");

@@ -5,15 +5,13 @@ import android.content.SharedPreferences
 
 class SessionManager(context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences("user_session", Context.MODE_PRIVATE)
-    private companion object {
-        const val KEY_REMEMBER_ME = "remember_me"
-    }
 
-    fun createLoginSession(token: String, userId: Long, rememberMe: Boolean = false) {
+
+
+    fun createLoginSession(token: String, userId: Long) {
         prefs.edit()
             .putString("auth_token", token)
             .putBoolean("is_logged_in", true)
-            .putBoolean(KEY_REMEMBER_ME, rememberMe)
             .putLong("current_user_id", userId)
             .apply()
     }
@@ -21,13 +19,8 @@ class SessionManager(context: Context) {
     fun activateGuestMode() {
         prefs.edit()
             .putBoolean("is_logged_in", false)
-            .putBoolean(KEY_REMEMBER_ME, false)
             .putLong("current_user_id", -1L)
             .apply()
-    }
-
-    fun isRemembered(): Boolean {
-        return prefs.getBoolean(KEY_REMEMBER_ME, false)
     }
 
     fun fetchAuthToken(): String? {

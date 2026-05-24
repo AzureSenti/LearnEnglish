@@ -22,12 +22,14 @@ import com.nhom2.learnenglish.core.util.SessionManager;
 import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
 
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
+
 public class LoginActivity extends AppCompatActivity {
     private TextInputEditText inputEmail, inputPassword;
     private MaterialButton buttonLogin;
     private MaterialCheckBox checkRemember;
-    private MaterialButton linkForgotPassword, linkSignup, useWithoutLogin;
+    private TextView linkForgotPassword, linkSignup, useWithoutLogin;
     private UserRepository userRepository;
 
     @Override
@@ -60,8 +62,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setupData() {
         SessionManager sessionManager = new SessionManager(this);
-        AppDatabase db = AppDatabase.Companion.getInstance(this);
         AuthApi authApi = RetrofitClient.INSTANCE.getInstance().create(AuthApi.class);
+        AppDatabase db = AppDatabase.Companion.getInstance(this);
 
         userRepository = new UserRepository(
                 AppExecutors.Companion.getInstance(),
@@ -79,15 +81,21 @@ public class LoginActivity extends AppCompatActivity {
 
         // Nút Quên mật khẩu
         linkForgotPassword.setOnClickListener(v -> {
-            Navigator.INSTANCE.navigateTo(this, ForgotPasswordActivity.class);
+            Toast.makeText(this, "Chuyển sang trang Quên mật khẩu", Toast.LENGTH_SHORT).show();
+            // TODO: Mở ForgotPasswordActivity
         });
 
         // Nút Đăng ký
         linkSignup.setOnClickListener(v -> {
-            Navigator.INSTANCE.navigateTo(this, RegisterActivity.class);
+            Toast.makeText(this, "Chuyển sang trang Đăng ký", Toast.LENGTH_SHORT).show();
+            // TODO: Mở SignupActivity
         });
 
+//        useWithoutLogin.setOnClickListener(v -> {
+//            activateGuestMode();
+//        });
         useWithoutLogin.setOnClickListener(v -> {
+            Toast.makeText(this, "Đang xử lý đăng nhập ẩn...", Toast.LENGTH_SHORT).show();
             activateGuestMode();
         });
 
@@ -114,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 UserEntity user = kotlinx.coroutines.BuildersKt.runBlocking(
                         kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
-                        (scope, continuation) -> userRepository.login(email, password, isRememberMe, continuation)
+                        (scope, continuation) -> userRepository.login(email, password, continuation)
                 );
 
                 runOnUiThread(() -> {
@@ -152,6 +160,9 @@ public class LoginActivity extends AppCompatActivity {
                 });
             } catch (Exception e) {
                 e.printStackTrace();
+                runOnUiThread(() -> {
+                    Toast.makeText(LoginActivity.this, "Lỗi hệ thống: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
             }
         });
     }

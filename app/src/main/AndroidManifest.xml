@@ -26,6 +26,10 @@
         </activity>
 
         <activity
+            android:name=".feature.game.VocabularyGameActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".feature.mainmenu.MainMenuActivity"
             android:exported="false" />
 
@@ -35,6 +39,9 @@
 
         <activity
             android:name=".feature.auth.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.profile.ProfileActivity"
             android:exported="false" />
 
         <activity
