@@ -1,6 +1,5 @@
-package com.nhom2.learnenglish.core.network.Auth
+package com.nhom2.learnenglish.core.network.auth
 
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 

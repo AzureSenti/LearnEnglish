@@ -2,8 +2,8 @@ package com.nhom2.learnenglish.core.data.repository
 
 import com.nhom2.learnenglish.core.data.local.dao.UserDao
 import com.nhom2.learnenglish.core.data.local.entity.UserEntity
-import com.nhom2.learnenglish.core.network.Auth.AuthApi
-import com.nhom2.learnenglish.core.network.Auth.LoginRequest
+import com.nhom2.learnenglish.core.network.auth.AuthApi
+import com.nhom2.learnenglish.core.network.auth.LoginRequest
 import com.nhom2.learnenglish.core.util.AppExecutors
 import com.nhom2.learnenglish.core.util.SessionManager
 

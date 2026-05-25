@@ -1,4 +1,4 @@
-package com.nhom2.learnenglish.core.data.local.model
+package com.nhom2.learnenglish.core.data.model
 
 import androidx.room3.ColumnInfo
 

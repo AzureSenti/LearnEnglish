@@ -6,7 +6,7 @@ import com.nhom2.learnenglish.core.data.local.dao.grammar.UserGrammarProgressDao
 import com.nhom2.learnenglish.core.data.local.entity.grammar.GrammarLessonEntity
 import com.nhom2.learnenglish.core.data.local.entity.grammar.GrammarQuestionEntity
 import com.nhom2.learnenglish.core.data.local.entity.grammar.UserGrammarProgress
-import com.nhom2.learnenglish.core.data.local.model.GrammarLessonWithStatus
+import com.nhom2.learnenglish.core.data.model.GrammarLessonWithStatus
 import com.nhom2.learnenglish.core.util.AppExecutors
 
 class GrammarRepository(

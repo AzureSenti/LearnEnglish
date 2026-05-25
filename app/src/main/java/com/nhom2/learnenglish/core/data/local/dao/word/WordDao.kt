@@ -4,7 +4,7 @@ import androidx.room3.Dao
 import androidx.room3.Query
 import com.nhom2.learnenglish.core.data.local.dao.BaseDao
 import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity
-import com.nhom2.learnenglish.core.data.local.model.WordWithProgress
+import com.nhom2.learnenglish.core.data.model.WordWithProgress
 
 @Dao
 interface WordDao : BaseDao<WordEntity> {
