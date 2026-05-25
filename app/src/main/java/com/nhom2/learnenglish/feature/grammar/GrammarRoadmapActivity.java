@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nhom2.learnenglish.R;
 import com.nhom2.learnenglish.core.data.local.AppDatabase;
-import com.nhom2.learnenglish.core.data.local.model.GrammarLessonWithStatus;
+import com.nhom2.learnenglish.core.data.model.GrammarLessonWithStatus;
 import com.nhom2.learnenglish.core.data.repository.GrammarRepository;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.Navigator;

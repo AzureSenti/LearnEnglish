@@ -8,7 +8,7 @@ import com.nhom2.learnenglish.core.data.local.entity.word.UserWordSetCrossRef
 import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity
 import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity
 import com.nhom2.learnenglish.core.data.local.entity.word.WordSrsEntity
-import com.nhom2.learnenglish.core.data.local.model.WordWithProgress
+import com.nhom2.learnenglish.core.data.model.WordWithProgress
 import com.nhom2.learnenglish.core.util.AppExecutors
 
 class WordRepository(

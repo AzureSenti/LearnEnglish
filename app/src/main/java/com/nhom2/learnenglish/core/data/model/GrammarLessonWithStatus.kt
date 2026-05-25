@@ -1,4 +1,4 @@
-package com.nhom2.learnenglish.core.data.local.model
+package com.nhom2.learnenglish.core.data.model
 
 import com.nhom2.learnenglish.core.data.local.entity.grammar.GrammarLessonEntity
 

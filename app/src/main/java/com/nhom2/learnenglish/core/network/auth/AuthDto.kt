@@ -1,4 +1,4 @@
-package com.nhom2.learnenglish.core.network.Auth
+package com.nhom2.learnenglish.core.network.auth
 
 data class LoginRequest(
     val email: String,
@@ -6,7 +6,7 @@ data class LoginRequest(
 )
 
 data class LoginResponse(
-    val userId: Long,
+    val userId: String,
     val fullName: String,
     val avatarUrl: String,
     val email: String,

@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.nhom2.learnenglish.R;
-import com.nhom2.learnenglish.core.data.local.model.GrammarLessonWithStatus;
+import com.nhom2.learnenglish.core.data.model.GrammarLessonWithStatus;
 import java.util.ArrayList;
 import java.util.List;
 
