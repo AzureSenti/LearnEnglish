@@ -44,7 +44,7 @@ class UserRepository(
         if (localUser == null) {
             localUser = UserEntity(
                 id = LOCAL_USER_ID,
-                userId = LOCAL_USER_ID,
+                userId = LOCAL_USER_ID.toString(),
                 fullName = "Local User",
                 coins = 0,
             )
