@@ -12,11 +12,11 @@ import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity
 import com.nhom2.learnenglish.core.data.local.entity.word.WordSrsEntity
 import com.nhom2.learnenglish.core.data.model.WordWithProgress
 import com.nhom2.learnenglish.core.util.AppExecutors
-import com.nhom2.learnenglish.core.data.local.dao.word.WordSetCrossDao
-import com.nhom2.learnenglish.core.data.local.entity.word.WordSetCrossRef
+
 
 class WordRepository(
     private val wordDao: WordDao,
+    private val wordSetDao: WordSetDao,
     private val wordSrsDao: WordSrsDao,
     private val userWordSetDao: UserWordSetDao,
     private val wordSetCrossDao: WordSetCrossDao,
