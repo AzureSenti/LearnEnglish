@@ -19,7 +19,7 @@ class GrammarRepository(
     /**
      * 1. LẤY BẢN ĐỒ LỘ TRÌNH (Danh sách bài học kèm Trạng thái khóa/mở)
      */
-    fun getGrammarRoadmap(userId: Long): List<GrammarLessonWithStatus> {
+    fun getGrammarRoadmap(userId: String): List<GrammarLessonWithStatus> {
         val lessons = lessonDao.getAllLessons()
         val progressList = progressDao.getAllProgressForUser(userId)
 
@@ -69,7 +69,7 @@ class GrammarRepository(
      */
 
     // Gọi khi User bấm nút "Đã hiểu / Tiếp tục" ở cuối trang Lý thuyết
-    fun markTheoryAsCompleted(userId: Long, lessonId: Long) {
+    fun markTheoryAsCompleted(userId: String, lessonId: Long) {
         val progress = progressDao.getProgress(userId, lessonId)
             ?: UserGrammarProgress(userId = userId, lessonId = lessonId)
 
@@ -77,7 +77,7 @@ class GrammarRepository(
     }
 
     // Gọi khi User nộp bài Trắc nghiệm
-    fun submitQuizResult(userId: Long, lessonId: Long, score: Int, isPassed: Boolean) {
+    fun submitQuizResult(userId: String, lessonId: Long, score: Int, isPassed: Boolean) {
         val progress = progressDao.getProgress(userId, lessonId)
             ?: UserGrammarProgress(userId = userId, lessonId = lessonId)
 

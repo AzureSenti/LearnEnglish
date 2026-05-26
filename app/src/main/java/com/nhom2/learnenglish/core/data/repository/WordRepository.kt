@@ -50,7 +50,7 @@ class WordRepository(
         return wordDao.getWordsBySetId(setId)
     }
 
-    fun getWordsForReview(userId: Long): List<WordEntity> {
+    fun getWordsForReview(userId: String): List<WordEntity> {
         val currentTimeMillis = System.currentTimeMillis()
         return wordDao.getWordsDueForReview(userId, currentTimeMillis)
     }
@@ -64,7 +64,7 @@ class WordRepository(
     }
 
 
-    fun getWordListWithProgress(setId: Long, userId: Long): List<WordWithProgress> {
+    fun getWordListWithProgress(setId: Long, userId: String): List<WordWithProgress> {
         val rawList = wordDao.getWordsWithProgressBySet(setId, userId)
 
         return rawList.map { item ->
@@ -87,11 +87,11 @@ class WordRepository(
         }
     }
 
-    fun getNewWordsToLearn(userId: Long, setId: Long): List<WordEntity> {
+    fun getNewWordsToLearn(userId: String, setId: Long): List<WordEntity> {
         return wordDao.getUnlearnedWords(setId, userId, limit = 10)
     }
 
-    fun processWordLearning(userId: Long, wordId: Long, isCorrect: Boolean) {
+    fun processWordLearning(userId: String, wordId: Long, isCorrect: Boolean) {
         val existingSrs = wordSrsDao.getWordSrs(userId, wordId)
         val currentTime = System.currentTimeMillis()
 

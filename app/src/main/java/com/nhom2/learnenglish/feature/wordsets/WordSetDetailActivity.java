@@ -33,7 +33,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
     private SessionManager sessionManager; // THÊM SESSION MANAGER
     private WordAdapter adapter;
     private long setId;
-    private long userId; // LƯU USER ID
+    private String userId; // LƯU USER ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

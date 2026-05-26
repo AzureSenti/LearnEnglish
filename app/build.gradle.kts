@@ -15,7 +15,7 @@ val localPropertiesFile = rootProject.file("application-local.properties")
 if (localPropertiesFile.exists()) {
     localProperties.load(FileInputStream(localPropertiesFile))
 }
-val baseUrl = localProperties.getProperty("BASE_URL") ?: "http://10.0.2.2:8000"
+val baseUrl = localProperties.getProperty("BASE_URL") ?: "http://10.0.2.2:8000/api/v1/"
 
 android {
     namespace = "com.nhom2.learnenglish"

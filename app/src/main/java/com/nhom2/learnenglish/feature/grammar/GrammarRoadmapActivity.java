@@ -82,7 +82,7 @@ public class GrammarRoadmapActivity extends AppCompatActivity implements Grammar
     }
 
     private void loadGrammarRoadmapData() {
-        long currentUserId = sessionManager.getCurrentUserId();
+        String currentUserId = sessionManager.getCurrentUserId();
 
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {

@@ -30,7 +30,7 @@ import com.nhom2.learnenglish.core.data.local.entity.UserEntity
 )
 data class UserGrammarProgress(
     @ColumnInfo(name = "user_id")
-    val userId: Long,
+    val userId: String,
 
     @ColumnInfo(name = "lesson_id")
     val lessonId: Long,

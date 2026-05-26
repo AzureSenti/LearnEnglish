@@ -20,7 +20,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ActivityProfileBinding binding;
     private AppDatabase database;
     private SessionManager sessionManager;
-    private long currentUserId;
+    private String currentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -11,10 +11,10 @@ import com.nhom2.learnenglish.core.data.local.entity.grammar.UserGrammarProgress
 interface UserGrammarProgressDao : BaseDao<UserGrammarProgress> {
 
     @Query("SELECT * FROM user_grammar_progress WHERE user_id = :userId AND lesson_id = :lessonId")
-    fun getProgress(userId: Long, lessonId: Long): UserGrammarProgress?
+    fun getProgress(userId: String, lessonId: Long): UserGrammarProgress?
 
     @Query("SELECT * FROM user_grammar_progress WHERE user_id = :userId")
-    fun getAllProgressForUser(userId: Long): List<UserGrammarProgress>
+    fun getAllProgressForUser(userId: String): List<UserGrammarProgress>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdate(progress: UserGrammarProgress)

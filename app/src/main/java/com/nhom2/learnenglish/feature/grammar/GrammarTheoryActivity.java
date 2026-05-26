@@ -95,7 +95,7 @@ public class GrammarTheoryActivity extends AppCompatActivity {
     }
 
     private void markTheoryDoneAndContinue() {
-        long currentUserId = sessionManager.getCurrentUserId();
+        String currentUserId = sessionManager.getCurrentUserId();
 
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {

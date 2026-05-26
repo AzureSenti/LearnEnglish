@@ -171,7 +171,7 @@ public class GrammarQuizActivity extends AppCompatActivity {
     }
 
     private void finishQuiz() {
-        long currentUserId = sessionManager.getCurrentUserId();
+        String currentUserId = sessionManager.getCurrentUserId();
         // Cần làm đúng tất cả để Pass (Hoặc bạn có thể tùy chỉnh logic)
         boolean isPassed = (score == questions.size());
 

@@ -60,7 +60,7 @@ public class VocabularyGameActivity extends AppCompatActivity {
     private int score = 0;
     private boolean isAnswerRevealed = false;
     private GameOptionAdapter adapter;
-    private long userId = -1L; // Đặt mặc định là tài khoản ngoại tuyến/local
+    private String userId = "-1"; // Đặt mặc định là tài khoản ngoại tuyến/local
     private long lastClickTime = 0;
 
     @Override
@@ -70,12 +70,12 @@ public class VocabularyGameActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         try {
-            long currentUserId = sessionManager.getCurrentUserId();
-            if (currentUserId != -1L) {
+            String currentUserId = sessionManager.getCurrentUserId();
+            if (currentUserId != "-1") {
                 userId = currentUserId;
             }
         } catch (Exception e) {
-            userId = -1L;
+            userId = "-1";
         }
 
         initViews();
