@@ -42,7 +42,6 @@ public class LibraryActivity extends AppCompatActivity {
         AppDatabase db = AppDatabase.Companion.getInstance(this);
         wordRepository = new WordRepository(
                 db.wordDao(),
-                db.wordSetDao(),
                 db.wordSrsDao(),
                 db.userWordSetDao(),
                 db.wordSetCrossDao(),
