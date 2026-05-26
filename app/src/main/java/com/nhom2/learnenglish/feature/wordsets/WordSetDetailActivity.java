@@ -69,9 +69,10 @@ public class WordSetDetailActivity extends AppCompatActivity {
 
         wordRepository = new WordRepository(
                 db.wordDao(),
-                db.wordSetDao(),
                 db.wordSrsDao(),
                 db.userWordSetDao(),
+                db.wordSetDao(),
+                db.wordSetCrossDao(),
                 AppExecutors.Companion.getInstance()
         );
     }
