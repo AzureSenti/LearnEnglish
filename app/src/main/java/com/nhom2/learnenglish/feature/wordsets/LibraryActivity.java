@@ -44,7 +44,6 @@ public class LibraryActivity extends AppCompatActivity {
                 db.wordDao(),
                 db.wordSrsDao(),
                 db.userWordSetDao(),
-                db.wordSetDao(),
                 db.wordSetCrossDao(),
                 AppExecutors.Companion.getInstance()
         );

@@ -28,13 +28,27 @@ import com.nhom2.learnenglish.feature.grammar.GrammarRoadmapActivity;
 import com.nhom2.learnenglish.feature.profile.ProfileActivity;
 import com.nhom2.learnenglish.feature.wordsets.LibraryActivity;
 import com.nhom2.learnenglish.feature.wordsets.WordSetDetailActivity;
-
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.Toast;
+import android.widget.Button;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.nhom2.learnenglish.core.data.model.DictionaryResult;
+import com.nhom2.learnenglish.core.network.RetrofitClient;
+import com.nhom2.learnenglish.core.network.dictionary.DictionaryApi;
+import com.nhom2.learnenglish.core.data.repository.DictionaryRepository;
 import java.util.List;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity;
+import java.util.ArrayList;
 
 public class MainMenuActivity extends AppCompatActivity {
 
     private ArticleRepository articleRepository;
     private WordRepository wordRepository;
+    private DictionaryRepository dictionaryRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,31 +59,138 @@ public class MainMenuActivity extends AppCompatActivity {
         setupWindowInsets();
         setupData();
         setupNavigation();
-        loadFeaturedArticle();
+
+        setupSearchBar();
         MockDataImport.INSTANCE.importIfNeeded(this, () -> {
             loadFeaturedArticle();
             loadRecentWordSets();
         });
+
     }
 
     private void setupData() {
         AppDatabase db = AppDatabase.Companion.getInstance(this);
-        articleRepository = new ArticleRepository(
-                AppExecutors.Companion.getInstance(),
-                db.articleDao()
-        );
+        articleRepository = new ArticleRepository(AppExecutors.Companion.getInstance(), db.articleDao());
         wordRepository = new WordRepository(
-                db.wordDao(),
-                db.wordSrsDao(),
-                db.userWordSetDao(),
-                db.wordSetDao(),
-                db.wordSetCrossDao(),
-                AppExecutors.Companion.getInstance()
+                db.wordDao(), db.wordSetDao(), db.wordSrsDao(), db.userWordSetDao(), db.wordSetCrossDao(), AppExecutors.Companion.getInstance()
         );
+
+        // KHỞI TẠO DICTIONARY REPOSITORY
+        DictionaryApi dictionaryApi = RetrofitClient.INSTANCE.getInstance().create(DictionaryApi.class);
+        dictionaryRepository = new DictionaryRepository(dictionaryApi);
+    }
+    private void setupSearchBar() {
+        // Lưu ý đổi từ EditText thành AutoCompleteTextView
+        AutoCompleteTextView etSearch = findViewById(R.id.et_search);
+
+        if (etSearch != null) {
+
+            // 1. Load danh sách từ vựng từ Local DB để làm dữ liệu gợi ý
+            AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+                try {
+                    List<WordEntity> allWords = wordRepository.getAllWords();
+                    List<String> suggestionList = new ArrayList<>();
+
+                    // Lấy ra danh sách các từ tiếng Anh
+                    for (WordEntity word : allWords) {
+                        suggestionList.add(word.getEnglishWord());
+                    }
+
+                    // Đưa danh sách gợi ý lên giao diện (phải chạy trên Main Thread)
+                    runOnUiThread(() -> {
+                        // Đổi tham số để Android biết phải nhét String vào cái TextView nào trong file item_suggestion.xml
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                                this,
+                                R.layout.item_suggestion,       // Layout custom mình vừa tạo
+                                R.id.tv_suggestion_word,        // ID của TextView bên trong layout đó
+                                suggestionList
+                        );
+                        etSearch.setAdapter(adapter);
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+            // 2. Sự kiện: Khi user BẤM CHỌN một từ trong danh sách gợi ý
+            etSearch.setOnItemClickListener((parent, view, position, id) -> {
+                String selectedWord = (String) parent.getItemAtPosition(position);
+                performSearch(selectedWord);
+
+                // Ẩn bàn phím và xoá chữ sau khi search
+                hideKeyboard(etSearch);
+                etSearch.setText("");
+            });
+
+            // 3. Sự kiện cũ: Khi user tự gõ và bấm nút Search (Kính lúp) trên bàn phím ảo
+            etSearch.setOnEditorActionListener((v, actionId, event) -> {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    String query = etSearch.getText().toString().trim();
+                    if (!query.isEmpty()) {
+                        performSearch(query);
+                        hideKeyboard(etSearch);
+                        etSearch.setText(""); // clear text
+                    }
+                    return true;
+                }
+                return false;
+            });
+        }
+    }
+
+    // Hàm phụ trợ để ẩn bàn phím ảo đi cho gọn code
+    private void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+    private void performSearch(String word) {
+        Toast.makeText(this, "Đang tra từ: " + word + "...", Toast.LENGTH_SHORT).show();
+
+        AppExecutors.Companion.getInstance().getNetworkIO().execute(() -> {
+            try {
+                // Gọi suspend function của Kotlin từ Java
+                DictionaryResult result = kotlinx.coroutines.BuildersKt.runBlocking(
+                        kotlin.coroutines.EmptyCoroutineContext.INSTANCE,
+                        (scope, continuation) -> dictionaryRepository.lookupWord(word, continuation)
+                );
+
+                runOnUiThread(() -> {
+                    if (result != null) {
+                        showTranslationBottomSheet(result);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(MainMenuActivity.this, "Không tìm thấy từ này", Toast.LENGTH_SHORT).show());
+            }
+        });
+    }
+    private void showTranslationBottomSheet(DictionaryResult result) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View bottomSheetView = getLayoutInflater().inflate(R.layout.layout_bottom_sheet_translation, null);
+        bottomSheetDialog.setContentView(bottomSheetView);
+
+        TextView tvWord = bottomSheetView.findViewById(R.id.tv_bs_word);
+        TextView tvPhonetic = bottomSheetView.findViewById(R.id.tv_bs_phonetic);
+        TextView tvMeaning = bottomSheetView.findViewById(R.id.tv_bs_meaning);
+        Button btnSave = bottomSheetView.findViewById(R.id.btn_bs_save);
+
+        tvWord.setText(result.getWord());
+        tvPhonetic.setText(result.getPhonetic().isEmpty() ? "/.../" : result.getPhonetic());
+        tvMeaning.setText(result.getVietnameseMeaning());
+
+        btnSave.setOnClickListener(v -> {
+            Toast.makeText(this, "Tính năng lưu từ đang được cập nhật", Toast.LENGTH_SHORT).show();
+            bottomSheetDialog.dismiss();
+        });
+
+        bottomSheetDialog.show();
     }
 
     @SuppressLint("SetTextI18n")
-    private void updateWordSetUI(WordSetEntity set, int index) {
+    private void updateWordSetUI(WordSetEntity set, int index, int wordCount) {
         int cardId = (index == 1) ? R.id.card_word_set_1 : R.id.card_word_set_2;
         int titleId = (index == 1) ? R.id.tv_word_set_title_1 : R.id.tv_word_set_title_2;
         int countId = (index == 1) ? R.id.tv_word_count_1 : R.id.tv_word_count_2;
@@ -79,7 +200,8 @@ public class MainMenuActivity extends AppCompatActivity {
         TextView tvCount = findViewById(countId);
 
         if (tvTitle != null) tvTitle.setText(set.getName());
-        if (tvCount != null) tvCount.setText("5 words");
+        // UPDATE DỮ LIỆU ĐỘNG VÀO ĐÂY
+        if (tvCount != null) tvCount.setText(wordCount + " words");
 
         if (card != null) {
             card.setOnClickListener(v -> {
@@ -96,12 +218,17 @@ public class MainMenuActivity extends AppCompatActivity {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
                 List<WordSetEntity> list = wordRepository.getAllSets();
-                runOnUiThread(() -> {
-                    if (list != null && list.size() >= 2) {
-                        updateWordSetUI(list.get(0), 1);
-                        updateWordSetUI(list.get(1), 2);
-                    }
-                });
+
+                if (list != null && list.size() >= 2) {
+                    // Truy vấn DB lấy danh sách từ thuộc Set đó, rồi đếm size()
+                    int count1 = wordRepository.getWordsInSet(list.get(0).getId()).size();
+                    int count2 = wordRepository.getWordsInSet(list.get(1).getId()).size();
+
+                    runOnUiThread(() -> {
+                        updateWordSetUI(list.get(0), 1, count1);
+                        updateWordSetUI(list.get(1), 2, count2);
+                    });
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -207,6 +334,8 @@ public class MainMenuActivity extends AppCompatActivity {
             });
         }
     }
+
+
 
     @Override
     protected void onPause() {

@@ -61,4 +61,7 @@ interface WordDao : BaseDao<WordEntity> {
 
     @Query("DELETE FROM words")
     fun deleteAll()
+    // Kiểm tra xem từ vựng đã tồn tại trong từ điển chung chưa
+    @Query("SELECT * FROM words WHERE english_word = :word LIMIT 1")
+    fun getWordByEnglish(word: String): WordEntity?
 }

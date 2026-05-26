@@ -12,12 +12,13 @@ import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity
 import com.nhom2.learnenglish.core.data.local.entity.word.WordSrsEntity
 import com.nhom2.learnenglish.core.data.model.WordWithProgress
 import com.nhom2.learnenglish.core.util.AppExecutors
+import com.nhom2.learnenglish.core.data.local.dao.word.WordSetCrossDao
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSetCrossRef
 
 class WordRepository(
     private val wordDao: WordDao,
     private val wordSrsDao: WordSrsDao,
     private val userWordSetDao: UserWordSetDao,
-    private val wordSetDao: WordSetDao,
     private val wordSetCrossDao: WordSetCrossDao,
     executors: AppExecutors = AppExecutors.getInstance()
 ) : BaseRepository(executors) {
@@ -143,6 +144,60 @@ class WordRepository(
 
     fun getWordById(wordId: Long): WordEntity? {
         return wordDao.getById(wordId)
+    }
+    // QUẢN LÝ TỪ VỰNG TRONG MỘT BỘ TỪ (CRUD TÙY CHỈNH)
+
+
+    /**
+     * THÊM: Thêm từ mới vào một bộ từ (Có kiểm tra trùng lặp)
+     */
+    fun addNewWordToSet(
+        word: WordEntity,
+        setId: Long,
+        onSuccess: (() -> Unit)? = null,
+        onError: ((String) -> Unit)? = null
+    ) {
+        runOnDiskIO {
+            try {
+                // 1. Kiểm tra từ đã có trong kho từ vựng chung chưa
+                val existingWord = wordDao.getWordByEnglish(word.englishWord)
+
+                // 2. Lấy ra ID để liên kết
+                val wordIdToLink = if (existingWord != null) {
+                    existingWord.id // Dùng lại ID cũ
+                } else {
+                    wordDao.insert(word) // Thêm mới và lấy ID mới
+                }
+
+                // 3. Kiểm tra xem từ đã nằm trong Bộ từ hiện tại chưa
+                val isAlreadyInSet = wordSetCrossDao.isWordInSet(wordIdToLink, setId)
+
+                if (isAlreadyInSet) {
+                    onError?.let { runOnMain { it("Từ này đã có trong bộ từ hiện tại!") } }
+                } else {
+                    // 4. Tạo liên kết
+                    val crossRef = WordSetCrossRef(wordId = wordIdToLink, setId = setId)
+                    wordSetCrossDao.insert(crossRef)
+                    onSuccess?.let { runOnMain { it() } }
+                }
+
+            } catch (e: Exception) {
+                onError?.let { runOnMain { it("Lỗi hệ thống: ${e.message}") } }
+            }
+        }
+    }
+
+
+
+
+    /**
+     * XÓA: Gỡ liên kết của từ khỏi bộ từ hiện tại
+     */
+    fun removeWordFromSpecificSet(wordId: Long, setId: Long, onComplete: (() -> Unit)? = null) {
+        runOnDiskIO {
+            wordSetCrossDao.removeWordFromSet(wordId = wordId, setId = setId)
+            onComplete?.let { runOnMain { it() } }
+        }
     }
 
 

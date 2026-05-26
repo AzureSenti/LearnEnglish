@@ -20,7 +20,6 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- Header -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -68,7 +67,6 @@
                     android:textSize="14sp" />
             </RelativeLayout>
 
-            <!-- Search Bar -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -82,7 +80,8 @@
                     android:layout_height="20dp"
                     android:src="@drawable/ic_search" />
 
-                <EditText
+                <AutoCompleteTextView
+                    android:id="@+id/et_search"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="12dp"
@@ -90,10 +89,12 @@
                     android:hint="Search vocabulary..."
                     android:imeOptions="actionSearch"
                     android:inputType="text"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:completionThreshold="1"
+                    android:popupBackground="@drawable/bg_card_white"
+                    android:dropDownVerticalOffset="8dp" />
             </LinearLayout>
 
-            <!-- Learning Categories -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -176,7 +177,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Featured Articles Header -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -204,7 +204,6 @@
                     android:background="?attr/selectableItemBackground" />
             </RelativeLayout>
 
-            <!-- Featured Article Card -->
             <LinearLayout
                 android:id="@+id/card_featured_article"
                 android:layout_width="match_parent"
@@ -282,7 +281,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Recent Word Sets Header -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -338,7 +336,7 @@
 
                     <TextView
                         android:id="@+id/tv_word_set_title_1"
-                        android:text="Loading..."
+                        tools:text="Technology"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
@@ -348,7 +346,7 @@
 
                     <TextView
                         android:id="@+id/tv_word_count_1"
-                        android:text="0 words"
+                        tools:text="5 words"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
@@ -378,7 +376,7 @@
 
                     <TextView
                         android:id="@+id/tv_word_set_title_2"
-                        android:text="Loading..."
+                        tools:text="Business"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
@@ -388,7 +386,7 @@
 
                     <TextView
                         android:id="@+id/tv_word_count_2"
-                        android:text="0 words"
+                        tools:text="10 words"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
@@ -400,7 +398,6 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"

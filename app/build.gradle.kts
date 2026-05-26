@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
 
+
     // Room 3
     implementation(libs.room3.runtime)
     ksp(libs.room3.compiler)
@@ -82,6 +83,8 @@ dependencies {
 
     // Gson (used by TypeConverters for JSON serialization)
     implementation("com.google.code.gson:gson:2.11.0")
+    //
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
