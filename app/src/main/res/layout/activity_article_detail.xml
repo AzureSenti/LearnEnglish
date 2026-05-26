@@ -7,7 +7,6 @@
     android:background="@color/bg_color"
     tools:context=".ArticleDetailActivity">
 
-    <!-- Top App Bar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -33,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="The Art of Recovery"
+                tools:text="The Art of Recovery"
                 android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -64,12 +63,11 @@
                 android:id="@+id/tv_detail_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Understanding Emotional Elasticity"
+                tools:text="Understanding Emotional Elasticity"
                 android:textColor="@color/text_primary"
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
-            <!-- Author & Info -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,8 +80,6 @@
                     android:scaleType="centerCrop"
                     android:src="@android:color/darker_gray"
                     app:shapeAppearanceOverlay="@style/RoundedTopCorners" />
-                <!-- Note: Using simple gray for placeholder author image -->
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -95,7 +91,7 @@
                         android:id="@+id/tv_detail_author"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dr. Elena Vance"
+                        tools:text="Dr. Elena Vance"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -104,13 +100,12 @@
                         android:id="@+id/tv_detail_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="8 min read • English Mastery"
+                        tools:text="8 min read • English Mastery"
                         android:textColor="@color/text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
             </RelativeLayout>
 
-            <!-- Main Image -->
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
@@ -118,20 +113,16 @@
                 android:scaleType="centerCrop"
                 android:src="@android:color/darker_gray"
                 app:shapeAppearanceOverlay="@style/RoundedTopCorners" />
-            <!-- Using generic rounded corners if available, else standard imageview with radius -->
-
-            <!-- Article Body -->
             <TextView
                 android:id="@+id/tv_detail_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:lineSpacingExtra="6dp"
-                android:text="Emotional elasticity is the cognitive ability to adapt to stressful situations and bounce back from adversity without losing your inner sense of calm. In the journey of language acquisition, this concept becomes a vital pillar. We often view learning as a linear progression of vocabulary and grammar, but it is equally a test of our psychological resilience.\n\nWhen we encounter a phrase we don't understand or struggle to articulate a complex thought in a second language, our immediate biological response is often frustration. This cognitive friction can trigger a 'fight or flight' response, which shuts down the very creative centers of the brain required for fluid communication."
+                tools:text="Emotional elasticity is the cognitive ability to adapt to stressful situations and bounce back from adversity without losing your inner sense of calm. In the journey of language acquisition, this concept becomes a vital pillar. We often view learning as a linear progression of vocabulary and grammar, but it is equally a test of our psychological resilience.\n\nWhen we encounter a phrase we don't understand or struggle to articulate a complex thought in a second language, our immediate biological response is often frustration. This cognitive friction can trigger a 'fight or flight' response, which shuts down the very creative centers of the brain required for fluid communication."
                 android:textColor="@color/text_primary"
                 android:textSize="15sp" />
 
-            <!-- Quote Block -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,7 +139,6 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
-            <!-- Mark as Read Section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

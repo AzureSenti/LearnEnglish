@@ -14,12 +14,24 @@ object MockDataImport {
     }
 
     fun importIfNeeded(context: Context, onComplete: Runnable?) {
+        // DÙNG SHAREDPREFERENCES ĐỂ KIỂM TRA ĐIỀU KIỆN
+        val sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
+        // Nếu ứng dụng đã được nạp dữ liệu mẫu rồi thì bỏ qua luôn, không xoá DB nữa
+        if (sharedPref.getBoolean(KEY_DB_SEEDED, false)) {
+            if (onComplete != null) {
+                AppExecutors.getInstance().mainThread.execute {
+                    onComplete.run()
+                }
+            }
+            return
+        }
 
         val db = AppDatabase.getInstance(context)
         AppExecutors.getInstance().diskIO.execute {
             try {
                 kotlinx.coroutines.runBlocking {
+                    // Chỉ thực hiện xoá và chèn lại duy nhất 1 lần đầu tiên khi cài app
                     // Article
                     db.articleDao().deleteAll()
                     db.articleDao().insertAll(MockData.articles)
@@ -38,9 +50,10 @@ object MockDataImport {
 
                     db.grammarLessonDao().insertAll(MockData.grammarLessons)
                     db.grammarQuestionDao().insertAll(MockData.grammarQuestion)
-
-
                 }
+
+                // ĐÁNH DẤU: Đã nạp thành công dữ liệu mẫu vào máy, lần sau không nạp lại nữa
+                sharedPref.edit().putBoolean(KEY_DB_SEEDED, true).apply()
 
                 if (onComplete != null) {
                     AppExecutors.getInstance().mainThread.execute {
