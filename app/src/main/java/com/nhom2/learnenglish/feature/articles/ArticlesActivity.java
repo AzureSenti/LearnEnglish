@@ -1,6 +1,7 @@
 package com.nhom2.learnenglish.feature.articles;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -31,28 +32,16 @@ public class ArticlesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_articles);
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
+        setupWindowInsets();
         setupData();
         setupToolbar();
         setupRecyclerView();
 
-//        loadArticleData();
+
     }
 
-//    private void setupData() {
-//        AppDatabase db = AppDatabase.Companion.getInstance(this);
-//        articleRepository = new ArticleRepository(
-//                AppExecutors.Companion.getInstance(),
-//                db.articleDao()
-//        );
-//        MockDataImport.INSTANCE.importIfNeeded(this);
-//    }
+
+
 private void setupData() {
     AppDatabase db = AppDatabase.Companion.getInstance(this);
     articleRepository = new ArticleRepository(
@@ -64,7 +53,17 @@ private void setupData() {
     // Di chuyển vào đây
     MockDataImport.INSTANCE.importIfNeeded(this, this::loadArticleData);
 }
-
+    private void setupWindowInsets() {
+        // Sử dụng android.R.id.content để lấy View gốc (Root View) của Activity
+        View mainView = findViewById(android.R.id.content);
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
+    }
     private void setupToolbar() {
         ImageView ivBack = findViewById(R.id.iv_back);
         if (ivBack != null) {
@@ -80,13 +79,10 @@ private void setupData() {
             // Trong setupRecyclerView()
             adapter = new ArticleAdapter(article ->
             {
-                Bundle bundle = new Bundle();
-                bundle.putLong("article_id", article.getId());
-                Navigator.navigateTo(this, ArticleDetailActivity.class, bundle);
-                //android.content.Intent intent = new android.content.Intent(this, ArticleDetailActivity.class);
-                //intent.putExtra("article_id", article.getId());
-                //startActivity(intent);
-                //overridePendingTransition(0, 0);
+                android.content.Intent intent = new android.content.Intent(this, ArticleDetailActivity.class);
+                intent.putExtra("article_id", article.getId());
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             });
             rvArticles.setAdapter(adapter);
         }
