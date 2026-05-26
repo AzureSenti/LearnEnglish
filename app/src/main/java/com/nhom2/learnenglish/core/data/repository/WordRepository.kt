@@ -2,10 +2,12 @@ package com.nhom2.learnenglish.core.data.repository
 
 import com.nhom2.learnenglish.core.data.local.dao.word.UserWordSetDao
 import com.nhom2.learnenglish.core.data.local.dao.word.WordDao
+import com.nhom2.learnenglish.core.data.local.dao.word.WordSetCrossDao
 import com.nhom2.learnenglish.core.data.local.dao.word.WordSetDao
 import com.nhom2.learnenglish.core.data.local.dao.word.WordSrsDao
 import com.nhom2.learnenglish.core.data.local.entity.word.UserWordSetCrossRef
 import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSetCrossRef
 import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity
 import com.nhom2.learnenglish.core.data.local.entity.word.WordSrsEntity
 import com.nhom2.learnenglish.core.data.model.WordWithProgress
@@ -13,14 +15,34 @@ import com.nhom2.learnenglish.core.util.AppExecutors
 
 class WordRepository(
     private val wordDao: WordDao,
-    private val wordSetDao: WordSetDao,
     private val wordSrsDao: WordSrsDao,
     private val userWordSetDao: UserWordSetDao,
+    private val wordSetDao: WordSetDao,
+    private val wordSetCrossDao: WordSetCrossDao,
     executors: AppExecutors = AppExecutors.getInstance()
 ) : BaseRepository(executors) {
 
     fun getAllSets(): List<WordSetEntity> {
         return wordSetDao.getAllSets()
+    }
+
+    fun getSetById(setId: Long): WordSetEntity? {
+        return wordSetDao.getSetById(setId)
+    }
+
+    fun createSet(set: WordSetEntity) {
+        wordSetDao.insert(set)
+    }
+
+    fun updateSet(set: WordSetEntity) {
+        wordSetDao.update(set)
+    }
+    fun addWordToSet(wordId: Long, setId: Long) {
+        wordSetCrossDao.insert(WordSetCrossRef(wordId = wordId, setId = setId))
+    }
+
+    fun  removeWordFromSet(wordId: Long, setId: Long) {
+        wordSetCrossDao.removeWordFromSet(wordId, setId)
     }
 
     fun getWordsInSet(setId: Long): List<WordEntity> {
