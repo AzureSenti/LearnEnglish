@@ -9,4 +9,7 @@ import com.nhom2.learnenglish.core.data.local.entity.word.WordSetCrossRef
 interface WordSetCrossDao : BaseDao<WordSetCrossRef> {
     @Query("DELETE FROM word_set_cross_ref")
     fun deleteAll()
+
+    @Query("DELETE FROM word_set_cross_ref WHERE word_id = :wordId AND set_id = :setId")
+    fun removeWordFromSet(wordId: Long, setId: Long)
 }
