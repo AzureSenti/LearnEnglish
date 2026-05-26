@@ -50,8 +50,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
         holder.tvLevel.setText(article.getLevel());
         holder.tvCategory.setText(article.getCategory());
         holder.tvReadTime.setText(article.getReadTime());
+        holder.tvStatus.setText("Báo hay");
 
-        holder.tvStatus.setVisibility(article.isCompleted() ? View.VISIBLE : View.GONE);
+//        holder.tvStatus.setVisibility(article.isCompleted() ? View.VISIBLE : View.GONE);
+
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {

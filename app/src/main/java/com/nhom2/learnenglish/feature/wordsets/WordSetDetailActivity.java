@@ -72,6 +72,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
                 db.wordSetDao(),
                 db.wordSrsDao(),
                 db.userWordSetDao(),
+                db.wordSetCrossDao(),
                 AppExecutors.Companion.getInstance()
         );
     }
