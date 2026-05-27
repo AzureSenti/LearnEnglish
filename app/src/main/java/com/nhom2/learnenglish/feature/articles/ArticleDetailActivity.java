@@ -22,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.nhom2.learnenglish.R;
 import com.nhom2.learnenglish.core.data.local.AppDatabase;
 import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity;
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity;
 import com.nhom2.learnenglish.core.data.model.DictionaryResult;
 import com.nhom2.learnenglish.core.data.repository.ArticleRepository;
 import com.nhom2.learnenglish.core.data.repository.DictionaryRepository;
@@ -30,10 +31,17 @@ import com.nhom2.learnenglish.core.network.RetrofitClient;
 import com.nhom2.learnenglish.core.network.dictionary.DictionaryApi;
 import com.nhom2.learnenglish.feature.dictionary.DictionaryViewModel;
 import com.nhom2.learnenglish.core.util.AppExecutors;
-
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.bumptech.glide.Glide;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.nhom2.learnenglish.feature.wordsets.WordSetSelectionAdapter;
 
 public class ArticleDetailActivity extends AppCompatActivity {
     private TextView tvTitle, tvContent, tvAuthor, tvInfo, tvToolbarTitle;
@@ -45,6 +53,8 @@ public class ArticleDetailActivity extends AppCompatActivity {
     // THÊM 2 BIẾN NÀY ĐỂ LƯU VỊ TRÍ TỪ ĐANG ĐƯỢC CHỌN
     private int selectedStart = -1;
     private int selectedEnd = -1;
+    // Đặt ở trên cùng class ArticleDetailActivity
+    private List<WordSetEntity> availableWordSets = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,11 +122,20 @@ public class ArticleDetailActivity extends AppCompatActivity {
                 Toast.makeText(this, "Không tìm thấy từ này trong từ điển", Toast.LENGTH_SHORT).show();
             }
         });
+        // Lắng nghe danh sách Word Set
+        dictionaryViewModel.getWordSets().observe(this, sets -> {
+            if (sets != null) {
+                availableWordSets.clear();
+                availableWordSets.addAll(sets);
+            }
+        });
 
         // Lắng nghe trạng thái khi bấm lưu từ vựng (Thành công hay Trùng lặp)
         dictionaryViewModel.getSaveStatus().observe(this, message -> {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         });
+        // lấy data
+        dictionaryViewModel.loadWordSets();
     }
 
     private void loadArticleDetail(long id) {
@@ -218,20 +237,63 @@ public class ArticleDetailActivity extends AppCompatActivity {
         TextView tvMeaning = bottomSheetView.findViewById(R.id.tv_bs_meaning);
         Button btnSave = bottomSheetView.findViewById(R.id.btn_bs_save);
 
-        // Hiển thị dữ liệu trả về từ API lên giao diện Dialog
+        // Ánh xạ layout chọn từ
+        View layoutSelectWordSet = bottomSheetView.findViewById(R.id.layout_select_word_set);
+        TextView tvSelectedWordSet = bottomSheetView.findViewById(R.id.tv_selected_word_set);
+
         tvWord.setText(result.getWord());
         tvPhonetic.setText(result.getPhonetic().isEmpty() ? "/.../" : result.getPhonetic());
         tvMeaning.setText(result.getVietnameseMeaning());
-        btnSave.setEnabled(true);
 
-        // Bắt sự kiện bấm nút Lưu vào Bộ từ vựng
+        // Dùng mảng 1 phần tử để lưu ID (nhằm thay đổi được giá trị bên trong hàm lambda)
+        final long[] selectedSetId = {-1L};
+
+        // Khi mở lên, mờ nút đi vì chưa chọn thư mục nào
+        btnSave.setEnabled(false);
+        btnSave.setAlpha(0.5f);
+
+        // 1. SỰ KIỆN BẤM ĐỂ MỞ MODAL CHỌN
+        layoutSelectWordSet.setOnClickListener(v -> {
+            showWordSetSelectionDialog(tvSelectedWordSet, selectedSetId, btnSave);
+        });
+
+        // 2. SỰ KIỆN BẤM LƯU TỪ
         btnSave.setOnClickListener(v -> {
-            long targetSetId = 1L; // Mặc định lưu vào bộ số 1 (Giao tiếp cơ bản), bạn có thể lấy ID động tuỳ ý
-            dictionaryViewModel.saveWordToSet(result, targetSetId);
-            bottomSheetDialog.dismiss();
+            if (selectedSetId[0] != -1L) {
+                dictionaryViewModel.saveWordToSet(result, selectedSetId[0]);
+                bottomSheetDialog.dismiss();
+            } else {
+                Toast.makeText(this, "Vui lòng chọn bộ từ vựng trước", Toast.LENGTH_SHORT).show();
+            }
         });
 
         bottomSheetDialog.show();
+    }
+    // HÀM MỚI ĐỂ HIỂN THỊ MODAL CHỌN TỪ VỰNG
+    private void showWordSetSelectionDialog(TextView tvSelectedWordSet, long[] selectedSetId, Button btnSave) {
+        BottomSheetDialog selectionDialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.layout_dialog_select_word_set, null);
+        selectionDialog.setContentView(view);
+
+        RecyclerView rvSelection = view.findViewById(R.id.rv_word_set_selection);
+        rvSelection.setLayoutManager(new LinearLayoutManager(this));
+
+        // Khởi tạo Adapter với danh sách availableWordSets đã lấy từ Database
+        WordSetSelectionAdapter adapter = new WordSetSelectionAdapter(availableWordSets, item -> {
+            // Khi user nhấp vào 1 dòng trong Modal thứ 2:
+            selectedSetId[0] = item.getId(); // Lưu ID lại
+            tvSelectedWordSet.setText(item.getName()); // Đổi text trên UI gốc
+
+            // Bật sáng nút Lưu
+            btnSave.setEnabled(true);
+            btnSave.setAlpha(1.0f);
+
+            // Tắt Modal phụ đi
+            selectionDialog.dismiss();
+        });
+
+        rvSelection.setAdapter(adapter);
+        selectionDialog.show();
     }
 
     private void setupToolbar() {

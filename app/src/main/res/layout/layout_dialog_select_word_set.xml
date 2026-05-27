@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/bg_card_white">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lưu vào bộ từ vựng:"
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="210dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_word_set_selection"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
+    </FrameLayout>
+</LinearLayout>

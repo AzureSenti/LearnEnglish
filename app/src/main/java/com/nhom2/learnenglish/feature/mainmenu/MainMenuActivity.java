@@ -349,7 +349,12 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Tự động cập nhật lại số lượng từ mới nhất mỗi khi quay lại trang chủ
+        loadRecentWordSets();
+    }
 
     @Override
     protected void onPause() {
