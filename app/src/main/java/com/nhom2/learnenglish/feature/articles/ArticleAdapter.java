@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nhom2.learnenglish.R;
 import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity;
+import android.widget.ImageView;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -53,6 +55,15 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
         holder.tvStatus.setText("Báo hay");
 
 //        holder.tvStatus.setVisibility(article.isCompleted() ? View.VISIBLE : View.GONE);
+        // TẢI ẢNH TỪ URL BẰNG GLIDE
+        if (article.getImage() != null && !article.getImage().isEmpty()) {
+            Glide.with(holder.itemView.getContext())
+                    .load(article.getImage())
+                    .placeholder(android.R.color.darker_gray) // Ảnh hiển thị tạm trong lúc tải
+                    .into(holder.ivImage);
+        } else {
+            holder.ivImage.setImageResource(android.R.color.darker_gray); // Ảnh mặc định nếu không có link
+        }
 
 
         holder.itemView.setOnClickListener(v -> {
@@ -68,9 +79,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     static class ArticleViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvDescription, tvLevel, tvCategory, tvReadTime, tvStatus;
+        ImageView ivImage;
 
         public ArticleViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivImage = itemView.findViewById(R.id.iv_article_image);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvDescription = itemView.findViewById(R.id.tv_description);
             tvLevel = itemView.findViewById(R.id.tv_level_tag);

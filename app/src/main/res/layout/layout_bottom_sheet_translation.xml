@@ -65,11 +65,15 @@
         android:layout_marginBottom="8dp"/>
 
     <RelativeLayout
+        android:id="@+id/layout_select_word_set"
         android:layout_width="match_parent"
         android:layout_height="52dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/bg_search"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp">
+        android:paddingHorizontal="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
 
         <ImageView
             android:id="@+id/iv_folder_icon"
@@ -79,16 +83,18 @@
             android:src="@drawable/ic_folder"
             app:tint="@color/text_secondary" />
 
-        <Spinner
-            android:id="@+id/spinner_word_sets"
+        <TextView
+            android:id="@+id/tv_selected_word_set"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_toEndOf="@id/iv_folder_icon"
             android:layout_toStartOf="@+id/iv_arrow_down"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@android:color/transparent"
-            android:spinnerMode="dropdown" />
+            android:layout_centerVertical="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:text="Chọn bộ từ vựng..."
+            android:textColor="@color/text_primary"
+            android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/iv_arrow_down"
@@ -99,6 +105,7 @@
             android:src="@android:drawable/arrow_down_float"
             app:tint="@color/text_secondary" />
     </RelativeLayout>
+
 
     <Button
         android:id="@+id/btn_bs_save"

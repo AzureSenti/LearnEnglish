@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
-    tools:context=".ArticleDetailActivity">
+    tools:context=".feature.articles.ArticleDetailActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -78,12 +78,13 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="centerCrop"
-                    android:src="@android:color/darker_gray"
+                    android:src="@android:color/white"
                     app:shapeAppearanceOverlay="@style/RoundedTopCorners" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="57dp"
                     android:layout_toEndOf="@id/iv_author"
                     android:orientation="vertical">
 
@@ -91,23 +92,23 @@
                         android:id="@+id/tv_detail_author"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Dr. Elena Vance"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:text="Dr. Elena Vance" />
 
                     <TextView
                         android:id="@+id/tv_detail_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="8 min read • English Mastery"
                         android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        tools:text="8 min read • English Mastery" />
                 </LinearLayout>
             </RelativeLayout>
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="match_parent"
+                android:id="@+id/iv_detail_image" android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_marginTop="24dp"
                 android:scaleType="centerCrop"

@@ -9,7 +9,10 @@ import com.nhom2.learnenglish.core.data.model.DictionaryResult
 import com.nhom2.learnenglish.core.data.repository.DictionaryRepository
 import com.nhom2.learnenglish.core.data.repository.WordRepository
 import kotlinx.coroutines.launch
-
+import androidx.lifecycle.viewModelScope
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 class DictionaryViewModel(
     private val dictionaryRepo: DictionaryRepository,
     private val wordRepo: WordRepository
@@ -50,5 +53,21 @@ class DictionaryViewModel(
             onSuccess = { _saveStatus.postValue("Lưu từ vựng thành công!") },
             onError = { errorMsg -> _saveStatus.postValue(errorMsg) }
         )
+    }
+    // Khai báo LiveData để chứa danh sách Word Sets
+    private val _wordSets = MutableLiveData<List<WordSetEntity>>()
+    val wordSets: LiveData<List<WordSetEntity>> get() = _wordSets
+
+    // Hàm load dữ liệu từ DB (chạy trên background thread)
+    fun loadWordSets() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                // Lấy danh sách từ repository (đảm bảo wordRepo có hàm getAllSets())
+                val sets = wordRepo.getAllSets()
+                _wordSets.postValue(sets)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 }

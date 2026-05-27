@@ -43,6 +43,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity;
 import java.util.ArrayList;
+import android.widget.ImageView;
+import com.bumptech.glide.Glide;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -307,6 +309,7 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     private void updateFeaturedUI(ArticleEntity article) {
+        ImageView ivFeaturedImage = findViewById(R.id.iv_featured_image);
         TextView tvLevel = findViewById(R.id.tv_featured_level);
         TextView tvCategory = findViewById(R.id.tv_featured_category);
         TextView tvTitle = findViewById(R.id.tv_featured_title);
@@ -324,6 +327,17 @@ public class MainMenuActivity extends AppCompatActivity {
             }
             tvDesc.setText(desc);
         }
+        // 2. Tải ảnh bằng Glide
+        if (ivFeaturedImage != null) {
+            if (article.getImage() != null && !article.getImage().isEmpty()) {
+                Glide.with(this)
+                        .load(article.getImage())
+                        .placeholder(android.R.color.darker_gray) // Ảnh chờ khi đang tải
+                        .into(ivFeaturedImage);
+            } else {
+                ivFeaturedImage.setImageResource(android.R.color.darker_gray);
+            }
+        }
 
         if (cardFeaturedArticle != null) {
             cardFeaturedArticle.setOnClickListener(v -> {
@@ -335,7 +349,12 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Tự động cập nhật lại số lượng từ mới nhất mỗi khi quay lại trang chủ
+        loadRecentWordSets();
+    }
 
     @Override
     protected void onPause() {
