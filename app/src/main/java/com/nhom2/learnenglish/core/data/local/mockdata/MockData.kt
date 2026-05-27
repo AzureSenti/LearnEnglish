@@ -55,7 +55,8 @@ object MockData {
             level = "B2 Intermediate",
             category = "Business",
             readTime = "5 min read",
-            isCompleted = true
+            isCompleted = true,
+            image = "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1000&auto=format&fit=crop"
         ),
 
         // Báo
@@ -75,10 +76,30 @@ object MockData {
             level = "B2 Intermediate",
             category = "Business",
             readTime = "5 min read",
-            isCompleted = false
-        )
+            isCompleted = false,
+            image = "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1000&auto=format&fit=crop"
+        ),
+        ArticleEntity(
+            title = "The Evolution of Full-Stack Web Development",
+            content = "In recent years, full-stack web development has seen a massive shift. Technologies like React and Next.js have revolutionized how developers build interactive user interfaces. On the server side, Node.js and Java Spring Boot continue to power robust and scalable backends.\n\nDatabase management has also evolved, with developers utilizing both relational databases like MySQL and modern cloud solutions like Supabase or PostgreSQL to ensure data integrity and real-time synchronization. As system requirement specifications become more complex, mastering these tools is essential for any modern developer.",
+            level = "C1 Advanced",
+            category = "Technology",
+            readTime = "4 min read",
+            isCompleted = false,
+            image = "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1000&auto=format&fit=crop"
+        ),
+        ArticleEntity(
+            title = "Why Cozy Games and Epic Adventures Capture Our Hearts",
+            content = "The gaming industry offers diverse experiences that cater to different player moods. On one hand, cozy farming simulators like Stardew Valley provide a relaxing escape, allowing players to build relationships with town characters, harvest crops, and manage a peaceful virtual life.\n\nOn the other hand, visually stunning open-world adventures like Ghost of Tsushima immerse players in rich historical narratives and intense samurai combat. Even competitive sports titles like FC Online keep players engaged through strategic team building. This variety ensures that whether you want to relax or face a challenge, there is always a game for you.",
+            level = "B1 Pre-Intermediate",
+            category = "Entertainment",
+            readTime = "5 min read",
+            isCompleted = false,
+            image = "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=1000&auto=format&fit=crop"
+        ),
 
-    )
+
+        )
 
     // Ngữ pháp
     val grammarLessons = listOf(

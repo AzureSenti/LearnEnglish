@@ -33,10 +33,12 @@ import com.nhom2.learnenglish.core.util.AppExecutors;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.bumptech.glide.Glide;
 
 public class ArticleDetailActivity extends AppCompatActivity {
     private TextView tvTitle, tvContent, tvAuthor, tvInfo, tvToolbarTitle;
     private ArticleRepository articleRepository;
+    private ImageView ivDetailImage;
 
     // 1. KHAI BÁO THÊM VIEWMODEL Ở ĐÂY
     private DictionaryViewModel dictionaryViewModel;
@@ -54,6 +56,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
         tvAuthor = findViewById(R.id.tv_detail_author);
         tvInfo = findViewById(R.id.tv_detail_info);
         tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
+        ivDetailImage = findViewById(R.id.iv_detail_image);
 
         setupData();
         setupToolbar();
@@ -127,6 +130,12 @@ public class ArticleDetailActivity extends AppCompatActivity {
 
                         // 5. THAY ĐỔI: Biến đổi nội dung bài báo thành các từ có thể click
                         makeContentClickable(article.getContent());
+                        //img
+                        if (article.getImage() != null && !article.getImage().isEmpty()) {
+                            Glide.with(ArticleDetailActivity.this)
+                                    .load(article.getImage())
+                                    .into(ivDetailImage);
+                        }
 
                         if (tvAuthor != null && article.getAuthor() != null) {
                             tvAuthor.setText(article.getAuthor());

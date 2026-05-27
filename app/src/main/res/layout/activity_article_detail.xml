@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
-    tools:context=".ArticleDetailActivity">
+    tools:context=".feature.articles.ArticleDetailActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -107,7 +107,7 @@
             </RelativeLayout>
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="match_parent"
+                android:id="@+id/iv_detail_image" android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_marginTop="24dp"
                 android:scaleType="centerCrop"
