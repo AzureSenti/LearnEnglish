@@ -1,30 +1,39 @@
 package com.nhom2.learnenglish.feature.wordsets;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.LinearLayout;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nhom2.learnenglish.R;
 import com.nhom2.learnenglish.core.data.local.AppDatabase;
+import com.nhom2.learnenglish.core.data.local.dao.word.WordSetDao;
 import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity;
 import com.nhom2.learnenglish.core.data.local.mockdata.MockDataImport;
 import com.nhom2.learnenglish.core.data.repository.WordRepository;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.Navigator;
-import com.nhom2.learnenglish.feature.grammar.GrammarRoadmapActivity;
 import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
-import com.nhom2.learnenglish.feature.profile.ProfileActivity;
 
 import java.util.List;
 
 public class LibraryActivity extends AppCompatActivity {
 
     private WordRepository wordRepository;
+    private WordSetDao wordSetDao;
     private WordSetAdapter adapter;
 
     @Override
@@ -34,12 +43,13 @@ public class LibraryActivity extends AppCompatActivity {
 
         setupData();
         setupBackNavigation();
-        setupBottomNavigation();
         setupRecyclerView();
+        setupFab();
     }
 
     private void setupData() {
         AppDatabase db = AppDatabase.Companion.getInstance(this);
+        wordSetDao = db.wordSetDao();
         wordRepository = new WordRepository(
                 db.wordDao(),
                 db.wordSetDao(),
@@ -61,61 +71,164 @@ public class LibraryActivity extends AppCompatActivity {
         });
     }
 
-    private void setupBottomNavigation() {
-        // Điều hướng sang Explore
-        LinearLayout navExplore = findViewById(R.id.nav_explore);
-        if (navExplore != null) {
-            navExplore.setOnClickListener(v -> Navigator.navigateTo(this, MainMenuActivity.class));
-        }
-
-        // Điều hướng sang Learn
-        LinearLayout navLearn = findViewById(R.id.nav_learn);
-        if (navLearn != null) {
-            navLearn.setOnClickListener(v -> Navigator.navigateTo(this, GrammarRoadmapActivity.class));
-        }
-
-        // Điều hướng sang Profile
-        LinearLayout navProfile = findViewById(R.id.nav_profile);
-        if (navProfile != null) {
-            navProfile.setOnClickListener(v -> Navigator.navigateTo(this, ProfileActivity.class));
+    private void setupFab() {
+        FloatingActionButton fabAdd = findViewById(R.id.fab_add);
+        if (fabAdd != null) {
+            fabAdd.setOnClickListener(v -> showWordSetForm(null));
         }
     }
 
     private void setupRecyclerView() {
         RecyclerView rvWordSets = findViewById(R.id.rv_word_sets);
-        if (rvWordSets != null) {
-            rvWordSets.setLayoutManager(new GridLayoutManager(this, 2));
-            adapter = new WordSetAdapter(item -> {
-                Intent intent = new Intent(this, WordSetDetailActivity.class);
+        if (rvWordSets == null) return;
+
+        rvWordSets.setLayoutManager(new GridLayoutManager(this, 2));
+        adapter = new WordSetAdapter(new WordSetAdapter.OnItemActionListener() {
+            @Override
+            public void onItemClick(WordSetEntity item) {
+                Intent intent = new Intent(LibraryActivity.this, WordSetDetailActivity.class);
                 intent.putExtra("SET_ID", item.getId());
                 intent.putExtra("SET_TITLE", item.getName());
                 startActivity(intent);
                 overridePendingTransition(0, 0);
+            }
+
+            @Override
+            public void onMoreClick(WordSetEntity item) {
+                showWordSetActions(item);
+            }
+        });
+        rvWordSets.setAdapter(adapter);
+    }
+
+    private void showWordSetActions(WordSetEntity item) {
+        new AlertDialog.Builder(this)
+                .setTitle(item.getName())
+                .setItems(new CharSequence[]{"Sửa bộ từ", "Xóa bộ từ"}, (dialog, which) -> {
+                    if (which == 0) showWordSetForm(item);
+                    else confirmDeleteWordSet(item);
+                })
+                .setNegativeButton("Đóng", null)
+                .show();
+    }
+
+    private void confirmDeleteWordSet(WordSetEntity item) {
+        new AlertDialog.Builder(this)
+                .setTitle("Xóa bộ từ")
+                .setMessage("Bạn có chắc muốn xóa \"" + item.getName() + "\"?")
+                .setPositiveButton("Xóa", (dialog, which) ->
+                        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+                            try {
+                                wordSetDao.delete(item);
+                                runOnUiThread(() -> {
+                                    Toast.makeText(this, "Đã xóa bộ từ", Toast.LENGTH_SHORT).show();
+                                    loadWordSetData();
+                                });
+                            } catch (Exception e) { e.printStackTrace(); }
+                        }))
+                .setNegativeButton("Hủy", null).show();
+    }
+
+    private void showWordSetForm(WordSetEntity item) {
+        final boolean isEdit = item != null;
+        BottomSheetDialog sheet = new BottomSheetDialog(this);
+        View content = getLayoutInflater().inflate(R.layout.bottom_sheet_word_set_form, null);
+
+        EditText etName = content.findViewById(R.id.et_set_name);
+        MaterialButton btnSave = content.findViewById(R.id.btn_save);
+        
+        // Emerald color cho nút Save
+        btnSave.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#10B981")));
+
+        String defaultIcon = isEdit && item.getDescription() != null ? item.getDescription() : "briefcase";
+        if ("folder".equals(defaultIcon)) defaultIcon = "briefcase";
+        final String[] selectedIcon = {defaultIcon};
+        setupCategoryIcons(content, selectedIcon);
+
+        if (isEdit) {
+            ((TextView)content.findViewById(R.id.tv_sheet_title)).setText("Edit Word Set");
+            etName.setText(item.getName());
+            btnSave.setText("Update Set");
+        }
+
+        content.findViewById(R.id.iv_close).setOnClickListener(v -> sheet.dismiss());
+
+        btnSave.setOnClickListener(v -> {
+            String name = etName.getText().toString().trim();
+            if (name.isEmpty()) {
+                etName.setError("Nhập tên bộ từ");
+                return;
+            }
+
+            AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+                try {
+                    // Constructor 4 tham số: id, name, description (lưu icon), unlockCost
+                    if (isEdit) {
+                        wordSetDao.update(new WordSetEntity(item.getId(), name, selectedIcon[0], item.getUnlockCost()));
+                    } else {
+                        wordSetDao.insert(new WordSetEntity(0L, name, selectedIcon[0], 0));
+                    }
+                    runOnUiThread(() -> {
+                        Toast.makeText(this, isEdit ? "Đã cập nhật" : "Đã tạo bộ từ mới", Toast.LENGTH_SHORT).show();
+                        sheet.dismiss();
+                        loadWordSetData();
+                    });
+                } catch (Exception e) { e.printStackTrace(); }
             });
-            rvWordSets.setAdapter(adapter);
+        });
+
+        // Hiệu ứng lò xo nhẹ khi hiện sheet
+        content.setTranslationY(100f);
+        content.animate().translationY(0).setDuration(400).start();
+
+        sheet.setContentView(content);
+        sheet.show();
+    }
+
+    private void setupCategoryIcons(View view, String[] selectedIcon) {
+        int[] ids = {R.id.cat_briefcase, R.id.cat_brain, R.id.cat_restaurant, R.id.cat_airplane, R.id.cat_more};
+        String[] tags = {"briefcase", "brain", "restaurant", "airplane", "more"};
+
+        for (int i = 0; i < ids.length; i++) {
+            MaterialButton btn = view.findViewById(ids[i]);
+            if (btn == null) continue;
+            final String tag = tags[i];
+            btn.setTag(tag);
+            
+            Runnable updateStyle = () -> {
+                boolean active = tag.equals(selectedIcon[0]);
+                btn.setStrokeColorResource(active ? R.color.primary_blue : R.color.border_light);
+                btn.setStrokeWidth(active ? 4 : 1);
+            };
+            updateStyle.run();
+
+            btn.setOnClickListener(v -> {
+                selectedIcon[0] = tag;
+                // Feedback khi chọn
+                v.animate().scaleX(1.2f).scaleY(1.2f).setDuration(100).withEndAction(() -> 
+                    v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                ).start();
+                // Cập nhật lại cho tất cả
+                for (int id : ids) {
+                    MaterialButton b = view.findViewById(id);
+                    if (b != null) {
+                        boolean active = b.getTag().equals(selectedIcon[0]);
+                        b.setStrokeColorResource(active ? R.color.primary_blue : R.color.border_light);
+                        b.setStrokeWidth(active ? 4 : 1);
+                    }
+                }
+            });
         }
     }
 
     private void loadWordSetData() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                List<WordSetEntity> list = wordRepository.getAllSets();
+                List<WordSetEntity> list = wordSetDao.getAllSets();
                 runOnUiThread(() -> {
-                    if (adapter != null) {
-                        adapter.updateData(list);
-                    }
+                    if (adapter != null) adapter.updateData(list);
                 });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) { e.printStackTrace(); }
         });
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (isFinishing()) {
-            overridePendingTransition(0, 0);
-        }
     }
 }
