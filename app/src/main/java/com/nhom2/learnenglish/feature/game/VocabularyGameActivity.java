@@ -152,22 +152,24 @@ public class VocabularyGameActivity extends AppCompatActivity {
                 List<WordEntity> tempWords = new ArrayList<>();
 
                 if ("REVIEW".equals(gameMode)) {
-                    // ĐÃ FIX: Phân loại Ôn tập theo Bộ hay Ôn tập Toàn cục
                     if (setId != -1L) {
-                        // Nếu có setId -> Ôn tập riêng bộ đó
+                        // Ôn tập riêng một bộ
                         tempWords = wordRepository.getWordsForReview(userId, setId);
                     } else {
-                        // Nếu không có setId (Từ trang chủ gọi vào) -> Ôn tập toàn bộ từ đến hạn
+                        // Ôn tập toàn cục
                         tempWords = wordRepository.getGlobalWordsForReview(userId);
                     }
-                } else if (setId != -1L) {
-                    if ("LEARN_NEW".equals(gameMode)) {
-                        // Nếu là học từ mới -> Chỉ lấy từ chưa học
+                } else if ("LEARN_NEW".equals(gameMode)) {
+                    if (setId != -1L) {
+                        // Học mới từ của một bộ
                         tempWords = wordRepository.getNewWordsToLearn(userId, setId);
                     } else {
-                        // Mặc định -> Lấy tất cả từ trong Set
-                        tempWords = wordRepository.getWordsInSet(setId);
+                        // Học mới toàn cục (Tất cả các bộ)
+                        tempWords = wordRepository.getGlobalNewWordsToLearn(userId);
                     }
+                } else if (setId != -1L) {
+                    // Mặc định -> Lấy tất cả từ trong Set
+                    tempWords = wordRepository.getWordsInSet(setId);
                 }
 
                 allWords = wordRepository.getAllWords();
