@@ -6,11 +6,11 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:background="@drawable/bg_card_white"
-    android:orientation="vertical"
-    android:padding="16dp"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?attr/selectableItemBackground">
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,16 +23,25 @@
             android:backgroundTint="@color/blue_light" />
 
         <ImageView
+            android:id="@+id/iv_set_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerInParent="true"
+            android:contentDescription="@null"
             android:src="@drawable/ic_folder"
             app:tint="@color/blue_primary" />
 
+
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:id="@+id/iv_more_actions"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_alignParentEnd="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@null"
+            android:focusable="true"
+            android:padding="4dp"
             android:src="@drawable/ic_more_vert" />
     </RelativeLayout>
 

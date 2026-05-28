@@ -19,3 +19,4 @@ data class WordSetEntity(
     val unlockCost: Int
 
 )
+
