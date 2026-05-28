@@ -49,11 +49,19 @@ class WordRepository(
     fun getWordsInSet(setId: Long): List<WordEntity> {
         return wordDao.getWordsBySetId(setId)
     }
-
-    fun getWordsForReview(userId: String): List<WordEntity> {
+    // 1. Dùng cho MainMenuActivity (Nút ôn tập toàn bộ sau này)
+    fun getGlobalWordsForReview(userId: String): List<WordEntity> {
         val currentTimeMillis = System.currentTimeMillis()
-        return wordDao.getWordsDueForReview(userId, currentTimeMillis)
+        return wordDao.getGlobalWordsDueForReview(userId, currentTimeMillis)
     }
+
+    // 2. Dùng cho WordSetDetailActivity (Nút ôn tập trong từng bộ)
+    fun getWordsForReview(userId: String, setId: Long): List<WordEntity> {
+        val currentTimeMillis = System.currentTimeMillis()
+        return wordDao.getWordsDueForReviewBySet(userId, setId, currentTimeMillis)
+    }
+
+
 
     fun getUnlockedWordSets(userId: Long): List<WordSetEntity> {
         return if (userId == -1L) {
