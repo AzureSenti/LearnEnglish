@@ -45,6 +45,12 @@ import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity;
 import java.util.ArrayList;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
+import android.text.Html;
+import androidx.core.content.ContextCompat;
+import android.widget.TextView;
+import com.google.android.material.button.MaterialButton;
+import com.nhom2.learnenglish.core.util.SessionManager;
+import com.nhom2.learnenglish.feature.game.VocabularyGameActivity;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -215,6 +221,101 @@ public class MainMenuActivity extends AppCompatActivity {
             });
         }
     }
+    // Hàm 1: Truy vấn số lượng từ đến hạn trong Database
+    private void loadGlobalReviewCount() {
+        SessionManager sessionManager = new SessionManager(this);
+        String userId = sessionManager.getCurrentUserId();
+
+        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+            try {
+                // Lấy toàn bộ từ đến hạn (Global)
+                int reviewCount = wordRepository.getGlobalWordsForReview(userId).size();
+
+                runOnUiThread(() -> {
+                    // Truyền con số xuống hàm cập nhật giao diện
+                    updateReviewUI(reviewCount);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    // Hàm 2: Cập nhật giao diện và gắn sự kiện cho nút bấm mới
+    private void updateReviewUI(int reviewCount) {
+        TextView tvReviewCount = findViewById(R.id.tv_global_review_count);
+        com.google.android.material.button.MaterialButton btnReview = findViewById(R.id.btn_action_global_review);
+
+        if (tvReviewCount == null || btnReview == null) return;
+
+        if (reviewCount > 0) {
+            // Trạng thái 1: Có từ cần ôn
+            String htmlText = "Bạn có <font color='#FF0000'><b>" + reviewCount + "</b></font> từ đến hạn";
+            tvReviewCount.setText(android.text.Html.fromHtml(htmlText, android.text.Html.FROM_HTML_MODE_LEGACY));
+
+            // Kích hoạt nút bấm
+            btnReview.setEnabled(true);
+            btnReview.setAlpha(1.0f);
+
+            // Chuyển sang màn hình Game (Global)
+            btnReview.setOnClickListener(v -> {
+                Intent intent = new Intent(MainMenuActivity.this, com.nhom2.learnenglish.feature.game.VocabularyGameActivity.class);
+                intent.putExtra("GAME_MODE", "REVIEW");
+                // Cố tình KHÔNG truyền SET_ID để Game bốc toàn bộ từ đến hạn
+                startActivity(intent);
+            });
+        } else {
+            // Trạng thái 2: Không có từ nào cần ôn
+            tvReviewCount.setText("Bạn đã hoàn thành mục tiêu");
+            tvReviewCount.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.green_tag_text));
+
+            // Làm mờ và vô hiệu hóa nút
+            btnReview.setEnabled(false);
+            btnReview.setAlpha(0.5f);
+            btnReview.setOnClickListener(null);
+        }
+    }
+    // Hàm 1: Đếm số từ mới trong Database
+    private void loadGlobalLearnCount() {
+        SessionManager sessionManager = new SessionManager(this);
+        String userId = sessionManager.getCurrentUserId();
+
+        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+            try {
+                int learnCount = wordRepository.getGlobalNewWordsToLearn(userId).size();
+                runOnUiThread(() -> updateLearnUI(learnCount));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+    // Hàm 2: Cập nhật chữ và gắn lệnh chuyển sang Game
+    private void updateLearnUI(int count) {
+        TextView tvLearnCount = findViewById(R.id.tv_global_learn_count);
+        com.google.android.material.button.MaterialButton btnLearn = findViewById(R.id.btn_action_global_learn);
+
+        if (tvLearnCount == null || btnLearn == null) return;
+
+        if (count > 0) {
+            String htmlText = "Có <font color='#FF9800'><b>" + count + "</b></font> từ đang chờ";
+            tvLearnCount.setText(android.text.Html.fromHtml(htmlText, android.text.Html.FROM_HTML_MODE_LEGACY));
+
+            btnLearn.setEnabled(true);
+            btnLearn.setAlpha(1.0f);
+
+            btnLearn.setOnClickListener(v -> {
+                Intent intent = new Intent(MainMenuActivity.this, com.nhom2.learnenglish.feature.game.VocabularyGameActivity.class);
+                intent.putExtra("GAME_MODE", "LEARN_NEW"); // Đẩy cờ HỌC MỚI sang Game
+                startActivity(intent);
+            });
+        } else {
+            tvLearnCount.setText("Bạn đã học hết từ vựng!");
+            tvLearnCount.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.text_secondary));
+
+            btnLearn.setEnabled(false);
+            btnLearn.setAlpha(0.5f);
+            btnLearn.setOnClickListener(null);
+        }}
 
     private void loadRecentWordSets() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
@@ -363,6 +464,9 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onResume();
         // Tự động cập nhật lại số lượng từ mới nhất mỗi khi quay lại trang chủ
         loadRecentWordSets();
+        //  Tự động đếm và cập nhật lại số từ cần ôn tập và từ mới mỗi khi vào trang chủ
+        loadGlobalReviewCount();
+        loadGlobalLearnCount();
     }
 
     @Override
