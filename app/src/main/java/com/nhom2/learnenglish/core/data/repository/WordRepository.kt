@@ -83,6 +83,10 @@ class WordRepository(
             }
         }
     }
+    // Dùng cho nút HỌC MỚI ở trang chủ (Lấy từ chưa học từ tất cả các bộ)
+    fun getGlobalNewWordsToLearn(userId: String): List<WordEntity> {
+        return wordDao.getGlobalNewWords(userId)
+    }
 
     fun unlockWordSet(userId: Long, setId: Long): Boolean {
         try {
