@@ -51,12 +51,33 @@ import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
 import com.nhom2.learnenglish.core.util.SessionManager;
 import com.nhom2.learnenglish.feature.game.VocabularyGameActivity;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.nhom2.learnenglish.core.data.model.DictionaryResult;
+import com.nhom2.learnenglish.core.data.repository.DictionaryRepository;
+import com.nhom2.learnenglish.core.network.RetrofitClient;
+import com.nhom2.learnenglish.feature.dictionary.DictionaryViewModel;
+import com.nhom2.learnenglish.feature.wordsets.WordSetSelectionAdapter;
+
+import java.util.ArrayList;
 
 public class MainMenuActivity extends AppCompatActivity {
 
     private ArticleRepository articleRepository;
     private WordRepository wordRepository;
     private DictionaryRepository dictionaryRepository;
+
+    private DictionaryViewModel dictionaryViewModel;
+    private List<WordSetEntity> availableWordSets = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +107,34 @@ public class MainMenuActivity extends AppCompatActivity {
         // KHỞI TẠO DICTIONARY REPOSITORY
         DictionaryApi dictionaryApi = RetrofitClient.INSTANCE.getInstance().create(DictionaryApi.class);
         dictionaryRepository = new DictionaryRepository(dictionaryApi);
+        // --- BỔ SUNG KHỞI TẠO TỪ ĐIỂN Ở ĐÂY ---
+        
+        DictionaryRepository dictRepo = new DictionaryRepository(dictionaryApi);
+        dictionaryViewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new DictionaryViewModel(dictRepo, wordRepository);
+            }
+        }).get(DictionaryViewModel.class);
+
+        // Quan sát danh sách bộ từ vựng để đổ vào Modal chọn
+        dictionaryViewModel.getWordSets().observe(this, sets -> {
+            if (sets != null) {
+                // ĐÃ FIX: Dùng clear() và addAll() để cập nhật lại danh sách gốc, thay vì tạo danh sách mới
+                availableWordSets.clear();
+                availableWordSets.addAll(sets);
+            }
+        });
+
+        //  Bổ sung lắng nghe kết quả khi lưu từ vựng thành công
+        dictionaryViewModel.getSaveStatus().observe(this, message -> {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            if ("Lưu từ vựng thành công!".equals(message)) {
+                loadRecentWordSets(); // Cập nhật lại số lượng từ trên thẻ màn hình chính
+            }
+        });
+        dictionaryViewModel.loadWordSets();
     }
     private void setupSearchBar() {
         // Lưu ý đổi từ EditText thành AutoCompleteTextView
@@ -175,6 +224,7 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
     }
+    // 1. Hàm hiển thị BottomSheet tra từ (Đã thêm chức năng chọn thư mục)
     private void showTranslationBottomSheet(DictionaryResult result) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View bottomSheetView = getLayoutInflater().inflate(R.layout.layout_bottom_sheet_translation, null);
@@ -185,18 +235,61 @@ public class MainMenuActivity extends AppCompatActivity {
         TextView tvMeaning = bottomSheetView.findViewById(R.id.tv_bs_meaning);
         Button btnSave = bottomSheetView.findViewById(R.id.btn_bs_save);
 
+        // Ánh xạ layout chọn bộ từ
+        View layoutSelectWordSet = bottomSheetView.findViewById(R.id.layout_select_word_set);
+        TextView tvSelectedWordSet = bottomSheetView.findViewById(R.id.tv_selected_word_set);
+
         tvWord.setText(result.getWord());
         tvPhonetic.setText(result.getPhonetic().isEmpty() ? "/.../" : result.getPhonetic());
         tvMeaning.setText(result.getVietnameseMeaning());
 
+        final long[] selectedSetId = {-1L};
+
+        // Khi mở lên, mờ nút lưu vì chưa chọn thư mục nào
+        btnSave.setEnabled(false);
+        btnSave.setAlpha(0.5f);
+
+        // Sự kiện: Bấm để mở Modal chọn bộ từ vựng
+        layoutSelectWordSet.setOnClickListener(v -> {
+            showWordSetSelectionDialog(tvSelectedWordSet, selectedSetId, btnSave);
+        });
+
+        // Sự kiện: Bấm lưu từ
         btnSave.setOnClickListener(v -> {
-            Toast.makeText(this, "Tính năng lưu từ đang được cập nhật", Toast.LENGTH_SHORT).show();
-            bottomSheetDialog.dismiss();
+            if (selectedSetId[0] != -1L) {
+                dictionaryViewModel.saveWordToSet(result, selectedSetId[0]);
+                bottomSheetDialog.dismiss();
+            } else {
+                Toast.makeText(this, "Vui lòng chọn bộ từ vựng trước", Toast.LENGTH_SHORT).show();
+            }
         });
 
         bottomSheetDialog.show();
     }
 
+    // 2. Hàm hiển thị Modal chọn Bộ từ vựng phụ
+    private void showWordSetSelectionDialog(TextView tvSelectedWordSet, long[] selectedSetId, Button btnSave) {
+        BottomSheetDialog selectionDialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.layout_dialog_select_word_set, null);
+        selectionDialog.setContentView(view);
+
+        RecyclerView rvSelection = view.findViewById(R.id.rv_word_set_selection);
+        rvSelection.setLayoutManager(new LinearLayoutManager(this));
+
+        WordSetSelectionAdapter adapter = new WordSetSelectionAdapter(availableWordSets, item -> {
+            selectedSetId[0] = item.getId();
+            tvSelectedWordSet.setText(item.getName());
+
+            // Bật sáng nút Lưu
+            btnSave.setEnabled(true);
+            btnSave.setAlpha(1.0f);
+
+            selectionDialog.dismiss();
+        });
+
+        rvSelection.setAdapter(adapter);
+        selectionDialog.show();
+    }
     @SuppressLint("SetTextI18n")
     private void updateWordSetUI(WordSetEntity set, int index, int wordCount) {
         int cardId = (index == 1) ? R.id.card_word_set_1 : R.id.card_word_set_2;
