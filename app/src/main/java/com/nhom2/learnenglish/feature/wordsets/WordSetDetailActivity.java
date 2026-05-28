@@ -87,10 +87,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
         btnLearnNew = findViewById(R.id.btnLearnNew);
         btnReview = findViewById(R.id.btnReview);
         
-        FloatingActionButton fabAddWord = findViewById(R.id.fab_add_word);
-        if (fabAddWord != null) {
-            fabAddWord.setOnClickListener(v -> showWordForm(null));
-        }
+
 
         if (btnLearnNew != null) {
             btnLearnNew.setOnClickListener(v -> {
@@ -280,7 +277,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
     private void loadReviewCount() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                int reviewCount = wordRepository.getWordsForReview(String.valueOf(userId)).size();
+                int reviewCount = wordRepository.getWordsForReview(String.valueOf(userId), setId).size();
                 runOnUiThread(() -> {
                     if (btnReview != null) {
                         btnReview.setText(reviewCount > 0 ? "ÔN TẬP (" + reviewCount + ")" : "CHƯA CÓ TỪ CẦN ÔN");

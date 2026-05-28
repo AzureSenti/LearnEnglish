@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,8 @@ import com.nhom2.learnenglish.core.data.repository.WordRepository;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
+import com.nhom2.learnenglish.feature.grammar.GrammarRoadmapActivity; // Bổ sung import
+import com.nhom2.learnenglish.feature.profile.ProfileActivity; // Bổ sung import
 
 import java.util.List;
 
@@ -45,6 +48,7 @@ public class LibraryActivity extends AppCompatActivity {
         setupBackNavigation();
         setupRecyclerView();
         setupFab();
+        setupBottomNav(); // BỔ SUNG: Gọi hàm thiết lập điều hướng
     }
 
     private void setupData() {
@@ -66,7 +70,11 @@ public class LibraryActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                Navigator.navigateTo(LibraryActivity.this, MainMenuActivity.class);
+                Intent intent = new Intent(LibraryActivity.this, MainMenuActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
             }
         });
     }
@@ -136,7 +144,7 @@ public class LibraryActivity extends AppCompatActivity {
 
         EditText etName = content.findViewById(R.id.et_set_name);
         MaterialButton btnSave = content.findViewById(R.id.btn_save);
-        
+
         // Emerald color cho nút Save
         btnSave.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#10B981")));
 
@@ -146,9 +154,9 @@ public class LibraryActivity extends AppCompatActivity {
         setupCategoryIcons(content, selectedIcon);
 
         if (isEdit) {
-            ((TextView)content.findViewById(R.id.tv_sheet_title)).setText("Edit Word Set");
+            ((TextView)content.findViewById(R.id.tv_sheet_title)).setText("Sửa Bộ Từ Vựng");
             etName.setText(item.getName());
-            btnSave.setText("Update Set");
+            btnSave.setText("Cập Nhật");
         }
 
         content.findViewById(R.id.iv_close).setOnClickListener(v -> sheet.dismiss());
@@ -162,7 +170,6 @@ public class LibraryActivity extends AppCompatActivity {
 
             AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
                 try {
-                    // Constructor 4 tham số: id, name, description (lưu icon), unlockCost
                     if (isEdit) {
                         wordSetDao.update(new WordSetEntity(item.getId(), name, selectedIcon[0], item.getUnlockCost()));
                     } else {
@@ -177,7 +184,6 @@ public class LibraryActivity extends AppCompatActivity {
             });
         });
 
-        // Hiệu ứng lò xo nhẹ khi hiện sheet
         content.setTranslationY(100f);
         content.animate().translationY(0).setDuration(400).start();
 
@@ -194,26 +200,27 @@ public class LibraryActivity extends AppCompatActivity {
             if (btn == null) continue;
             final String tag = tags[i];
             btn.setTag(tag);
-            
+
             Runnable updateStyle = () -> {
                 boolean active = tag.equals(selectedIcon[0]);
-                btn.setStrokeColorResource(active ? R.color.primary_blue : R.color.border_light);
+                // ĐÃ FIX LỖI: R.color.blue_primary
+                btn.setStrokeColorResource(active ? R.color.blue_primary : R.color.border_light);
                 btn.setStrokeWidth(active ? 4 : 1);
             };
             updateStyle.run();
 
             btn.setOnClickListener(v -> {
                 selectedIcon[0] = tag;
-                // Feedback khi chọn
-                v.animate().scaleX(1.2f).scaleY(1.2f).setDuration(100).withEndAction(() -> 
-                    v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                v.animate().scaleX(1.2f).scaleY(1.2f).setDuration(100).withEndAction(() ->
+                        v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
                 ).start();
-                // Cập nhật lại cho tất cả
+
                 for (int id : ids) {
                     MaterialButton b = view.findViewById(id);
                     if (b != null) {
                         boolean active = b.getTag().equals(selectedIcon[0]);
-                        b.setStrokeColorResource(active ? R.color.primary_blue : R.color.border_light);
+                        // ĐÃ FIX LỖI: R.color.blue_primary
+                        b.setStrokeColorResource(active ? R.color.blue_primary : R.color.border_light);
                         b.setStrokeWidth(active ? 4 : 1);
                     }
                 }
@@ -230,5 +237,53 @@ public class LibraryActivity extends AppCompatActivity {
                 });
             } catch (Exception e) { e.printStackTrace(); }
         });
+    }
+
+    // BỔ SUNG: Hàm điều hướng chuẩn theo cấu trúc của dự án
+    private void setupBottomNav() {
+        LinearLayout navExplore = findViewById(R.id.nav_explore);
+        LinearLayout navLibrary = findViewById(R.id.nav_library);
+        LinearLayout navLearn = findViewById(R.id.nav_learn);
+        LinearLayout navProfile = findViewById(R.id.nav_profile);
+
+        if (navExplore != null) {
+            navExplore.setOnClickListener(v -> {
+                Intent intent = new Intent(this, MainMenuActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
+            });
+        }
+
+        if (navLibrary != null) {
+            navLibrary.setOnClickListener(null); // Đang ở Library nên khóa click
+        }
+
+        if (navLearn != null) {
+            navLearn.setOnClickListener(v -> {
+                Intent intent = new Intent(this, GrammarRoadmapActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
+            });
+        }
+
+        if (navProfile != null) {
+            navProfile.setOnClickListener(v -> {
+                Intent intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
+            });
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isFinishing()) {
+            overridePendingTransition(0, 0); // Tắt animation khi đóng activity
+        }
     }
 }

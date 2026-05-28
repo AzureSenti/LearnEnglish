@@ -45,12 +45,39 @@ import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity;
 import java.util.ArrayList;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
+import android.text.Html;
+import androidx.core.content.ContextCompat;
+import android.widget.TextView;
+import com.google.android.material.button.MaterialButton;
+import com.nhom2.learnenglish.core.util.SessionManager;
+import com.nhom2.learnenglish.feature.game.VocabularyGameActivity;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.nhom2.learnenglish.core.data.model.DictionaryResult;
+import com.nhom2.learnenglish.core.data.repository.DictionaryRepository;
+import com.nhom2.learnenglish.core.network.RetrofitClient;
+import com.nhom2.learnenglish.feature.dictionary.DictionaryViewModel;
+import com.nhom2.learnenglish.feature.wordsets.WordSetSelectionAdapter;
+
+import java.util.ArrayList;
 
 public class MainMenuActivity extends AppCompatActivity {
 
     private ArticleRepository articleRepository;
     private WordRepository wordRepository;
     private DictionaryRepository dictionaryRepository;
+
+    private DictionaryViewModel dictionaryViewModel;
+    private List<WordSetEntity> availableWordSets = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +107,34 @@ public class MainMenuActivity extends AppCompatActivity {
         // KHỞI TẠO DICTIONARY REPOSITORY
         DictionaryApi dictionaryApi = RetrofitClient.INSTANCE.getInstance().create(DictionaryApi.class);
         dictionaryRepository = new DictionaryRepository(dictionaryApi);
+        // --- BỔ SUNG KHỞI TẠO TỪ ĐIỂN Ở ĐÂY ---
+        
+        DictionaryRepository dictRepo = new DictionaryRepository(dictionaryApi);
+        dictionaryViewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new DictionaryViewModel(dictRepo, wordRepository);
+            }
+        }).get(DictionaryViewModel.class);
+
+        // Quan sát danh sách bộ từ vựng để đổ vào Modal chọn
+        dictionaryViewModel.getWordSets().observe(this, sets -> {
+            if (sets != null) {
+                // ĐÃ FIX: Dùng clear() và addAll() để cập nhật lại danh sách gốc, thay vì tạo danh sách mới
+                availableWordSets.clear();
+                availableWordSets.addAll(sets);
+            }
+        });
+
+        //  Bổ sung lắng nghe kết quả khi lưu từ vựng thành công
+        dictionaryViewModel.getSaveStatus().observe(this, message -> {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            if ("Lưu từ vựng thành công!".equals(message)) {
+                loadRecentWordSets(); // Cập nhật lại số lượng từ trên thẻ màn hình chính
+            }
+        });
+        dictionaryViewModel.loadWordSets();
     }
     private void setupSearchBar() {
         // Lưu ý đổi từ EditText thành AutoCompleteTextView
@@ -169,6 +224,7 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
     }
+    // 1. Hàm hiển thị BottomSheet tra từ (Đã thêm chức năng chọn thư mục)
     private void showTranslationBottomSheet(DictionaryResult result) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View bottomSheetView = getLayoutInflater().inflate(R.layout.layout_bottom_sheet_translation, null);
@@ -179,18 +235,61 @@ public class MainMenuActivity extends AppCompatActivity {
         TextView tvMeaning = bottomSheetView.findViewById(R.id.tv_bs_meaning);
         Button btnSave = bottomSheetView.findViewById(R.id.btn_bs_save);
 
+        // Ánh xạ layout chọn bộ từ
+        View layoutSelectWordSet = bottomSheetView.findViewById(R.id.layout_select_word_set);
+        TextView tvSelectedWordSet = bottomSheetView.findViewById(R.id.tv_selected_word_set);
+
         tvWord.setText(result.getWord());
         tvPhonetic.setText(result.getPhonetic().isEmpty() ? "/.../" : result.getPhonetic());
         tvMeaning.setText(result.getVietnameseMeaning());
 
+        final long[] selectedSetId = {-1L};
+
+        // Khi mở lên, mờ nút lưu vì chưa chọn thư mục nào
+        btnSave.setEnabled(false);
+        btnSave.setAlpha(0.5f);
+
+        // Sự kiện: Bấm để mở Modal chọn bộ từ vựng
+        layoutSelectWordSet.setOnClickListener(v -> {
+            showWordSetSelectionDialog(tvSelectedWordSet, selectedSetId, btnSave);
+        });
+
+        // Sự kiện: Bấm lưu từ
         btnSave.setOnClickListener(v -> {
-            Toast.makeText(this, "Tính năng lưu từ đang được cập nhật", Toast.LENGTH_SHORT).show();
-            bottomSheetDialog.dismiss();
+            if (selectedSetId[0] != -1L) {
+                dictionaryViewModel.saveWordToSet(result, selectedSetId[0]);
+                bottomSheetDialog.dismiss();
+            } else {
+                Toast.makeText(this, "Vui lòng chọn bộ từ vựng trước", Toast.LENGTH_SHORT).show();
+            }
         });
 
         bottomSheetDialog.show();
     }
 
+    // 2. Hàm hiển thị Modal chọn Bộ từ vựng phụ
+    private void showWordSetSelectionDialog(TextView tvSelectedWordSet, long[] selectedSetId, Button btnSave) {
+        BottomSheetDialog selectionDialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.layout_dialog_select_word_set, null);
+        selectionDialog.setContentView(view);
+
+        RecyclerView rvSelection = view.findViewById(R.id.rv_word_set_selection);
+        rvSelection.setLayoutManager(new LinearLayoutManager(this));
+
+        WordSetSelectionAdapter adapter = new WordSetSelectionAdapter(availableWordSets, item -> {
+            selectedSetId[0] = item.getId();
+            tvSelectedWordSet.setText(item.getName());
+
+            // Bật sáng nút Lưu
+            btnSave.setEnabled(true);
+            btnSave.setAlpha(1.0f);
+
+            selectionDialog.dismiss();
+        });
+
+        rvSelection.setAdapter(adapter);
+        selectionDialog.show();
+    }
     @SuppressLint("SetTextI18n")
     private void updateWordSetUI(WordSetEntity set, int index, int wordCount) {
         int cardId = (index == 1) ? R.id.card_word_set_1 : R.id.card_word_set_2;
@@ -215,6 +314,101 @@ public class MainMenuActivity extends AppCompatActivity {
             });
         }
     }
+    // Hàm 1: Truy vấn số lượng từ đến hạn trong Database
+    private void loadGlobalReviewCount() {
+        SessionManager sessionManager = new SessionManager(this);
+        String userId = sessionManager.getCurrentUserId();
+
+        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+            try {
+                // Lấy toàn bộ từ đến hạn (Global)
+                int reviewCount = wordRepository.getGlobalWordsForReview(userId).size();
+
+                runOnUiThread(() -> {
+                    // Truyền con số xuống hàm cập nhật giao diện
+                    updateReviewUI(reviewCount);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    // Hàm 2: Cập nhật giao diện và gắn sự kiện cho nút bấm mới
+    private void updateReviewUI(int reviewCount) {
+        TextView tvReviewCount = findViewById(R.id.tv_global_review_count);
+        com.google.android.material.button.MaterialButton btnReview = findViewById(R.id.btn_action_global_review);
+
+        if (tvReviewCount == null || btnReview == null) return;
+
+        if (reviewCount > 0) {
+            // Trạng thái 1: Có từ cần ôn
+            String htmlText = "Bạn có <font color='#FF0000'><b>" + reviewCount + "</b></font> từ đến hạn";
+            tvReviewCount.setText(android.text.Html.fromHtml(htmlText, android.text.Html.FROM_HTML_MODE_LEGACY));
+
+            // Kích hoạt nút bấm
+            btnReview.setEnabled(true);
+            btnReview.setAlpha(1.0f);
+
+            // Chuyển sang màn hình Game (Global)
+            btnReview.setOnClickListener(v -> {
+                Intent intent = new Intent(MainMenuActivity.this, com.nhom2.learnenglish.feature.game.VocabularyGameActivity.class);
+                intent.putExtra("GAME_MODE", "REVIEW");
+                // Cố tình KHÔNG truyền SET_ID để Game bốc toàn bộ từ đến hạn
+                startActivity(intent);
+            });
+        } else {
+            // Trạng thái 2: Không có từ nào cần ôn
+            tvReviewCount.setText("Bạn đã hoàn thành mục tiêu");
+            tvReviewCount.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.green_tag_text));
+
+            // Làm mờ và vô hiệu hóa nút
+            btnReview.setEnabled(false);
+            btnReview.setAlpha(0.5f);
+            btnReview.setOnClickListener(null);
+        }
+    }
+    // Hàm 1: Đếm số từ mới trong Database
+    private void loadGlobalLearnCount() {
+        SessionManager sessionManager = new SessionManager(this);
+        String userId = sessionManager.getCurrentUserId();
+
+        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+            try {
+                int learnCount = wordRepository.getGlobalNewWordsToLearn(userId).size();
+                runOnUiThread(() -> updateLearnUI(learnCount));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+    // Hàm 2: Cập nhật chữ và gắn lệnh chuyển sang Game
+    private void updateLearnUI(int count) {
+        TextView tvLearnCount = findViewById(R.id.tv_global_learn_count);
+        com.google.android.material.button.MaterialButton btnLearn = findViewById(R.id.btn_action_global_learn);
+
+        if (tvLearnCount == null || btnLearn == null) return;
+
+        if (count > 0) {
+            String htmlText = "Có <font color='#FF9800'><b>" + count + "</b></font> từ đang chờ";
+            tvLearnCount.setText(android.text.Html.fromHtml(htmlText, android.text.Html.FROM_HTML_MODE_LEGACY));
+
+            btnLearn.setEnabled(true);
+            btnLearn.setAlpha(1.0f);
+
+            btnLearn.setOnClickListener(v -> {
+                Intent intent = new Intent(MainMenuActivity.this, com.nhom2.learnenglish.feature.game.VocabularyGameActivity.class);
+                intent.putExtra("GAME_MODE", "LEARN_NEW"); // Đẩy cờ HỌC MỚI sang Game
+                startActivity(intent);
+            });
+        } else {
+            tvLearnCount.setText("Bạn đã học hết từ vựng!");
+            tvLearnCount.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.text_secondary));
+
+            btnLearn.setEnabled(false);
+            btnLearn.setAlpha(0.5f);
+            btnLearn.setOnClickListener(null);
+        }}
 
     private void loadRecentWordSets() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
@@ -262,32 +456,41 @@ public class MainMenuActivity extends AppCompatActivity {
         }
 
         // --- Bottom Navigation ---
-        
-        // 1. Explore (Chính nó - hiện tại đang active)
+
+        // 1. Explore (Chính nó - hiện tại đang active -> Khóa click)
         LinearLayout navExplore = findViewById(R.id.nav_explore);
         if (navExplore != null) {
-            navExplore.setOnClickListener(null); 
+            navExplore.setOnClickListener(null);
         }
 
-        // 2. Library
+        // 2. Chuyển sang Library
         LinearLayout navLibrary = findViewById(R.id.nav_library);
         if (navLibrary != null) {
-            navLibrary.setOnClickListener(v -> Navigator.navigateTo(this, LibraryActivity.class));
+            navLibrary.setOnClickListener(v -> {
+                Navigator.navigateTo(this, LibraryActivity.class);
+                overridePendingTransition(0, 0); // THÊM DÒNG NÀY: Xóa hiệu ứng chuyển trang
+            });
         }
 
-        // 3. Learn (Ngữ pháp)
+        // 3. Chuyển sang Learn (Ngữ pháp)
         LinearLayout navLearn = findViewById(R.id.nav_learn);
         if (navLearn != null) {
-            navLearn.setOnClickListener(v -> Navigator.navigateTo(this, GrammarRoadmapActivity.class));
+            navLearn.setOnClickListener(v -> {
+                Navigator.navigateTo(this, GrammarRoadmapActivity.class);
+                overridePendingTransition(0, 0); // THÊM DÒNG NÀY: Xóa hiệu ứng chuyển trang
+            });
         }
 
-        // 4. Profile
+        // 4. Chuyển sang Profile
         LinearLayout navProfile = findViewById(R.id.nav_profile);
         if (navProfile != null) {
-            navProfile.setOnClickListener(v -> Navigator.navigateTo(this, ProfileActivity.class));
+            navProfile.setOnClickListener(v -> {
+                Navigator.navigateTo(this, ProfileActivity.class);
+                overridePendingTransition(0, 0); // THÊM DÒNG NÀY: Xóa hiệu ứng chuyển trang
+            });
         }
 
-        // Nút Ngữ pháp ở phần Categories giữa màn hình
+        // Nút Ngữ pháp ở phần Categories giữa màn hình (Giữ nguyên)
         LinearLayout cardGrammar = findViewById(R.id.card_grammar);
         if (cardGrammar != null) {
             cardGrammar.setOnClickListener(v -> Navigator.navigateTo(this, GrammarRoadmapActivity.class));
@@ -354,6 +557,9 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onResume();
         // Tự động cập nhật lại số lượng từ mới nhất mỗi khi quay lại trang chủ
         loadRecentWordSets();
+        //  Tự động đếm và cập nhật lại số từ cần ôn tập và từ mới mỗi khi vào trang chủ
+        loadGlobalReviewCount();
+        loadGlobalLearnCount();
     }
 
     @Override
