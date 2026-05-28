@@ -277,7 +277,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
     private void loadReviewCount() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                int reviewCount = wordRepository.getWordsForReview(String.valueOf(userId)).size();
+                int reviewCount = wordRepository.getWordsForReview(String.valueOf(userId), setId).size();
                 runOnUiThread(() -> {
                     if (btnReview != null) {
                         btnReview.setText(reviewCount > 0 ? "ÔN TẬP (" + reviewCount + ")" : "CHƯA CÓ TỪ CẦN ÔN");

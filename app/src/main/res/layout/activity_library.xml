@@ -26,7 +26,7 @@
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_menu" />
+                android:src="@drawable/ic_library" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -71,14 +71,15 @@
                     android:textColor="@color/text_primary"
                     android:textSize="28sp"
                     android:textStyle="bold" />
-
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_search" />
+                    android:src="@drawable/ic_folder" />
+
+
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
