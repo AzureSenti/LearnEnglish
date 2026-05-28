@@ -70,6 +70,13 @@ interface WordDao : BaseDao<WordEntity> {
         LIMIT :limit
     """)
     fun getUnlearnedWords(setId: Long, userId: String, limit: Int = 10): List<WordEntity>
+    // Lấy các từ mới (chưa học) trên toàn hệ thống (không phân biệt bộ)
+    @Query("""
+        SELECT w.* FROM words w
+        WHERE w.id NOT IN (SELECT word_id FROM word_srs WHERE user_id = :userId)
+        LIMIT :limit
+    """)
+    fun getGlobalNewWords(userId: String, limit: Int = 20): List<WordEntity>
 
 
     @Query("DELETE FROM words")
