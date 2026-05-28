@@ -62,6 +62,7 @@
             app:tint="@color/text_secondary" />
 
         <EditText
+            android:id="@+id/et_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -71,7 +72,7 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <!-- Categories / Chips -->
+    <!-- Categories / Chips Section -->
     <HorizontalScrollView
         android:id="@+id/hsv_categories"
         android:layout_width="match_parent"
@@ -82,54 +83,16 @@
         android:scrollbars="none"
         app:layout_constraintTop_toBottomOf="@id/ll_search">
 
-        <LinearLayout
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_categories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:singleLine="true"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+            <!-- Chips will be added dynamically here -->
+        </com.google.android.material.chip.ChipGroup>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_chip_selected"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="8dp"
-                android:text="All"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_unselected"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="8dp"
-                android:text="Business"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_unselected"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="8dp"
-                android:text="Culture"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_unselected"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="8dp"
-                android:text="Technology"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp" />
-        </LinearLayout>
     </HorizontalScrollView>
 
     <!-- Articles List -->
