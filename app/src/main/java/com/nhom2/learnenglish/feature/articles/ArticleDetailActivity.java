@@ -112,16 +112,24 @@ public class ArticleDetailActivity extends AppCompatActivity {
         }
     }
 
+
     // 4. HÀM LẮNG NGHE KẾT QUẢ TỪ API MẠNG VÀ DATABASE
     private void setupViewModelObservers() {
-        // Lắng nghe kết quả tra từ
+        //  Chỉ giữ lại 1 observer duy nhất và chặn chuỗi "không thể dịch"
         dictionaryViewModel.getTranslationResult().observe(this, result -> {
-            if (result != null) {
+            if (result != null
+                    && result.getVietnameseMeaning() != null
+                    && !result.getVietnameseMeaning().isEmpty()
+                    && !result.getVietnameseMeaning().toLowerCase().contains("không thể dịch từ này")
+                    && !result.getVietnameseMeaning().toLowerCase().contains("không tìm thấy")) {
+
                 showTranslationBottomSheet(result);
+
             } else {
-                Toast.makeText(this, "Không tìm thấy từ này trong từ điển", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Không tìm thấy nghĩa của từ này hoặc lỗi mạng!", Toast.LENGTH_LONG).show();
             }
         });
+
         // Lắng nghe danh sách Word Set
         dictionaryViewModel.getWordSets().observe(this, sets -> {
             if (sets != null) {
@@ -130,11 +138,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
             }
         });
 
-        // Lắng nghe trạng thái khi bấm lưu từ vựng (Thành công hay Trùng lặp)
-        dictionaryViewModel.getSaveStatus().observe(this, message -> {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        });
-        // lấy data
+        // Lấy data
         dictionaryViewModel.loadWordSets();
     }
 
@@ -228,6 +232,16 @@ public class ArticleDetailActivity extends AppCompatActivity {
 
     // 7. HIỂN THỊ DIALOG KẾT QUẢ DỊCH
     private void showTranslationBottomSheet(DictionaryResult result) {
+        // BẢO MẬT BỔ SUNG: Không cho mở nếu result rỗng
+        // BẢO MẬT BỔ SUNG: Chặn mọi đường có thể lọt từ rỗng hoặc lỗi
+        if (result == null
+                || result.getVietnameseMeaning() == null
+                || result.getVietnameseMeaning().isEmpty()
+                || result.getVietnameseMeaning().toLowerCase().contains("không thể dịch")
+                || result.getVietnameseMeaning().toLowerCase().contains("không tìm thấy")) {
+            Toast.makeText(this, "Dữ liệu từ vựng không hợp lệ!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View bottomSheetView = getLayoutInflater().inflate(R.layout.layout_bottom_sheet_translation, null);
         bottomSheetDialog.setContentView(bottomSheetView);

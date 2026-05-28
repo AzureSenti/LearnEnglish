@@ -214,18 +214,31 @@ public class MainMenuActivity extends AppCompatActivity {
                 );
 
                 runOnUiThread(() -> {
-                    if (result != null) {
+                    //  Chỉ mở bảng dịch khi lấy được dữ liệu thành công
+                    if (result != null
+                            && result.getVietnameseMeaning() != null
+                            && !result.getVietnameseMeaning().isEmpty()
+                            && !result.getVietnameseMeaning().toLowerCase().contains("không thể dịch từ này")
+                            && !result.getVietnameseMeaning().toLowerCase().contains("không tìm thấy")) {
                         showTranslationBottomSheet(result);
+                    } else {
+                        Toast.makeText(MainMenuActivity.this, "Không tìm thấy nghĩa của từ này. Vui lòng kiểm tra lại kết nối mạng!", Toast.LENGTH_LONG).show();
                     }
                 });
             } catch (Exception e) {
                 e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(MainMenuActivity.this, "Không tìm thấy từ này", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> Toast.makeText(MainMenuActivity.this, "Lỗi kết nối mạng, không thể tra từ!", Toast.LENGTH_SHORT).show());
             }
         });
     }
-    // 1. Hàm hiển thị BottomSheet tra từ (Đã thêm chức năng chọn thư mục)
+    //  Hàm hiển thị BottomSheet tra từ (Đã thêm chức năng chọn thư mục)
     private void showTranslationBottomSheet(DictionaryResult result) {
+        //  BẢO MẬT BỔ SUNG: Không cho mở nếu result rỗng
+        if (result == null || result.getVietnameseMeaning() == null || result.getVietnameseMeaning().isEmpty()) {
+            Toast.makeText(this, "Dữ liệu từ vựng không hợp lệ!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View bottomSheetView = getLayoutInflater().inflate(R.layout.layout_bottom_sheet_translation, null);
         bottomSheetDialog.setContentView(bottomSheetView);
@@ -257,6 +270,7 @@ public class MainMenuActivity extends AppCompatActivity {
         // Sự kiện: Bấm lưu từ
         btnSave.setOnClickListener(v -> {
             if (selectedSetId[0] != -1L) {
+                // Đảm bảo chỉ truyền result thật xuống Repository
                 dictionaryViewModel.saveWordToSet(result, selectedSetId[0]);
                 bottomSheetDialog.dismiss();
             } else {
@@ -267,7 +281,7 @@ public class MainMenuActivity extends AppCompatActivity {
         bottomSheetDialog.show();
     }
 
-    // 2. Hàm hiển thị Modal chọn Bộ từ vựng phụ
+    //  Hàm hiển thị Modal chọn Bộ từ vựng phụ
     private void showWordSetSelectionDialog(TextView tvSelectedWordSet, long[] selectedSetId, Button btnSave) {
         BottomSheetDialog selectionDialog = new BottomSheetDialog(this);
         View view = getLayoutInflater().inflate(R.layout.layout_dialog_select_word_set, null);
@@ -314,7 +328,7 @@ public class MainMenuActivity extends AppCompatActivity {
             });
         }
     }
-    // Hàm 1: Truy vấn số lượng từ đến hạn trong Database
+    // Hàm  Truy vấn số lượng từ đến hạn trong Database
     private void loadGlobalReviewCount() {
         SessionManager sessionManager = new SessionManager(this);
         String userId = sessionManager.getCurrentUserId();
@@ -334,7 +348,7 @@ public class MainMenuActivity extends AppCompatActivity {
         });
     }
 
-    // Hàm 2: Cập nhật giao diện và gắn sự kiện cho nút bấm mới
+    // Hàm  Cập nhật giao diện và gắn sự kiện cho nút bấm mới
     private void updateReviewUI(int reviewCount) {
         TextView tvReviewCount = findViewById(R.id.tv_global_review_count);
         com.google.android.material.button.MaterialButton btnReview = findViewById(R.id.btn_action_global_review);
