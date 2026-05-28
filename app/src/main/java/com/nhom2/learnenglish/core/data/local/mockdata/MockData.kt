@@ -97,6 +97,186 @@ object MockData {
             isCompleted = false,
             image = "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=1000&auto=format&fit=crop"
         ),
+        ArticleEntity(
+            title = "Mastering Server-Side Rendering with Next.js",
+            content = "Server-side rendering (SSR) has transformed how we build modern web applications. By utilizing Next.js alongside React, developers can significantly improve SEO and initial page load times. Understanding how to fetch data seamlessly on the server before rendering the UI is a critical skill for building fast, user-friendly platforms.",
+            level = "C1 Advanced",
+            category = "Technology",
+            readTime = "6 min read",
+            isCompleted = false,
+            image = "https://picsum.photos/seed/tech1/800/600"
+        ),
+        ArticleEntity(
+            title = "Building Robust APIs with Java Spring Boot",
+            content = "Java Spring Boot remains a powerhouse for enterprise-level backend development. Its dependency injection and robust security features make it ideal for handling complex system requirement specifications. When combined with scalable databases, Spring Boot ensures high availability and reliable data processing for microservices.",
+            level = "B2 Intermediate",
+            category = "Technology",
+            readTime = "7 min read",
+            isCompleted = true,
+            image = "https://picsum.photos/seed/code2/800/600"
+        ),
+        ArticleEntity(
+            title = "PostgreSQL vs MySQL: Choosing Your Relational Database",
+            content = "When designing the schema for a new project, choosing the right database is crucial. MySQL offers incredible speed for read-heavy operations and is highly popular. However, PostgreSQL provides advanced data types and strict adherence to SQL standards, making it the preferred choice for complex queries and data integrity.",
+            level = "B2 Intermediate",
+            category = "Technology",
+            readTime = "5 min read",
+            isCompleted = false,
+            image = "https://picsum.photos/seed/db3/800/600"
+        ),
+        ArticleEntity(
+            title = "The Psychology of Farming Simulators",
+            content = "Farming simulators offer a unique therapeutic experience. By focusing on repetitive but rewarding tasks—like clearing land, planting crops, and interacting with townspeople—players find a sense of control and relaxation that is often missing in high-stakes competitive games. The daily routine becomes a comforting escape.",
+            level = "B1 Pre-Intermediate",
+            category = "Entertainment",
+            readTime = "4 min read",
+            isCompleted = true,
+            image = "https://picsum.photos/seed/game4/800/600"
+        ),
+        ArticleEntity(
+            title = "Historical Accuracy in Samurai Video Games",
+            content = "Modern video games set in feudal Japan often blend historical facts with cinematic storytelling. Developers meticulously research architecture, weapon design, and traditional customs to create immersive open-world environments. Exploring these beautiful landscapes while engaging in tactical combat provides both education and entertainment.",
+            level = "B2 Intermediate",
+            category = "Entertainment",
+            readTime = "6 min read",
+            isCompleted = false,
+            image = "https://picsum.photos/seed/samurai5/800/600"
+        ),
+        ArticleEntity(
+            title = "Strategic Team Building in Football E-Sports",
+            content = "Succeeding in competitive football titles requires more than just quick reflexes. Players must act as managers, carefully considering player statistics, formations, and tactical adjustments. Building a balanced squad with a limited budget is a challenge that mirrors real-world sports management.",
+            level = "B1 Pre-Intermediate",
+            category = "Entertainment",
+            readTime = "5 min read",
+            isCompleted = false,
+            image = "https://picsum.photos/seed/sports6/800/600"
+        ),
+        ArticleEntity(
+            title = "Understanding the Labor Theory of Value",
+            content = "The labor theory of value argues that the economic value of a good or service is determined by the total amount of socially necessary labor required to produce it. This classical economic concept remains a fundamental pillar in political economy, sparking debates about surplus value, automation, and modern wage structures.",
+            level = "C1 Advanced",
+            category = "Economy",
+            readTime = "8 min read",
+            isCompleted = false,
+            image = "https://picsum.photos/seed/econ7/800/600"
+        ),
+        ArticleEntity(
+            title = "Dialectical Materialism: A Brief Introduction",
+            content = "Dialectical materialism is a philosophical approach to reality derived from the teachings of Karl Marx and Friedrich Engels. It suggests that every economic order grows to a state of maximum efficiency, while simultaneously developing internal contradictions or weaknesses that contribute to its eventual decay.",
+            level = "C1 Advanced",
+            category = "Philosophy",
+            readTime = "7 min read",
+            isCompleted = false,
+            image = "https://picsum.photos/seed/phil8/800/600"
+        ),
+        ArticleEntity(
+            title = "Daily Habits for English Proficiency",
+            content = "Consistency is the key to mastering a new language. Dedicating just 30 to 35 minutes a day to practicing pronunciation, listening to podcasts, or reviewing vocabulary can yield significant results. Regular practice is far more effective for standardized tests than cramming at the last minute.",
+            level = "A2 Elementary",
+            category = "Education",
+            readTime = "4 min read",
+            isCompleted = true,
+            image = "https://picsum.photos/seed/study9/800/600"
+        ),
+        ArticleEntity(
+            title = "Managing Dual-Boot Systems and SSD Partitions",
+            content = "Setting up a dual-boot environment, such as running Ubuntu alongside Windows, requires careful SSD management. Hardware failures, like a drive disappearing from the BIOS, often point to partition table corruption or physical connection issues. Regular backups and understanding GRUB bootloader mechanics are essential.",
+            level = "C1 Advanced",
+            category = "Technology",
+            readTime = "6 min read",
+            isCompleted = false,
+            image = "https://picsum.photos/seed/hardware10/800/600"
+        ),
+        ArticleEntity(
+            title = "Optimizing Peripheral Devices for Productivity",
+            content = "High-quality peripheral hardware, including mechanical keyboards and advanced mice with customizable macro configurations, can drastically improve your workflow. Adjusting DPI settings and programming shortcuts allows developers and gamers alike to reduce strain and increase efficiency during long sessions.",
+            level = "B2 Intermediate",
+            category = "Technology",
+            readTime = "5 min read",
+            isCompleted = true,
+            image = "https://picsum.photos/seed/mouse11/800/600"
+        ),
+        ArticleEntity(
+            title = "The Enduring Appeal of Die-Cast Toy Cars",
+            content = "Collecting die-cast model cars is a hobby that spans generations. Enthusiasts hunt for rare editions, specific castings, and limited-run series. The thrill of finding a highly sought-after model in pristine condition keeps collectors scouring hobby shops and trading communities worldwide.",
+            level = "B1 Pre-Intermediate",
+            category = "Lifestyle",
+            readTime = "4 min read",
+            isCompleted = false,
+            image = "https://picsum.photos/seed/car12/800/600"
+        ),
+        ArticleEntity(
+            title = "Creating Impactful Dashboards with Data Visualization",
+            content = "Transforming raw data into actionable insights requires effective visualization. Tools like Looker Studio allow analysts to build dynamic bubble charts, quadrant scatter plots, and consolidated reports. A well-designed dashboard highlights key metrics instantly, empowering management to make informed decisions.",
+            level = "B2 Intermediate",
+            category = "Business",
+            readTime = "6 min read",
+            isCompleted = false,
+            image = "https://picsum.photos/seed/data13/800/600"
+        ),
+        ArticleEntity(
+            title = "Designing Architecture for Modern HRMS",
+            content = "A robust Human Resource Management System (HRMS) or Job Portal requires a detailed project charter and clear module definitions. From managing stakeholders to implementing precise job-matching algorithms, the system architecture must prioritize security, scalable databases, and an intuitive user interface.",
+            level = "C1 Advanced",
+            category = "Technology",
+            readTime = "7 min read",
+            isCompleted = false,
+            image = "https://picsum.photos/seed/hrms14/800/600"
+        ),
+        ArticleEntity(
+            title = "Key Features of Successful Health Tracking Apps",
+            content = "The best fitness applications go beyond simply counting steps. They incorporate comprehensive workout journals, extensive exercise libraries, and personalized goal management. By tracking progress over time and providing visual feedback, these apps help users stay motivated and maintain a healthy lifestyle.",
+            level = "B2 Intermediate",
+            category = "Technology",
+            readTime = "5 min read",
+            isCompleted = true,
+            image = "https://picsum.photos/seed/health15/800/600"
+        ),
+        ArticleEntity(
+            title = "A Guide to Urban Parks and Green Spaces",
+            content = "Urban parks play a vital role in city living, offering residents a place to relax away from the concrete. Knowing the best times to visit, understanding parking situations, and locating the most scenic gates can turn a simple afternoon stroll into a refreshing weekend retreat.",
+            level = "A2 Elementary",
+            category = "Travel",
+            readTime = "3 min read",
+            isCompleted = false,
+            image = "https://picsum.photos/seed/park16/800/600"
+        ),
+        ArticleEntity(
+            title = "The James Webb Space Telescope's Newest Discoveries",
+            content = "Astronomers are continually amazed by the data transmitted by modern space telescopes. By observing infrared light, scientists can peer through cosmic dust to witness the birth of stars and the formation of early galaxies, rewriting our understanding of the universe's origins.",
+            level = "B2 Intermediate",
+            category = "Science",
+            readTime = "5 min read",
+            isCompleted = false,
+            image = "https://picsum.photos/seed/space17/800/600"
+        ),
+        ArticleEntity(
+            title = "Sustainable Supply Chains in 2026",
+            content = "Global businesses are facing increasing pressure to adopt sustainable logistics. Companies are transitioning to electric fleets, optimizing warehouse operations to reduce waste, and demanding transparency from their suppliers. This shift is not just ethical; it's becoming an economic necessity.",
+            level = "C1 Advanced",
+            category = "Business",
+            readTime = "6 min read",
+            isCompleted = false,
+            image = "https://picsum.photos/seed/biz18/800/600"
+        ),
+        ArticleEntity(
+            title = "How AI is Reshaping Frontend Development",
+            content = "Artificial intelligence is rapidly changing the frontend landscape. From AI-assisted code generation to smart UI components that adapt to user behavior, developers must learn to integrate these tools into their workflows. The future belongs to those who can bridge the gap between design systems and machine learning.",
+            level = "B2 Intermediate",
+            category = "Technology",
+            readTime = "5 min read",
+            isCompleted = false,
+            image = "https://picsum.photos/seed/ai19/800/600"
+        ),
+        ArticleEntity(
+            title = "Building a Minimalist Wardrobe with Neutral Tones",
+            content = "A minimalist wardrobe focuses on versatility and comfort. By investing in staple pieces like charcoal t-shirts, navy sweaters, and high-quality khaki pants, you can easily mix and match outfits for any casual or athletic occasion. Neutral tones provide a clean, timeless aesthetic without the daily hassle of choosing what to wear.",
+            level = "B1 Pre-Intermediate",
+            category = "Lifestyle",
+            readTime = "4 min read",
+            isCompleted = true,
+            image = "https://picsum.photos/seed/fashion20/800/600"
+        )
 
 
         )
