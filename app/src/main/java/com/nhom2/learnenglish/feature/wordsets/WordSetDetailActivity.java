@@ -87,10 +87,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
         btnLearnNew = findViewById(R.id.btnLearnNew);
         btnReview = findViewById(R.id.btnReview);
         
-        FloatingActionButton fabAddWord = findViewById(R.id.fab_add_word);
-        if (fabAddWord != null) {
-            fabAddWord.setOnClickListener(v -> showWordForm(null));
-        }
+
 
         if (btnLearnNew != null) {
             btnLearnNew.setOnClickListener(v -> {
