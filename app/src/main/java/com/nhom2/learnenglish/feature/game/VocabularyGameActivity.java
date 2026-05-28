@@ -32,6 +32,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import es.dmoral.toasty.Toasty;
+
 public class VocabularyGameActivity extends AppCompatActivity {
 
     private ImageView btnBack;
@@ -196,7 +198,7 @@ public class VocabularyGameActivity extends AppCompatActivity {
                         } else if ("LEARN_NEW".equals(gameMode)) {
                             msg = "Bạn đã học hết từ vựng mới trong bộ này!";
                         }
-                        Toast.makeText(VocabularyGameActivity.this, msg, Toast.LENGTH_LONG).show();
+                        Toasty.normal(VocabularyGameActivity.this, msg, Toast.LENGTH_LONG).show();
                         finish();
                     }
                 });
@@ -204,7 +206,7 @@ public class VocabularyGameActivity extends AppCompatActivity {
                 e.printStackTrace();
                 AppExecutors.Companion.getInstance().getMainThread().execute(() -> {
                     if (isFinishing() || isDestroyed()) return;
-                    Toast.makeText(VocabularyGameActivity.this, "Lỗi khi tải dữ liệu game", Toast.LENGTH_SHORT).show();
+                    Toasty.error(VocabularyGameActivity.this, "Lỗi khi tải dữ liệu game", Toast.LENGTH_SHORT).show();
                     finish();
                 });
             }
@@ -345,7 +347,7 @@ public class VocabularyGameActivity extends AppCompatActivity {
 
     private void finishGame() {
         progressBar.setProgress(totalWordsInSession);
-        Toast.makeText(this, "Hoàn thành! Bạn đã thuộc " + score + " từ.", Toast.LENGTH_LONG).show();
+        Toasty.success(this, "Hoàn thành! Bạn đã thuộc " + score + " từ.", Toast.LENGTH_LONG).show();
         finish();
     }
 

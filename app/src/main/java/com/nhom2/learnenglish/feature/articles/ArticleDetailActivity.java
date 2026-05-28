@@ -43,6 +43,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.nhom2.learnenglish.feature.wordsets.WordSetSelectionAdapter;
 
+import es.dmoral.toasty.Toasty;
+
 public class ArticleDetailActivity extends AppCompatActivity {
     private TextView tvTitle, tvContent, tvAuthor, tvInfo, tvToolbarTitle;
     private ArticleRepository articleRepository;
@@ -114,8 +116,9 @@ public class ArticleDetailActivity extends AppCompatActivity {
 
 
     // 4. HÀM LẮNG NGHE KẾT QUẢ TỪ API MẠNG VÀ DATABASE
+
     private void setupViewModelObservers() {
-        //  Chỉ giữ lại 1 observer duy nhất và chặn chuỗi "không thể dịch"
+        // Lắng nghe kết quả tra từ
         dictionaryViewModel.getTranslationResult().observe(this, result -> {
             if (result != null
                     && result.getVietnameseMeaning() != null
@@ -126,7 +129,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
                 showTranslationBottomSheet(result);
 
             } else {
-                Toast.makeText(this, "Không tìm thấy nghĩa của từ này hoặc lỗi mạng!", Toast.LENGTH_LONG).show();
+                Toasty.error(this, "Không tìm thấy nghĩa của từ này hoặc lỗi mạng!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -135,6 +138,18 @@ public class ArticleDetailActivity extends AppCompatActivity {
             if (sets != null) {
                 availableWordSets.clear();
                 availableWordSets.addAll(sets);
+            }
+        });
+
+        // ĐÃ FIX: THÊM ĐOẠN NÀY ĐỂ LẮNG NGHE TRẠNG THÁI LƯU TỪ VỰNG
+        dictionaryViewModel.getSaveStatus().observe(this, message -> {
+            if (message != null) {
+                if (message.equals("Lưu từ vựng thành công!")) {
+                    Toasty.success(this, message, Toast.LENGTH_SHORT, true).show();
+                } else {
+                    // Trường hợp lỗi (ví dụ: "Từ này đã có trong bộ từ hiện tại!")
+                    Toasty.warning(this, message, Toast.LENGTH_SHORT, true).show();
+                }
             }
         });
 
@@ -239,7 +254,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
                 || result.getVietnameseMeaning().isEmpty()
                 || result.getVietnameseMeaning().toLowerCase().contains("không thể dịch")
                 || result.getVietnameseMeaning().toLowerCase().contains("không tìm thấy")) {
-            Toast.makeText(this, "Dữ liệu từ vựng không hợp lệ!", Toast.LENGTH_SHORT).show();
+            Toasty.error(this, "Dữ liệu từ vựng không hợp lệ!", Toast.LENGTH_SHORT).show();
             return;
         }
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
@@ -277,7 +292,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
                 dictionaryViewModel.saveWordToSet(result, selectedSetId[0]);
                 bottomSheetDialog.dismiss();
             } else {
-                Toast.makeText(this, "Vui lòng chọn bộ từ vựng trước", Toast.LENGTH_SHORT).show();
+                Toasty.warning(this, "Vui lòng chọn bộ từ vựng trước", Toast.LENGTH_SHORT).show();
             }
         });
 

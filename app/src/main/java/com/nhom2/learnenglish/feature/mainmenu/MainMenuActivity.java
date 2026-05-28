@@ -67,6 +67,7 @@ import com.nhom2.learnenglish.core.data.repository.DictionaryRepository;
 import com.nhom2.learnenglish.core.network.RetrofitClient;
 import com.nhom2.learnenglish.feature.dictionary.DictionaryViewModel;
 import com.nhom2.learnenglish.feature.wordsets.WordSetSelectionAdapter;
+import es.dmoral.toasty.Toasty;
 
 import java.util.ArrayList;
 
@@ -129,9 +130,15 @@ public class MainMenuActivity extends AppCompatActivity {
 
         //  Bổ sung lắng nghe kết quả khi lưu từ vựng thành công
         dictionaryViewModel.getSaveStatus().observe(this, message -> {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            // Kiểm tra nội dung message để hiển thị Toasty tương ứng
             if ("Lưu từ vựng thành công!".equals(message)) {
+                // Hiện Toasty success màu xanh lá cực đẹp khi thành công
+                Toasty.success(this, message, Toast.LENGTH_SHORT, true).show();
+
                 loadRecentWordSets(); // Cập nhật lại số lượng từ trên thẻ màn hình chính
+            } else {
+                // Nếu có lỗi xảy ra (ví dụ: "Từ đã tồn tại", "Lỗi lưu trữ"...), hiện Toasty error hoặc warning
+                Toasty.error(this, message, Toast.LENGTH_SHORT, true).show();
             }
         });
         dictionaryViewModel.loadWordSets();
@@ -203,7 +210,7 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     }
     private void performSearch(String word) {
-        Toast.makeText(this, "Đang tra từ: " + word + "...", Toast.LENGTH_SHORT).show();
+        Toasty.info(this, "Đang tra từ: " + word + "...", Toast.LENGTH_SHORT, true).show();
 
         AppExecutors.Companion.getInstance().getNetworkIO().execute(() -> {
             try {
@@ -222,12 +229,11 @@ public class MainMenuActivity extends AppCompatActivity {
                             && !result.getVietnameseMeaning().toLowerCase().contains("không tìm thấy")) {
                         showTranslationBottomSheet(result);
                     } else {
-                        Toast.makeText(MainMenuActivity.this, "Không tìm thấy nghĩa của từ này. Vui lòng kiểm tra lại kết nối mạng!", Toast.LENGTH_LONG).show();
-                    }
+                        Toasty.warning(MainMenuActivity.this, "Không tìm thấy nghĩa của từ này. Vui lòng kiểm tra lại kết nối mạng!", Toast.LENGTH_LONG, true).show() ;                   }
                 });
             } catch (Exception e) {
                 e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(MainMenuActivity.this, "Lỗi kết nối mạng, không thể tra từ!", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> Toasty.error(MainMenuActivity.this, "Lỗi kết nối mạng, không thể tra từ!", Toast.LENGTH_SHORT, true).show());
             }
         });
     }
@@ -235,7 +241,7 @@ public class MainMenuActivity extends AppCompatActivity {
     private void showTranslationBottomSheet(DictionaryResult result) {
         //  BẢO MẬT BỔ SUNG: Không cho mở nếu result rỗng
         if (result == null || result.getVietnameseMeaning() == null || result.getVietnameseMeaning().isEmpty()) {
-            Toast.makeText(this, "Dữ liệu từ vựng không hợp lệ!", Toast.LENGTH_SHORT).show();
+            Toasty.error(this, "Dữ liệu từ vựng không hợp lệ!", Toast.LENGTH_SHORT, true).show();
             return;
         }
 
@@ -274,7 +280,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 dictionaryViewModel.saveWordToSet(result, selectedSetId[0]);
                 bottomSheetDialog.dismiss();
             } else {
-                Toast.makeText(this, "Vui lòng chọn bộ từ vựng trước", Toast.LENGTH_SHORT).show();
+                Toasty.info(this, "Vui lòng chọn bộ từ vựng trước", Toast.LENGTH_SHORT, true).show();
             }
         });
 

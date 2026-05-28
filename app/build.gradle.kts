@@ -88,6 +88,7 @@ dependencies {
     // img
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
+    implementation("com.github.GrenderG:Toasty:1.5.2")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
