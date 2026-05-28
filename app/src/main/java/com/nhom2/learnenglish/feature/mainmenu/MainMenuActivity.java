@@ -108,7 +108,7 @@ public class MainMenuActivity extends AppCompatActivity {
         DictionaryApi dictionaryApi = RetrofitClient.INSTANCE.getInstance().create(DictionaryApi.class);
         dictionaryRepository = new DictionaryRepository(dictionaryApi);
         // --- BỔ SUNG KHỞI TẠO TỪ ĐIỂN Ở ĐÂY ---
-        
+
         DictionaryRepository dictRepo = new DictionaryRepository(dictionaryApi);
         dictionaryViewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
             @NonNull
