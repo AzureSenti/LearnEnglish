@@ -397,7 +397,7 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
+<!--Bottom-->
     <LinearLayout
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
@@ -411,7 +411,7 @@
         <LinearLayout
             android:id="@+id/nav_explore"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
@@ -447,7 +447,7 @@
         <LinearLayout
             android:id="@+id/nav_library"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
@@ -472,7 +472,7 @@
         <LinearLayout
             android:id="@+id/nav_learn"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
@@ -483,7 +483,8 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_learn" />
+                android:src="@drawable/ic_learn"
+                app:tint="@color/text_secondary" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -496,7 +497,7 @@
         <LinearLayout
             android:id="@+id/nav_profile"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
@@ -507,7 +508,8 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_profile" />
+                android:src="@drawable/ic_profile"
+                app:tint="@color/text_secondary" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -518,5 +520,4 @@
         </LinearLayout>
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

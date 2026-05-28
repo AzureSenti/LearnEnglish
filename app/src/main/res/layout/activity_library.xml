@@ -18,7 +18,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingEnd="16dp">
+            android:background="#FFFFFF"
+            android:paddingEnd="16dp"
+            tools:layout_editor_absoluteX="16dp">
 
             <ImageView
                 android:layout_width="24dp"
@@ -30,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Sanctuary"
+                android:text="3English"
                 android:textColor="@color/text_primary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
