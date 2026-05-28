@@ -262,32 +262,41 @@ public class MainMenuActivity extends AppCompatActivity {
         }
 
         // --- Bottom Navigation ---
-        
-        // 1. Explore (Chính nó - hiện tại đang active)
+
+        // 1. Explore (Chính nó - hiện tại đang active -> Khóa click)
         LinearLayout navExplore = findViewById(R.id.nav_explore);
         if (navExplore != null) {
-            navExplore.setOnClickListener(null); 
+            navExplore.setOnClickListener(null);
         }
 
-        // 2. Library
+        // 2. Chuyển sang Library
         LinearLayout navLibrary = findViewById(R.id.nav_library);
         if (navLibrary != null) {
-            navLibrary.setOnClickListener(v -> Navigator.navigateTo(this, LibraryActivity.class));
+            navLibrary.setOnClickListener(v -> {
+                Navigator.navigateTo(this, LibraryActivity.class);
+                overridePendingTransition(0, 0); // THÊM DÒNG NÀY: Xóa hiệu ứng chuyển trang
+            });
         }
 
-        // 3. Learn (Ngữ pháp)
+        // 3. Chuyển sang Learn (Ngữ pháp)
         LinearLayout navLearn = findViewById(R.id.nav_learn);
         if (navLearn != null) {
-            navLearn.setOnClickListener(v -> Navigator.navigateTo(this, GrammarRoadmapActivity.class));
+            navLearn.setOnClickListener(v -> {
+                Navigator.navigateTo(this, GrammarRoadmapActivity.class);
+                overridePendingTransition(0, 0); // THÊM DÒNG NÀY: Xóa hiệu ứng chuyển trang
+            });
         }
 
-        // 4. Profile
+        // 4. Chuyển sang Profile
         LinearLayout navProfile = findViewById(R.id.nav_profile);
         if (navProfile != null) {
-            navProfile.setOnClickListener(v -> Navigator.navigateTo(this, ProfileActivity.class));
+            navProfile.setOnClickListener(v -> {
+                Navigator.navigateTo(this, ProfileActivity.class);
+                overridePendingTransition(0, 0); // THÊM DÒNG NÀY: Xóa hiệu ứng chuyển trang
+            });
         }
 
-        // Nút Ngữ pháp ở phần Categories giữa màn hình
+        // Nút Ngữ pháp ở phần Categories giữa màn hình (Giữ nguyên)
         LinearLayout cardGrammar = findViewById(R.id.card_grammar);
         if (cardGrammar != null) {
             cardGrammar.setOnClickListener(v -> Navigator.navigateTo(this, GrammarRoadmapActivity.class));

@@ -20,6 +20,7 @@ import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.Navigator;
 import com.nhom2.learnenglish.core.util.SessionManager;
 import com.nhom2.learnenglish.feature.mainmenu.MainMenuActivity;
+import com.nhom2.learnenglish.feature.profile.ProfileActivity;
 import com.nhom2.learnenglish.feature.wordsets.LibraryActivity;
 
 import java.util.List;
@@ -105,16 +106,23 @@ public class GrammarRoadmapActivity extends AppCompatActivity implements Grammar
     private void setupBottomNav() {
         LinearLayout navExplore = findViewById(R.id.nav_explore);
         LinearLayout navLibrary = findViewById(R.id.nav_library);
+        LinearLayout navProfile = findViewById(R.id.nav_profile);
 
         if (navExplore != null) {
             navExplore.setOnClickListener(v -> {
                 Navigator.navigateTo(this, MainMenuActivity.class);
-                finishAffinity(); // Xóa stack để về trang chủ mượt hơn
+                finishAffinity();
             });
         }
         if (navLibrary != null) {
             navLibrary.setOnClickListener(v -> {
                 Navigator.navigateTo(this, LibraryActivity.class);
+                finish();
+            });
+        }
+        if (navProfile != null) {
+            navProfile.setOnClickListener(v -> {
+                Navigator.navigateTo(this, ProfileActivity.class);
                 finish();
             });
         }
