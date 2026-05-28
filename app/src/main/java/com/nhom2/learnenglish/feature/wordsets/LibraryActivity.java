@@ -33,6 +33,8 @@ import com.nhom2.learnenglish.feature.profile.ProfileActivity; // Bổ sung impo
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 public class LibraryActivity extends AppCompatActivity {
 
     private WordRepository wordRepository;
@@ -129,7 +131,7 @@ public class LibraryActivity extends AppCompatActivity {
                             try {
                                 wordSetDao.delete(item);
                                 runOnUiThread(() -> {
-                                    Toast.makeText(this, "Đã xóa bộ từ", Toast.LENGTH_SHORT).show();
+                                    Toasty.success(this, "Đã xóa bộ từ", Toast.LENGTH_SHORT, true).show();
                                     loadWordSetData();
                                 });
                             } catch (Exception e) { e.printStackTrace(); }
@@ -176,8 +178,7 @@ public class LibraryActivity extends AppCompatActivity {
                         wordSetDao.insert(new WordSetEntity(0L, name, selectedIcon[0], 0));
                     }
                     runOnUiThread(() -> {
-                        Toast.makeText(this, isEdit ? "Đã cập nhật" : "Đã tạo bộ từ mới", Toast.LENGTH_SHORT).show();
-                        sheet.dismiss();
+                        Toasty.success(this, isEdit ? "Đã cập nhật" : "Đã tạo bộ từ mới", Toast.LENGTH_SHORT, true).show();                        sheet.dismiss();
                         loadWordSetData();
                     });
                 } catch (Exception e) { e.printStackTrace(); }

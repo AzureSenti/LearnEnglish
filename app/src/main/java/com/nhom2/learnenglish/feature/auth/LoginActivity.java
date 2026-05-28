@@ -25,6 +25,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import es.dmoral.toasty.Toasty;
+
 public class LoginActivity extends AppCompatActivity {
     private TextInputEditText inputEmail, inputPassword;
     private MaterialButton buttonLogin;
@@ -81,13 +83,13 @@ public class LoginActivity extends AppCompatActivity {
 
         // Nút Quên mật khẩu
         linkForgotPassword.setOnClickListener(v -> {
-            Toast.makeText(this, "Chuyển sang trang Quên mật khẩu", Toast.LENGTH_SHORT).show();
+            Toasty.normal(this, "Chuyển sang trang Quên mật khẩu", Toast.LENGTH_SHORT).show();
             // TODO: Mở ForgotPasswordActivity
         });
 
         // Nút Đăng ký
         linkSignup.setOnClickListener(v -> {
-            Toast.makeText(this, "Chuyển sang trang Đăng ký", Toast.LENGTH_SHORT).show();
+            Toasty.normal(this, "Chuyển sang trang Đăng ký", Toast.LENGTH_SHORT).show();
             // TODO: Mở SignupActivity
         });
 
@@ -95,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 //            activateGuestMode();
 //        });
         useWithoutLogin.setOnClickListener(v -> {
-            Toast.makeText(this, "Đang xử lý đăng nhập ẩn...", Toast.LENGTH_SHORT).show();
+            Toasty.info(this, "Đang xử lý đăng nhập ẩn...", Toast.LENGTH_SHORT, true).show();
             activateGuestMode();
         });
 

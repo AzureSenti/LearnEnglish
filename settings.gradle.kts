@@ -19,10 +19,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // ĐÃ THÊM KHO LƯU TRỮ JITPACK Ở ĐÂY ĐỂ TẢI THƯ VIỆN TOASTY
         maven { url = uri("https://jitpack.io") }
     }
 }
 
 rootProject.name = "LearnEnglish"
 include(":app")
- 

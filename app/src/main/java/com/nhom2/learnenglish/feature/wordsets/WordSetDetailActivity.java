@@ -30,6 +30,8 @@ import com.nhom2.learnenglish.feature.words.WordAdapter;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 public class WordSetDetailActivity extends AppCompatActivity {
     private MaterialButton btnLearnNew, btnReview;
     private TextView tvMasteryProgress;
@@ -167,8 +169,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
             String vi = etMeaning.getText().toString().trim();
 
             if (eng.isEmpty() || vi.isEmpty()) {
-                Toast.makeText(this, "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT).show();
-                return;
+                Toasty.warning(this, "Vui lòng điền đủ thông tin", Toast.LENGTH_SHORT, true).show();                return;
             }
 
             AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
@@ -177,7 +178,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
                     if (isEdit) {
                         WordEntity existing = db.wordDao().getWordByEnglish(eng);
                         if (existing != null && existing.getId() != wordToEdit.getWordId()) {
-                            runOnUiThread(() -> Toast.makeText(this, "Từ vựng tiếng Anh đã tồn tại trong hệ thống!", Toast.LENGTH_SHORT).show());
+                            runOnUiThread(() -> Toasty.warning(this, "Từ vựng tiếng Anh đã tồn tại trong hệ thống!", Toast.LENGTH_SHORT, true).show());
                             return;
                         }
                         WordEntity updated = new WordEntity(wordToEdit.getWordId(), eng, vi, wordToEdit.getAudio());
@@ -193,7 +194,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
                         
                         boolean isAlreadyInSet = db.wordSetCrossDao().isWordInSet(wordIdToLink, setId);
                         if (isAlreadyInSet) {
-                            runOnUiThread(() -> Toast.makeText(this, "Từ này đã có trong bộ từ hiện tại!", Toast.LENGTH_SHORT).show());
+                            runOnUiThread(() -> Toasty.warning(this, "Từ này đã có trong bộ từ hiện tại!", Toast.LENGTH_SHORT, true).show());
                             return;
                         }
                         
@@ -201,14 +202,13 @@ public class WordSetDetailActivity extends AppCompatActivity {
                     }
 
                     runOnUiThread(() -> {
-                        Toast.makeText(this, isEdit ? "Đã cập nhật!" : "Đã thêm từ mới!", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
+                        Toasty.success(this, isEdit ? "Đã cập nhật!" : "Đã thêm từ mới!", Toast.LENGTH_SHORT, true).show();                        dialog.dismiss();
                         loadWords();
                         loadReviewCount();
                     });
                 } catch (Exception e) { 
                     e.printStackTrace(); 
-                    runOnUiThread(() -> Toast.makeText(this, "Có lỗi xảy ra: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    runOnUiThread(() -> Toasty.error(this, "Có lỗi xảy ra: " + e.getMessage(), Toast.LENGTH_SHORT, true).show());
                 }
             });
         });
@@ -232,7 +232,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
                 .setMessage("Bạn có chắc muốn gỡ \"" + word.getEnglishWord() + "\" khỏi bộ này?")
                 .setPositiveButton("Xóa", (dialog, which) -> {
                     wordRepository.removeWordFromSpecificSet(word.getWordId(), setId, () -> {
-                        Toast.makeText(this, "Đã gỡ từ vựng", Toast.LENGTH_SHORT).show();
+                        Toasty.success(this, "Đã gỡ từ vựng", Toast.LENGTH_SHORT, true).show();
                         loadWords();
                         loadReviewCount();
                         return kotlin.Unit.INSTANCE;
