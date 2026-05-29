@@ -42,5 +42,8 @@ data class UserGrammarProgress(
     val isQuizPassed: Boolean = false,
 
     @ColumnInfo(name = "score")
-    val score: Int = 0
+    val score: Int = 0,
+
+    @ColumnInfo(name = "is_synced", defaultValue = "0")
+    val isSynced: Boolean = false
 )

@@ -67,11 +67,25 @@ public class LoginActivity extends AppCompatActivity {
         AuthApi authApi = RetrofitClient.INSTANCE.getInstance().create(AuthApi.class);
         AppDatabase db = AppDatabase.Companion.getInstance(this);
 
+        // Tạo SyncRepository cho đồng bộ dữ liệu học tập
+        com.nhom2.learnenglish.core.network.sync.SyncApi syncApi = RetrofitClient.INSTANCE.getSyncApi();
+        com.nhom2.learnenglish.core.data.repository.SyncRepository syncRepository =
+                new com.nhom2.learnenglish.core.data.repository.SyncRepository(
+                        syncApi,
+                        db.wordSrsDao(),
+                        db.userGrammarProgressDao(),
+                        db.userWordSetDao(),
+                        db.userDao(),
+                        sessionManager,
+                        AppExecutors.Companion.getInstance()
+                );
+
         userRepository = new UserRepository(
                 AppExecutors.Companion.getInstance(),
                 db.userDao(),
                 authApi,
-                sessionManager
+                sessionManager,
+                syncRepository
         );
 
         MockDataImport.INSTANCE.importIfNeeded(this);

@@ -156,4 +156,13 @@ public class ProfileActivity extends AppCompatActivity {
             binding.navLearn.setOnClickListener(v -> Navigator.INSTANCE.navigateTo(this, GrammarRoadmapActivity.class));
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Tự động đồng bộ dữ liệu khi có mạng
+        com.nhom2.learnenglish.core.util.NetworkSyncManager.INSTANCE.syncIfOnline(this);
+        // Tải lại profile sau khi sync
+        loadUserProfileData();
+    }
 }

@@ -580,6 +580,9 @@ public class MainMenuActivity extends AppCompatActivity {
         //  Tự động đếm và cập nhật lại số từ cần ôn tập và từ mới mỗi khi vào trang chủ
         loadGlobalReviewCount();
         loadGlobalLearnCount();
+
+        // Tự động đồng bộ dữ liệu khi có mạng
+        com.nhom2.learnenglish.core.util.NetworkSyncManager.INSTANCE.syncIfOnline(this);
     }
 
     @Override
