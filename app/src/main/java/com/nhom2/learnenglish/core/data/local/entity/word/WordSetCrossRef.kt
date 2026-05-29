@@ -32,6 +32,9 @@ data class WordSetCrossRef(
     val wordId: Long,
 
     @ColumnInfo(name = "set_id")
-    val setId: Long
+    val setId: Long,
+
+    @ColumnInfo(name = "is_synced", defaultValue = "0")
+    val isSynced: Boolean = false
 )
 

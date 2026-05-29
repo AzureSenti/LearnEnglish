@@ -1,5 +1,6 @@
 package com.nhom2.learnenglish.core.data.repository
 
+import android.util.Log
 import com.nhom2.learnenglish.core.data.local.dao.UserDao
 import com.nhom2.learnenglish.core.data.local.entity.UserEntity
 import com.nhom2.learnenglish.core.network.auth.AuthApi
@@ -11,11 +12,13 @@ class UserRepository(
     executors: AppExecutors = AppExecutors.getInstance(),
     private val userDao: UserDao,
     private val authApi: AuthApi,
-    private val sessionManager: SessionManager
+    private val sessionManager: SessionManager,
+    private val syncRepository: SyncRepository? = null
 ) : BaseRepository(executors) {
 
     companion object {
         const val LOCAL_USER_ID = "-1"
+        private const val TAG = "UserRepository"
     }
 
     suspend fun login(username: String, password: String) : UserEntity {
@@ -30,19 +33,38 @@ class UserRepository(
         // CẬP NHẬT 2: Đảm bảo userId không bị null
         val validUserId = response.userId ?: "-1"
 
-        // Lưu session an toàn
-        sessionManager.createLoginSession(validToken, validUserId)
+        // Lưu session an toàn (bao gồm cả refresh token)
+        val refreshToken = response.tokens?.refreshToken ?: ""
+        sessionManager.createLoginSession(validToken, validUserId, refreshToken)
 
         val userEntity = UserEntity(
             userId = validUserId, // Lưu String
             fullName = response.fullName ?: "",
             avatarUrl = response.avatarUrl ?: "",
             email = response.email ?: "",
-            coins = response.coins ?: 0
+            coins = response.coins ?: 0,
+            currentStreak = response.currentStreak ?: 0,
+            longestStreak = response.longestStreak ?: 0
         )
 
         userDao.deleteAll()
         userDao.insert(userEntity)
+
+        // --- SYNC: Merge guest data và đồng bộ với server ---
+        try {
+            syncRepository?.let { sync ->
+                // Bước 1: Chuyển dữ liệu guest sang user thật
+                sync.mergeGuestData(validUserId)
+                Log.i(TAG, "Guest data merged for user: $validUserId")
+
+                // Bước 2: Đồng bộ 2 chiều với server
+                val syncSuccess = sync.performFullSync()
+                Log.i(TAG, "Post-login sync result: $syncSuccess")
+            }
+        } catch (e: Exception) {
+            // Sync failure should NOT prevent login
+            Log.e(TAG, "Post-login sync failed (non-fatal)", e)
+        }
 
         return userEntity
     }

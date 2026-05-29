@@ -2,6 +2,11 @@ package com.nhom2.learnenglish.core.network.auth
 
 import com.google.gson.annotations.SerializedName
 
+
+// ---------------------------------------------------------------------------
+// Login
+// ---------------------------------------------------------------------------
+
 data class LoginRequest(
     @SerializedName("email") val email: String,
     @SerializedName("password") val password: String
@@ -24,3 +29,37 @@ data class LoginResponse(
         @SerializedName("token_type") val tokenType: String?
     )
 }
+
+
+// ---------------------------------------------------------------------------
+// Register
+// ---------------------------------------------------------------------------
+
+data class RegisterRequest(
+    @SerializedName("email") val email: String,
+    @SerializedName("password") val password: String,
+    @SerializedName("full_name") val fullName: String,
+    @SerializedName("account_name") val accountName: String
+)
+
+data class RegisterResponse(
+    @SerializedName("user_id") val userId: String,
+    @SerializedName("email") val email: String,
+    @SerializedName("full_name") val fullName: String,
+    @SerializedName("account_name") val accountName: String,
+    @SerializedName("tokens") val tokens: LoginResponse.Tokens?
+)
+
+
+// ---------------------------------------------------------------------------
+// Refresh / Logout
+// ---------------------------------------------------------------------------
+
+data class RefreshTokenRequest(
+    @SerializedName("refresh_token") val refreshToken: String
+)
+
+data class RefreshTokenResponse(
+    @SerializedName("access_token") val accessToken: String,
+    @SerializedName("token_type") val tokenType: String?
+)

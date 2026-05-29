@@ -73,7 +73,7 @@ class GrammarRepository(
         val progress = progressDao.getProgress(userId, lessonId)
             ?: UserGrammarProgress(userId = userId, lessonId = lessonId)
 
-        progressDao.insertOrUpdate(progress.copy(isTheoryCompleted = true))
+        progressDao.insertOrUpdate(progress.copy(isTheoryCompleted = true, isSynced = false))
     }
 
     // Gọi khi User nộp bài Trắc nghiệm
@@ -88,7 +88,8 @@ class GrammarRepository(
             progress.copy(
                 // Nếu đã pass 1 lần trong quá khứ thì luôn giữ trạng thái pass
                 isQuizPassed = progress.isQuizPassed || isPassed,
-                score = highestScore
+                score = highestScore,
+                isSynced = false
             )
         )
     }

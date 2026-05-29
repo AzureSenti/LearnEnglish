@@ -18,4 +18,21 @@ interface UserGrammarProgressDao : BaseDao<UserGrammarProgress> {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdate(progress: UserGrammarProgress)
+
+    // --- Sync queries ---
+
+    @Query("SELECT * FROM user_grammar_progress WHERE user_id = :userId AND is_synced = 0")
+    fun getUnsyncedProgress(userId: String): List<UserGrammarProgress>
+
+    @Query("UPDATE user_grammar_progress SET is_synced = 1 WHERE user_id = :userId")
+    fun markAllAsSynced(userId: String)
+
+    @Query("DELETE FROM user_grammar_progress WHERE user_id = :userId")
+    fun deleteAllForUser(userId: String)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertOrUpdateAll(list: List<UserGrammarProgress>)
+
+    @Query("UPDATE user_grammar_progress SET user_id = :newUserId WHERE user_id = :oldUserId")
+    fun migrateUserId(oldUserId: String, newUserId: String)
 }

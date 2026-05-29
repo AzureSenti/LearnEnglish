@@ -38,3 +38,5 @@ lint/intermediate-res/
 lint/generated/
 
 application-local.properties
+
+Backend/
