@@ -181,7 +181,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
                             runOnUiThread(() -> Toasty.warning(this, "Từ vựng tiếng Anh đã tồn tại trong hệ thống!", Toast.LENGTH_SHORT, true).show());
                             return;
                         }
-                        WordEntity updated = new WordEntity(wordToEdit.getWordId(), eng, vi, wordToEdit.getAudio());
+                        WordEntity updated = new WordEntity(wordToEdit.getWordId(), eng, vi, wordToEdit.getAudio(), false);
                         db.wordDao().update(updated);
                     } else {
                         WordEntity existing = db.wordDao().getWordByEnglish(eng);
@@ -189,7 +189,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
                         if (existing != null) {
                             wordIdToLink = existing.getId();
                         } else {
-                            wordIdToLink = db.wordDao().insert(new WordEntity(0, eng, vi, null));
+                            wordIdToLink = db.wordDao().insert(new WordEntity(0, eng, vi, null, false));
                         }
                         
                         boolean isAlreadyInSet = db.wordSetCrossDao().isWordInSet(wordIdToLink, setId);
@@ -198,7 +198,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
                             return;
                         }
                         
-                        db.wordSetCrossDao().insert(new com.nhom2.learnenglish.core.data.local.entity.word.WordSetCrossRef(wordIdToLink, setId));
+                        db.wordSetCrossDao().insert(new com.nhom2.learnenglish.core.data.local.entity.word.WordSetCrossRef(wordIdToLink, setId, false));
                     }
 
                     runOnUiThread(() -> {

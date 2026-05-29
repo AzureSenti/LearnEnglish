@@ -84,4 +84,13 @@ interface WordDao : BaseDao<WordEntity> {
     // Kiểm tra xem từ vựng đã tồn tại trong từ điển chung chưa
     @Query("SELECT * FROM words WHERE english_word = :word LIMIT 1")
     fun getWordByEnglish(word: String): WordEntity?
+
+    @Query("SELECT * FROM words WHERE is_synced = 0")
+    fun getUnsyncedWords(): List<WordEntity>
+
+    @Query("UPDATE words SET is_synced = 1")
+    fun markAllAsSynced()
+
+    @androidx.room3.Insert(onConflict = androidx.room3.OnConflictStrategy.REPLACE)
+    fun insertOrUpdateAll(words: List<WordEntity>)
 }

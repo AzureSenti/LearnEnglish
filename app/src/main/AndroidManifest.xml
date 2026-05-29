@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LearnEnglish"
         android:usesCleartextTraffic="true"
+        android:name=".LearnEnglishApp"
         >
 
         <activity

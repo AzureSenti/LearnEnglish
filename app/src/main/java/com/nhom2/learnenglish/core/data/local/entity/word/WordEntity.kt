@@ -23,4 +23,7 @@ data class WordEntity(
 
     @ColumnInfo(name = "audio")
     val audio: String? = null,
+
+    @ColumnInfo(name = "is_synced", defaultValue = "0")
+    val isSynced: Boolean = false
 )

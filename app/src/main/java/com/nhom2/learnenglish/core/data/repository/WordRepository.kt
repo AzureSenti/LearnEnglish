@@ -36,10 +36,10 @@ class WordRepository(
     }
 
     fun updateSet(set: WordSetEntity) {
-        wordSetDao.update(set)
+        wordSetDao.update(set.copy(isSynced = false))
     }
     fun addWordToSet(wordId: Long, setId: Long) {
-        wordSetCrossDao.insert(WordSetCrossRef(wordId = wordId, setId = setId))
+        wordSetCrossDao.insert(WordSetCrossRef(wordId = wordId, setId = setId, isSynced = false))
     }
 
     fun  removeWordFromSet(wordId: Long, setId: Long) {
@@ -188,7 +188,7 @@ class WordRepository(
                     onError?.let { runOnMain { it("Từ này đã có trong bộ từ hiện tại!") } }
                 } else {
                     // 4. Tạo liên kết
-                    val crossRef = WordSetCrossRef(wordId = wordIdToLink, setId = setId)
+                    val crossRef = WordSetCrossRef(wordId = wordIdToLink, setId = setId, isSynced = false)
                     wordSetCrossDao.insert(crossRef)
                     onSuccess?.let { runOnMain { it() } }
                 }

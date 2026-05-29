@@ -72,6 +72,9 @@ public class LoginActivity extends AppCompatActivity {
         com.nhom2.learnenglish.core.data.repository.SyncRepository syncRepository =
                 new com.nhom2.learnenglish.core.data.repository.SyncRepository(
                         syncApi,
+                        db.wordDao(),
+                        db.wordSetDao(),
+                        db.wordSetCrossDao(),
                         db.wordSrsDao(),
                         db.userGrammarProgressDao(),
                         db.userWordSetDao(),

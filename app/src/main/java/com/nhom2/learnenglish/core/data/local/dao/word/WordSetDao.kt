@@ -23,4 +23,13 @@ interface WordSetDao : BaseDao<WordSetEntity> {
 
     @Query("DELETE FROM word_sets")
     fun deleteAll()
+
+    @Query("SELECT * FROM word_sets WHERE is_synced = 0")
+    fun getUnsyncedSets(): List<WordSetEntity>
+
+    @Query("UPDATE word_sets SET is_synced = 1")
+    fun markAllAsSynced()
+
+    @androidx.room3.Insert(onConflict = androidx.room3.OnConflictStrategy.REPLACE)
+    fun insertOrUpdateAll(wordSets: List<WordSetEntity>)
 }

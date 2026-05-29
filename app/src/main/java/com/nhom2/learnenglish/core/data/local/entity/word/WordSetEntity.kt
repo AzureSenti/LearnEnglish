@@ -16,7 +16,9 @@ data class WordSetEntity(
     val description: String? = null,
 
     @ColumnInfo(name = "unlock_cost", defaultValue = "0")
-    val unlockCost: Int
+    val unlockCost: Int,
 
+    @ColumnInfo(name = "is_synced", defaultValue = "0")
+    val isSynced: Boolean? = false
 )
 
