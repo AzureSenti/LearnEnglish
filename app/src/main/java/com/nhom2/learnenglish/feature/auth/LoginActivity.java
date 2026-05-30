@@ -106,13 +106,10 @@ public class LoginActivity extends AppCompatActivity {
 
         // Nút Đăng ký
         linkSignup.setOnClickListener(v -> {
-            Toasty.normal(this, "Chuyển sang trang Đăng ký", Toast.LENGTH_SHORT).show();
-            // TODO: Mở SignupActivity
+            Navigator.navigateTo(this, SignUpActivity.class);
         });
-
-//        useWithoutLogin.setOnClickListener(v -> {
-//            activateGuestMode();
-//        });
+        
+        // Nút dùng mà không cần đăng nhập
         useWithoutLogin.setOnClickListener(v -> {
             Toasty.info(this, "Đang xử lý đăng nhập ẩn...", Toast.LENGTH_SHORT, true).show();
             activateGuestMode();
@@ -148,6 +145,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     Toast.makeText(LoginActivity.this, "Chào mừng trở lại!", Toast.LENGTH_SHORT).show();
                     Navigator.navigateTo(this, MainMenuActivity.class);
+                    finish();
                 });
 
             } catch (Exception e) {
