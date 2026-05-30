@@ -61,7 +61,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (binding.ivSettings != null) {
             binding.ivSettings.setOnClickListener(v -> {
-                // TODO: Xử lý cài đặt hoặc đăng xuất
+                android.content.Intent intent = new android.content.Intent(ProfileActivity.this, EditProfileActivity.class);
+                startActivity(intent);
             });
         }
     }

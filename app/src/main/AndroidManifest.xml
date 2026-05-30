@@ -38,10 +38,17 @@
         <activity
             android:name=".feature.auth.LoginActivity"
             android:exported="false" />
+        <activity
+            android:name=".feature.auth.SignUpActivity"
+            android:exported="false" />
         <activity android:name=".feature.wordsets.LibraryActivity"
             android:exported="false" />
         <activity
             android:name=".feature.profile.ProfileActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".feature.profile.EditProfileActivity"
             android:exported="false" />
 
 

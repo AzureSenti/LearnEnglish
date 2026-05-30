@@ -16,7 +16,7 @@
     <string name="signup_title">Create your account</string>
     <string name="signup_subtitle">Join 3English to start your journey.</string>
     <string name="label_username">Username</string>
-    <string name="hint_username_example">e.g. Alex</string>
+    <string name="hint_username_example">username_example</string>
     <string name="label_email">Email Address</string>
     <string name="label_password_field">Password</string>
     <string name="password_helper">Must be at least 8 characters</string>

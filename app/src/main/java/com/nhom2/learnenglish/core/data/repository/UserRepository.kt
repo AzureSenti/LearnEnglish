@@ -21,8 +21,8 @@ class UserRepository(
         private const val TAG = "UserRepository"
     }
 
-    suspend fun login(username: String, password: String) : UserEntity {
-        val response = authApi.login(LoginRequest(username, password))
+    suspend fun login(identifier: String, password: String) : UserEntity {
+        val response = authApi.login(LoginRequest(identifier, password))
 
         // CẬP NHẬT 1: Lấy đúng vị trí token và check null
         val validToken = response.tokens?.accessToken
@@ -64,6 +64,46 @@ class UserRepository(
         } catch (e: Exception) {
             // Sync failure should NOT prevent login
             Log.e(TAG, "Post-login sync failed (non-fatal)", e)
+        }
+
+        return userEntity
+    }
+
+    suspend fun register(email: String, password: String, fullName: String, accountName: String) : UserEntity {
+        val request = com.nhom2.learnenglish.core.network.auth.RegisterRequest(email, password, fullName, accountName)
+        val response = authApi.register(request)
+
+        val validToken = response.tokens?.accessToken
+        if (validToken.isNullOrEmpty()) {
+            throw Exception("Đăng ký thành công, nhưng vui lòng đăng nhập lại!")
+        }
+
+        val validUserId = response.userId
+
+        val refreshToken = response.tokens.refreshToken ?: ""
+        sessionManager.createLoginSession(validToken, validUserId, refreshToken)
+
+        val userEntity = UserEntity(
+            userId = validUserId,
+            fullName = response.fullName,
+            avatarUrl = "",
+            email = response.email,
+            coins = 0,
+            currentStreak = 0,
+            longestStreak = 0
+        )
+
+        userDao.deleteAll()
+        userDao.insert(userEntity)
+
+        try {
+            syncRepository?.let { sync ->
+                sync.mergeGuestData(validUserId)
+                Log.i(TAG, "Guest data merged for user: $validUserId")
+                sync.performFullSync()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Post-register sync failed (non-fatal)", e)
         }
 
         return userEntity
