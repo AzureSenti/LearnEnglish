@@ -88,7 +88,8 @@ public class WordSetDetailActivity extends AppCompatActivity {
     private void initViews() {
         btnLearnNew = findViewById(R.id.btnLearnNew);
         btnReview = findViewById(R.id.btnReview);
-        FloatingActionButton fabAddWord = findViewById(R.id.fab_add_word);
+        
+
 
         if (btnLearnNew != null) {
             btnLearnNew.setOnClickListener(v -> {
@@ -106,10 +107,6 @@ public class WordSetDetailActivity extends AppCompatActivity {
                 intent.putExtra("GAME_MODE", "REVIEW");
                 startActivity(intent);
             });
-        }
-
-        if (fabAddWord != null) {
-            fabAddWord.setOnClickListener(v -> showWordForm(null));
         }
     }
 

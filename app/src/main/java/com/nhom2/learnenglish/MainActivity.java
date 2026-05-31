@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
-        // MockDataImport.INSTANCE.importIfNeeded(this);
+        MockDataImport.INSTANCE.importIfNeeded(this);
 
 
         SessionManager sessionManager = new SessionManager(this);

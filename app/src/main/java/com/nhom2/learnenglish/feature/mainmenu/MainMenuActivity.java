@@ -91,14 +91,10 @@ public class MainMenuActivity extends AppCompatActivity {
         setupNavigation();
 
         setupSearchBar();
-        /*
         MockDataImport.INSTANCE.importIfNeeded(this, () -> {
             loadFeaturedArticle();
             loadRecentWordSets();
         });
-        */
-        loadFeaturedArticle();
-        loadRecentWordSets();
 
     }
 
@@ -339,50 +335,6 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     }
     // Hàm  Truy vấn số lượng từ đến hạn trong Database
-    // Hàm tính Streak thực tế cho màn hình chính (Gộp Từ vựng + Ngữ pháp)
-    private void loadGlobalStreak() {
-        SessionManager sessionManager = new SessionManager(this);
-        String userId = sessionManager.getCurrentUserId();
-
-        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
-            try {
-                AppDatabase db = AppDatabase.Companion.getInstance(this);
-                List<Long> allStudyDates = new ArrayList<>();
-
-                // 1. Lấy ngày học từ vựng
-                List<com.nhom2.learnenglish.core.data.local.entity.word.WordSrsEntity> srsRecords = 
-                    db.wordSrsDao().getAllForUser(userId);
-                
-                if (srsRecords != null) {
-                    for (com.nhom2.learnenglish.core.data.local.entity.word.WordSrsEntity record : srsRecords) {
-                        if (record.getLastReviewDate() != null) {
-                            allStudyDates.add(record.getLastReviewDate());
-                        }
-                    }
-                }
-
-                // 2. Lấy ngày học ngữ pháp (Merge In-Memory)
-                List<com.nhom2.learnenglish.core.data.local.entity.grammar.UserGrammarProgress> grammarProgress = 
-                    db.userGrammarProgressDao().getAllProgressForUser(userId);
-                
-                // Vì Entity Grammar hiện chưa có trường ngày tháng riêng, 
-                // cấu trúc gộp In-Memory đã sẵn sàng tại đây để không bỏ sót ngày học.
-
-                // 3. Tính toán và cập nhật UI
-                int streak = com.nhom2.learnenglish.feature.profile.StreakUtils.calculateStreak(allStudyDates);
-
-                runOnUiThread(() -> {
-                    TextView tvHomeStreak = findViewById(R.id.tv_home_streak);
-                    if (tvHomeStreak != null) {
-                        tvHomeStreak.setText(streak + "\nDays");
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
     private void loadGlobalReviewCount() {
         SessionManager sessionManager = new SessionManager(this);
         String userId = sessionManager.getCurrentUserId();
@@ -628,7 +580,6 @@ public class MainMenuActivity extends AppCompatActivity {
         //  Tự động đếm và cập nhật lại số từ cần ôn tập và từ mới mỗi khi vào trang chủ
         loadGlobalReviewCount();
         loadGlobalLearnCount();
-        loadGlobalStreak(); // THÊM DÒNG NÀY
 
         // Tự động đồng bộ dữ liệu khi có mạng
         com.nhom2.learnenglish.core.util.NetworkSyncManager.INSTANCE.syncIfOnline(this);
