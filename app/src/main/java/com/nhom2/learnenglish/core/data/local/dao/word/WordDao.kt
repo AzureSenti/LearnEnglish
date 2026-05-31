@@ -91,6 +91,9 @@ interface WordDao : BaseDao<WordEntity> {
     @Query("UPDATE words SET is_synced = 1")
     fun markAllAsSynced()
 
+    @Query("SELECT * FROM words ORDER BY RANDOM() LIMIT :limit")
+    fun getRandomWords(limit: Int = 70): List<WordEntity>
+
     @androidx.room3.Insert(onConflict = androidx.room3.OnConflictStrategy.REPLACE)
     fun insertOrUpdateAll(words: List<WordEntity>)
 }

@@ -199,6 +199,9 @@ class WordRepository(
         }
     }
 
+    fun getRandomWords(limit: Int = 70): List<WordEntity> {
+        return wordDao.getRandomWords(limit)
+    }
 
 
 

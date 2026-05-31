@@ -174,7 +174,7 @@ public class VocabularyGameActivity extends AppCompatActivity {
                     tempWords = wordRepository.getWordsInSet(setId);
                 }
 
-                allWords = wordRepository.getAllWords();
+                allWords = wordRepository.getRandomWords(70);
 
                 final List<WordEntity> finalTargetWords = tempWords;
 
