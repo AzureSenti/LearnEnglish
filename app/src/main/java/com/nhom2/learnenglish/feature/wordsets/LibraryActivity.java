@@ -175,7 +175,7 @@ public class LibraryActivity extends AppCompatActivity {
                     if (isEdit) {
                         wordSetDao.update(new WordSetEntity(item.getId(), name, selectedIcon[0], item.getUnlockCost(),item.isSynced()));
                     } else {
-                        wordSetDao.insert(new WordSetEntity(0L, name, selectedIcon[0], 0,item.isSynced()));
+                        wordSetDao.insert(new WordSetEntity(java.util.UUID.randomUUID().toString(), name, selectedIcon[0], 0,item.isSynced()));
                     }
                     runOnUiThread(() -> {
                         Toasty.success(this, isEdit ? "Đã cập nhật" : "Đã tạo bộ từ mới", Toast.LENGTH_SHORT, true).show();                        sheet.dismiss();

@@ -21,7 +21,7 @@ import com.nhom2.learnenglish.core.data.local.entity.UserEntity
         ),
         ForeignKey(
             entity = UserEntity::class,
-            parentColumns = ["id"],
+            parentColumns = ["user_id"],
             childColumns = ["user_id"],
             onDelete = ForeignKey.CASCADE
         )
@@ -38,7 +38,7 @@ data class WordSrsEntity(
     val userId: String,
 
     @ColumnInfo(name = "word_id")
-    val wordId: Long,
+    val wordId: String,
 
     @ColumnInfo(name = "level", defaultValue = "0")
     val level: Int,

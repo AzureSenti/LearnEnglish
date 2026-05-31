@@ -70,7 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void loadUserProfileData() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                UserEntity user = database.userDao().getById(currentUserId);
+                UserEntity user = database.userDao().getByUserId(currentUserId);
                 runOnUiThread(() -> {
                     if (user != null) {
                         binding.tvFullName.setText(user.getFullName());

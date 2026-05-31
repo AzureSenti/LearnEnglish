@@ -62,9 +62,9 @@ public class WordSetSelectionAdapter extends RecyclerView.Adapter<WordSetSelecti
         });
     }
 
-    public long getSelectedSetId() {
+    public String getSelectedSetId() {
         if (selectedPosition != -1) return items.get(selectedPosition).getId();
-        return -1;
+        return "";
     }
 
     @Override

@@ -110,7 +110,7 @@ class UserRepository(
     }
 
     fun ensureLocalUserExists(): UserEntity {
-        var localUser = userDao.getById(LOCAL_USER_ID)
+        var localUser = userDao.getByUserId(LOCAL_USER_ID)
 
         if (localUser == null) {
             localUser = UserEntity(

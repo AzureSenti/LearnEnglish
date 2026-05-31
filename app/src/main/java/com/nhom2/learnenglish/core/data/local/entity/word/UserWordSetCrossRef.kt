@@ -33,7 +33,7 @@ data class UserWordSetCrossRef(
     val userId: Long,
 
     @ColumnInfo(name = "set_id")
-    val setId: Long,
+    val setId: String,
 
     @ColumnInfo(name = "unlocked_at")
     val unlockedAt: Long? = System.currentTimeMillis()

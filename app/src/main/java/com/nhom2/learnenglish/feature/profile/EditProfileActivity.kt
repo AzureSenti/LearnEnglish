@@ -68,7 +68,7 @@ class EditProfileActivity : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             val userId = sessionManager.getCurrentUserId()
             if (userId != null) {
-                val user = database.userDao().getById(userId)
+                val user = database.userDao().getByUserId(userId)
                 withContext(Dispatchers.Main) {
                     user?.let {
                         binding.inputFullname.setText(it.fullName)
@@ -98,7 +98,7 @@ class EditProfileActivity : AppCompatActivity() {
                     if (body != null) {
                         val userId = sessionManager.getCurrentUserId()
                         if (userId != null) {
-                            val user = database.userDao().getById(userId)
+                            val user = database.userDao().getByUserId(userId)
                             if (user != null) {
                                 val updatedUser = user.copy(
                                     fullName = body.fullName,

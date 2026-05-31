@@ -9,8 +9,8 @@ interface UserDao : BaseDao<UserEntity> {
     @Query("SELECT * FROM users LIMIT 1")
     fun getActiveUser(): UserEntity?
 
-    @Query("SELECT * FROM users WHERE id = :id")
-    fun getById(id: String): UserEntity?
+    @Query("SELECT * FROM users WHERE user_id = :userId")
+    fun getByUserId(userId: String): UserEntity?
 
     @Query("DELETE FROM users")
     fun deleteAll()

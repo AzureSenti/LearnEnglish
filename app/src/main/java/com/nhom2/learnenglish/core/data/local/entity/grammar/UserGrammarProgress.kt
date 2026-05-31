@@ -10,12 +10,12 @@ import com.nhom2.learnenglish.core.data.local.entity.UserEntity
     tableName = "user_grammar_progress",
     primaryKeys = ["user_id", "lesson_id"],
     foreignKeys = [
-        //ForeignKey(
-        // entity = UserEntity::class,
-        // parentColumns = ["id"],
-        //    childColumns = ["user_id"],
-        //    onDelete = ForeignKey.Companion.CASCADE
-        //),
+        ForeignKey(
+         entity = UserEntity::class,
+         parentColumns = ["user_id"],
+            childColumns = ["user_id"],
+            onDelete = ForeignKey.Companion.CASCADE
+        ),
         ForeignKey(
             entity = GrammarLessonEntity::class,
             parentColumns = ["id"],

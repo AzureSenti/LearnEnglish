@@ -84,7 +84,8 @@ public class VocabularyGameActivity extends AppCompatActivity {
         setupRepository();
         setupTTS();
 
-        long setId = getIntent().getLongExtra("SET_ID", -1L);
+        String setId = getIntent().getStringExtra("SET_ID");
+        if (setId == null) setId = "";
         loadGameData(setId);
 
         btnBack.setOnClickListener(v -> finish());
@@ -146,7 +147,7 @@ public class VocabularyGameActivity extends AppCompatActivity {
         });
     }
 
-    private void loadGameData(long setId) {
+    private void loadGameData(String setId) {
         String gameMode = getIntent().getStringExtra("GAME_MODE");
 
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
@@ -154,7 +155,7 @@ public class VocabularyGameActivity extends AppCompatActivity {
                 List<WordEntity> tempWords = new ArrayList<>();
 
                 if ("REVIEW".equals(gameMode)) {
-                    if (setId != -1L) {
+                    if (!setId.isEmpty()) {
                         // Ôn tập riêng một bộ
                         tempWords = wordRepository.getWordsForReview(userId, setId);
                     } else {
@@ -162,14 +163,14 @@ public class VocabularyGameActivity extends AppCompatActivity {
                         tempWords = wordRepository.getGlobalWordsForReview(userId);
                     }
                 } else if ("LEARN_NEW".equals(gameMode)) {
-                    if (setId != -1L) {
+                    if (!setId.isEmpty()) {
                         // Học mới từ của một bộ
                         tempWords = wordRepository.getNewWordsToLearn(userId, setId);
                     } else {
                         // Học mới toàn cục (Tất cả các bộ)
                         tempWords = wordRepository.getGlobalNewWordsToLearn(userId);
                     }
-                } else if (setId != -1L) {
+                } else if (!setId.isEmpty()) {
                     // Mặc định -> Lấy tất cả từ trong Set
                     tempWords = wordRepository.getWordsInSet(setId);
                 }
@@ -310,7 +311,7 @@ public class VocabularyGameActivity extends AppCompatActivity {
         btnContinue.setEnabled(true);
     }
 
-    private void saveProgress(long wordId, boolean isMastered) {
+    private void saveProgress(String wordId, boolean isMastered) {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
                 wordRepository.processWordLearning(userId, wordId, isMastered);

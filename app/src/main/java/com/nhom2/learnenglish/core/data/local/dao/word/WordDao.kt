@@ -13,7 +13,7 @@ interface WordDao : BaseDao<WordEntity> {
     fun getAll(): List<WordEntity>
 
     @Query("SELECT * FROM words WHERE id = :id")
-    fun getById(id: Long): WordEntity?
+    fun getById(id: String): WordEntity?
 
     // Lấy tất cả các từ thuộc về một Bộ từ (Set) cụ thể
     @Query("""
@@ -21,7 +21,7 @@ interface WordDao : BaseDao<WordEntity> {
         INNER JOIN word_set_cross_ref ref ON w.id = ref.word_id 
         WHERE ref.set_id = :setId
     """)
-    fun getWordsBySetId(setId: Long): List<WordEntity>
+    fun getWordsBySetId(setId: String): List<WordEntity>
 
 
     // 1DÙNG CHO TRANG CHỦ (MAIN): Ôn tập tất cả các từ đến hạn của user, bất kể nằm ở bộ nào
@@ -44,7 +44,7 @@ interface WordDao : BaseDao<WordEntity> {
         ORDER BY srs.next_review_date ASC
         LIMIT :limit
     """)
-    fun getWordsDueForReviewBySet(userId: String, setId: Long, currentTime: Long, limit: Int = 20): List<WordEntity>
+    fun getWordsDueForReviewBySet(userId: String, setId: String, currentTime: Long, limit: Int = 20): List<WordEntity>
 
     // Từ với tiến trình
     @Query("""
@@ -59,7 +59,7 @@ interface WordDao : BaseDao<WordEntity> {
         LEFT JOIN word_srs srs ON w.id = srs.word_id AND srs.user_id = :userId
         WHERE ref.set_id = :setId
     """)
-    fun getWordsWithProgressBySet(setId: Long, userId: String): List<WordWithProgress>
+    fun getWordsWithProgressBySet(setId: String, userId: String): List<WordWithProgress>
 
     // Từ chưa học
     @Query("""
@@ -69,7 +69,7 @@ interface WordDao : BaseDao<WordEntity> {
         WHERE ref.set_id = :setId AND srs.word_id IS NULL
         LIMIT :limit
     """)
-    fun getUnlearnedWords(setId: Long, userId: String, limit: Int = 10): List<WordEntity>
+    fun getUnlearnedWords(setId: String, userId: String, limit: Int = 10): List<WordEntity>
     // Lấy các từ mới (chưa học) trên toàn hệ thống (không phân biệt bộ)
     @Query("""
         SELECT w.* FROM words w

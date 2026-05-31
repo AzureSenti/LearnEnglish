@@ -92,7 +92,7 @@ class SyncRepository(
         val unsyncedWordSrs = wordSrsDao.getUnsyncedProgress(userId)
         val wordSrsUpload = unsyncedWordSrs.map { srs ->
             WordSrsUploadItem(
-                wordId = srs.wordId.toInt(),
+                wordId = srs.wordId,
                 level = srs.level,
                 nextReviewDate = srs.nextReviewDate,
                 lastReviewDate = srs.lastReviewDate
@@ -115,7 +115,7 @@ class SyncRepository(
         val userLocalId = activeUser?.id ?: 0L
         val unlockedSetIds = userWordSetDao.getUnlockedSetIds(userLocalId)
         val wordSetUpload = unlockedSetIds.map { setId ->
-            UserWordSetUploadItem(setId = setId.toInt())
+            UserWordSetUploadItem(setId = setId)
         }
 
         // 4. Collect user profile
@@ -204,50 +204,8 @@ class SyncRepository(
 
         val data = response.body() ?: throw Exception("Download returned null body")
 
-        // 1. Merge word SRS data — server data replaces local
-        val serverWordSrs = data.wordSrsList.map { item ->
-            WordSrsEntity(
-                userId = userId,
-                wordId = item.wordId.toLong(),
-                level = item.level,
-                nextReviewDate = item.nextReviewDate,
-                lastReviewDate = item.lastReviewDate,
-                isSynced = true
-            )
-        }
-        if (serverWordSrs.isNotEmpty()) {
-            wordSrsDao.insertOrUpdateAll(serverWordSrs)
-        }
-
-        // 2. Merge grammar progress
-        val serverGrammar = data.grammarProgressList.map { item ->
-            UserGrammarProgress(
-                userId = userId,
-                lessonId = item.lessonId.toLong(),
-                isTheoryCompleted = item.isTheoryCompleted,
-                isQuizPassed = item.isQuizPassed,
-                score = item.score,
-                isSynced = true
-            )
-        }
-        if (serverGrammar.isNotEmpty()) {
-            grammarProgressDao.insertOrUpdateAll(serverGrammar)
-        }
-
-        // 3. Merge unlocked word sets
+        // 1. Update user profile from server
         val activeUser = userDao.getActiveUser()
-        val userLocalId = activeUser?.id ?: 0L
-        val serverUnlockedSets = data.unlockedWordSetIds.map { setId ->
-            UserWordSetCrossRef(
-                userId = userLocalId,
-                setId = setId.toLong()
-            )
-        }
-        if (serverUnlockedSets.isNotEmpty()) {
-            userWordSetDao.insertAll(serverUnlockedSets)
-        }
-
-        // 4. Update user profile from server
         if (activeUser != null) {
             val updatedUser = activeUser.copy(
                 coins = data.userProfile.coins,
@@ -260,7 +218,7 @@ class SyncRepository(
             userDao.update(updatedUser)
         }
 
-        // 5. Merge custom words
+        // 2. Merge custom words
         val serverWords = data.wordsList.map { item ->
             com.nhom2.learnenglish.core.data.local.entity.word.WordEntity(
                 id = item.wordId,
@@ -274,7 +232,7 @@ class SyncRepository(
             wordDao.insertOrUpdateAll(serverWords)
         }
 
-        // 6. Merge custom word sets
+        // 3. Merge custom word sets
         val serverWordSets = data.wordSetsList.map { item ->
             WordSetEntity(
                 id = item.setId,
@@ -287,7 +245,7 @@ class SyncRepository(
             wordSetDao.insertOrUpdateAll(serverWordSets)
         }
 
-        // 7. Merge custom word set cross refs
+        // 4. Merge custom word set cross refs
         val serverCrossRefs = data.wordSetCrossRefsList.map { item ->
             WordSetCrossRef(
                 wordId = item.wordId,
@@ -297,6 +255,48 @@ class SyncRepository(
         }
         if (serverCrossRefs.isNotEmpty()) {
             wordSetCrossDao.insertOrUpdateAll(serverCrossRefs)
+        }
+
+        // 5. Merge unlocked word sets
+        val userLocalId = activeUser?.id ?: 0L
+        val serverUnlockedSets = data.unlockedWordSetIds.map { setId ->
+            UserWordSetCrossRef(
+                userId = userLocalId,
+                setId = setId
+            )
+        }
+        if (serverUnlockedSets.isNotEmpty()) {
+            userWordSetDao.insertAll(serverUnlockedSets)
+        }
+
+        // 6. Merge word SRS data (MUST happen after words are merged to prevent CASCADE deletion)
+        val serverWordSrs = data.wordSrsList.map { item ->
+            WordSrsEntity(
+                userId = userId,
+                wordId = item.wordId,
+                level = item.level,
+                nextReviewDate = item.nextReviewDate,
+                lastReviewDate = item.lastReviewDate,
+                isSynced = true
+            )
+        }
+        if (serverWordSrs.isNotEmpty()) {
+            wordSrsDao.insertOrUpdateAll(serverWordSrs)
+        }
+
+        // 7. Merge grammar progress
+        val serverGrammar = data.grammarProgressList.map { item ->
+            UserGrammarProgress(
+                userId = userId,
+                lessonId = item.lessonId.toLong(),
+                isTheoryCompleted = item.isTheoryCompleted,
+                isQuizPassed = item.isQuizPassed,
+                score = item.score,
+                isSynced = true
+            )
+        }
+        if (serverGrammar.isNotEmpty()) {
+            grammarProgressDao.insertOrUpdateAll(serverGrammar)
         }
 
         Log.i(TAG, "Download & merge complete: ${serverWordSrs.size} SRS, " +

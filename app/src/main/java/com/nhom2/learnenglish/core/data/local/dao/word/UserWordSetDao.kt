@@ -14,12 +14,12 @@ interface UserWordSetDao : BaseDao<UserWordSetCrossRef> {
     fun unlockSet(crossRef: UserWordSetCrossRef)
 
     @Query("SELECT EXISTS(SELECT 1 FROM user_word_set_cross_ref WHERE user_id = :userId AND set_id = :setId)")
-    fun isSetUnlocked(userId: Long, setId: Long): Boolean
+    fun isSetUnlocked(userId: Long, setId: String): Boolean
 
     // --- Sync queries ---
 
     @Query("SELECT set_id FROM user_word_set_cross_ref WHERE user_id = :userId")
-    fun getUnlockedSetIds(userId: Long): List<Long>
+    fun getUnlockedSetIds(userId: Long): List<String>
 
     @Query("DELETE FROM user_word_set_cross_ref WHERE user_id = :userId")
     fun deleteAllForUser(userId: Long)
