@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "63f54e74616437a32c74e39ac24b6961",
+    "identityHash": "264f9e77c12b724ab1fbbbceda700155",
     "entities": [
       {
         "tableName": "users",
@@ -158,7 +158,7 @@
       },
       {
         "tableName": "words",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `english_word` TEXT NOT NULL, `vietnamese_meaning` TEXT NOT NULL, `audio` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `english_word` TEXT NOT NULL, `vietnamese_meaning` TEXT NOT NULL, `audio` TEXT, `is_synced` INTEGER NOT NULL DEFAULT 0)",
         "fields": [
           {
             "fieldPath": "id",
@@ -182,6 +182,13 @@
             "fieldPath": "audio",
             "columnName": "audio",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isSynced",
+            "columnName": "is_synced",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
           }
         ],
         "primaryKey": {
@@ -299,7 +306,7 @@
       },
       {
         "tableName": "word_sets",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `description` TEXT, `unlock_cost` INTEGER NOT NULL DEFAULT 0)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `description` TEXT, `unlock_cost` INTEGER NOT NULL DEFAULT 0, `is_synced` INTEGER DEFAULT 0)",
         "fields": [
           {
             "fieldPath": "id",
@@ -324,6 +331,12 @@
             "affinity": "INTEGER",
             "notNull": true,
             "defaultValue": "0"
+          },
+          {
+            "fieldPath": "isSynced",
+            "columnName": "is_synced",
+            "affinity": "INTEGER",
+            "defaultValue": "0"
           }
         ],
         "primaryKey": {
@@ -335,7 +348,7 @@
       },
       {
         "tableName": "word_set_cross_ref",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`word_id` INTEGER NOT NULL, `set_id` INTEGER NOT NULL, PRIMARY KEY(`word_id`, `set_id`), FOREIGN KEY(`word_id`) REFERENCES `words`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`set_id`) REFERENCES `word_sets`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`word_id` INTEGER NOT NULL, `set_id` INTEGER NOT NULL, `is_synced` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`word_id`, `set_id`), FOREIGN KEY(`word_id`) REFERENCES `words`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`set_id`) REFERENCES `word_sets`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "wordId",
@@ -348,6 +361,13 @@
             "columnName": "set_id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "isSynced",
+            "columnName": "is_synced",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
           }
         ],
         "primaryKey": {
@@ -594,7 +614,7 @@
       },
       {
         "tableName": "user_grammar_progress",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` TEXT NOT NULL, `lesson_id` INTEGER NOT NULL, `is_theory_completed` INTEGER NOT NULL, `is_quiz_passed` INTEGER NOT NULL, `score` INTEGER NOT NULL, PRIMARY KEY(`user_id`, `lesson_id`), FOREIGN KEY(`lesson_id`) REFERENCES `grammar_lessons`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` TEXT NOT NULL, `lesson_id` INTEGER NOT NULL, `is_theory_completed` INTEGER NOT NULL, `is_quiz_passed` INTEGER NOT NULL, `score` INTEGER NOT NULL, `is_synced` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`user_id`, `lesson_id`), FOREIGN KEY(`lesson_id`) REFERENCES `grammar_lessons`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "userId",
@@ -625,6 +645,13 @@
             "columnName": "score",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "isSynced",
+            "columnName": "is_synced",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
           }
         ],
         "primaryKey": {
@@ -671,7 +698,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '63f54e74616437a32c74e39ac24b6961')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '264f9e77c12b724ab1fbbbceda700155')"
     ]
   }
 }

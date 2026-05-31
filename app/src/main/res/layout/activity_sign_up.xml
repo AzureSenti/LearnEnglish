@@ -77,17 +77,51 @@
                     app:layout_constraintTop_toBottomOf="@id/signup_title" />
 
                 <TextView
-                    android:id="@+id/label_username"
+                    android:id="@+id/label_email"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="28dp"
-                    android:text="@string/label_username"
+                    android:text="@string/label_email"
                     android:textColor="@color/text_primary"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/signup_subtitle" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_email_signup"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:startIconDrawable="@drawable/ic_mail_outline"
+                    app:startIconTint="@color/text_muted"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/label_email">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_email_signup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="example@mail.com"
+                        android:inputType="textEmailAddress"
+                        android:textColorHint="@color/text_hint"
+                        tools:ignore="SpeakableTextPresentCheck" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/label_username"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/label_username"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_email_signup" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_username"
@@ -111,11 +145,11 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/label_email"
+                    android:id="@+id/label_fullname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="@string/label_email"
+                    android:text="Tên hiển thị"
                     android:textColor="@color/text_primary"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -123,52 +157,26 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layout_username" />
 
-                <LinearLayout
-                    android:id="@+id/layout_email_error"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_fullname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_input_error"
-                    android:gravity="center_vertical"
-                    android:minHeight="56dp"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="12dp"
+                    app:startIconDrawable="@drawable/ic_person_outline"
+                    app:startIconTint="@color/text_muted"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/label_email">
+                    app:layout_constraintTop_toBottomOf="@id/label_fullname">
 
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_mail_error" />
-
-                    <EditText
-                        android:id="@+id/input_email_signup"
-                        android:layout_width="0dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_fullname"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:autofillHints="emailAddress"
-                        android:background="@android:color/transparent"
-                        android:inputType="textEmailAddress"
-                        android:text="alex@example.com"
-                        android:textColor="@color/error_red"
+                        android:hint="Nhập tên hiển thị"
+                        android:inputType="textPersonName"
                         android:textColorHint="@color/text_hint"
                         tools:ignore="SpeakableTextPresentCheck" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/text_email_error"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="@string/error_email_registered"
-                    android:textColor="@color/error_red"
-                    android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/layout_email_error" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/label_password_signup"
@@ -181,7 +189,7 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/text_email_error" />
+                    app:layout_constraintTop_toBottomOf="@id/layout_fullname" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_password_signup"

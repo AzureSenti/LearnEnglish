@@ -19,11 +19,69 @@ public class ProfileActivity extends AppCompatActivity {
         binding = ActivityProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Nạp ProfileFragment (Giao diện đẹp và logic thực tế) vào Activity
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.profile_container, new ProfileFragment())
-                    .commit();
+        sessionManager = new SessionManager(this);
+        currentUserId = sessionManager.getCurrentUserId();
+        database = AppDatabase.Companion.getInstance(this);
+        mockRepo = new StudyHistoryMockRepository();
+
+        initViews();
+        loadUserProfileData();
+        setupMockStatistics();
+        setupSrsChart();
+        setupBottomNavigation();
+    }
+
+    private void initViews() {
+        if (binding.rvBadges != null) {
+            binding.rvBadges.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        }
+
+        if (binding.ivSettings != null) {
+            binding.ivSettings.setOnClickListener(v -> {
+                android.content.Intent intent = new android.content.Intent(ProfileActivity.this, EditProfileActivity.class);
+                startActivity(intent);
+            });
+        }
+    }
+
+    private void loadUserProfileData() {
+        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+            try {
+                UserEntity user = database.userDao().getById(currentUserId);
+                runOnUiThread(() -> {
+                    if (user != null) {
+                        binding.tvFullName.setText(user.getFullName());
+                        binding.tvEnglishLevel.setText("English Learner");
+                    }
+                });
+            } catch (Exception e) {
+                Log.e("ProfileActivity", "Lỗi tải dữ liệu người dùng", e);
+            }
+        });
+    }
+
+    private void setupMockStatistics() {
+        // Streak
+        binding.tvStreak.setText(String.valueOf(mockRepo.getCurrentStreak()));
+
+        // Words Mastered (XP)
+        binding.tvXp.setText(String.valueOf(mockRepo.getTotalXp()));
+
+        // Study Time
+        long totalMillis = mockRepo.getTotalStudyTime();
+        long hours = TimeUnit.MILLISECONDS.toHours(totalMillis);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(totalMillis) % 60;
+        String timeText = (hours > 0) ? (hours + "h " + minutes + "m") : (minutes + "m");
+        binding.tvStudyTime.setText(timeText);
+    }
+
+    private void setupSrsChart() {
+        BarChart srsChart = binding.srsChart;
+        List<Integer> levelData = mockRepo.getMockSrsChartData();
+        ArrayList<BarEntry> entries = new ArrayList<>();
+
+        for (int i = 0; i < levelData.size(); i++) {
+            entries.add(new BarEntry(i + 1, levelData.get(i)));
         }
 
         setupBottomNavigation();
