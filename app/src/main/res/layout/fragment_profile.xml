@@ -138,6 +138,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         tools:text="15"
+                        android:text="0"
                         android:textColor="#1F1F39"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -181,6 +182,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         tools:text="12.5h"
+                        android:text="0h"
                         android:textColor="#1F1F39"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -224,6 +226,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         tools:text="450"
+                        android:text="0"
                         android:textColor="#1F1F39"
                         android:textSize="20sp"
                         android:textStyle="bold" />
