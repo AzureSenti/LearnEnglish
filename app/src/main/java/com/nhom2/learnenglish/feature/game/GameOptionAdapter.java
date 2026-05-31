@@ -39,7 +39,31 @@ public class GameOptionAdapter extends RecyclerView.Adapter<GameOptionAdapter.Op
     @Override
     public OptionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_game_option, parent, false);
-        return new OptionViewHolder(view);
+        OptionViewHolder holder = new OptionViewHolder(view);
+
+        // Gắn sự kiện click ĐÚNG 1 LẦN DUY NHẤT ở đây
+        holder.itemView.setOnClickListener(v -> {
+            // Nếu đã bấm Kiểm tra rồi thì khóa không cho chọn lại
+            if (isAnswerChecked) return;
+
+            // Lấy vị trí hiện tại của ô vừa bị click
+            int position = holder.getAdapterPosition();
+
+            // Tránh lỗi click vào ô đang bị hiệu ứng xóa/ẩn (NO_POSITION là -1)
+            if (position != RecyclerView.NO_POSITION) {
+                int previousSelected = selectedPosition;
+                selectedPosition = position;
+
+                // Vẽ lại 2 ô để đổi viền xanh
+                notifyItemChanged(previousSelected);
+                notifyItemChanged(selectedPosition);
+
+                // Báo về Activity
+                listener.onOptionSelected(selectedPosition);
+            }
+        });
+
+        return holder;
     }
 
     @Override
@@ -59,15 +83,8 @@ public class GameOptionAdapter extends RecyclerView.Adapter<GameOptionAdapter.Op
                 holder.cardOption.setStrokeWidth(4);
             }
 
-            holder.itemView.setOnClickListener(v -> {
-                int previousSelected = selectedPosition;
-                selectedPosition = holder.getAdapterPosition();
-                notifyItemChanged(previousSelected);
-                notifyItemChanged(selectedPosition);
-                listener.onOptionSelected(selectedPosition);
-            });
+            ;
         } else {
-            holder.itemView.setOnClickListener(null);
             if (position == correctOptionIndex) {
                 // Correct answer UI - using the requested background logic
                 holder.cardOption.setBackgroundResource(R.drawable.bg_option_correct);

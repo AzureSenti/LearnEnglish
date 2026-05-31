@@ -56,16 +56,7 @@ public class ArticlesActivity extends AppCompatActivity {
         setupRecyclerView();
         setupSearch();
     }
-
-    private void setupData() {
-        AppDatabase db = AppDatabase.Companion.getInstance(this);
-        articleRepository = new ArticleRepository(
-                AppExecutors.Companion.getInstance(),
-                db.articleDao()
-        );
-
-        MockDataImport.INSTANCE.importIfNeeded(this, this::loadArticleData);
-    }
+    //KHU VỰC 2: CÀI ĐẶT GIAO DIỆN (UI SETUP)
 
     private void setupWindowInsets() {
         View mainView = findViewById(android.R.id.content);
@@ -77,7 +68,6 @@ public class ArticlesActivity extends AppCompatActivity {
             });
         }
     }
-
     private void setupToolbar() {
         ImageView ivBack = findViewById(R.id.iv_back);
         if (ivBack != null) {
@@ -110,17 +100,6 @@ public class ArticlesActivity extends AppCompatActivity {
         }
     }
 
-    private void hideKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
-            view.clearFocus();
-        }
-    }
-
     private void setupSearch() {
         EditText etSearch = findViewById(R.id.et_search);
         if (etSearch != null) {
@@ -142,7 +121,7 @@ public class ArticlesActivity extends AppCompatActivity {
 
     private void createDynamicChips(List<ArticleEntity> articles) {
         if (chipGroup == null) return;
-        
+
         chipGroup.removeAllViews();
 
         // 1. Tạo Chip "All" mặc định
@@ -180,22 +159,16 @@ public class ArticlesActivity extends AppCompatActivity {
         });
     }
 
-    private void filterData() {
-        List<ArticleEntity> filteredList = new ArrayList<>();
-        
-        for (ArticleEntity article : masterArticleList) {
-            boolean matchesSearch = article.getTitle().toLowerCase().contains(currentSearchQuery);
-            boolean matchesCategory = currentCategory.equals("All") || 
-                                     (article.getCategory() != null && article.getCategory().equalsIgnoreCase(currentCategory));
-            
-            if (matchesSearch && matchesCategory) {
-                filteredList.add(article);
-            }
-        }
-        
-        if (adapter != null) {
-            adapter.updateData(filteredList);
-        }
+    //KHU VỰC 3: DỮ LIỆU & LOGIC LỌC (DATA & LOGIC)
+
+    private void setupData() {
+        AppDatabase db = AppDatabase.Companion.getInstance(this);
+        articleRepository = new ArticleRepository(
+                AppExecutors.Companion.getInstance(),
+                db.articleDao()
+        );
+
+        MockDataImport.INSTANCE.importIfNeeded(this, this::loadArticleData);
     }
 
     private void loadArticleData() {
@@ -204,7 +177,7 @@ public class ArticlesActivity extends AppCompatActivity {
                 List<ArticleEntity> list = articleRepository.getAll();
                 masterArticleList.clear();
                 masterArticleList.addAll(list);
-                
+
                 runOnUiThread(() -> {
                     createDynamicChips(masterArticleList);
                     if (adapter != null) {
@@ -217,6 +190,35 @@ public class ArticlesActivity extends AppCompatActivity {
         });
     }
 
+    private void filterData() {
+        List<ArticleEntity> filteredList = new ArrayList<>();
+
+        for (ArticleEntity article : masterArticleList) {
+            boolean matchesSearch = article.getTitle().toLowerCase().contains(currentSearchQuery);
+            boolean matchesCategory = currentCategory.equals("All") ||
+                    (article.getCategory() != null && article.getCategory().equalsIgnoreCase(currentCategory));
+
+            if (matchesSearch && matchesCategory) {
+                filteredList.add(article);
+            }
+        }
+
+        if (adapter != null) {
+            adapter.updateData(filteredList);
+        }
+    }
+
+
+    private void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+            view.clearFocus();
+        }
+    }
     @Override
     protected void onPause() {
         super.onPause();

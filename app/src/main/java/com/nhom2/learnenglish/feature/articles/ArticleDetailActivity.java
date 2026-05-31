@@ -29,11 +29,9 @@ import com.nhom2.learnenglish.core.data.repository.DictionaryRepository;
 import com.nhom2.learnenglish.core.data.repository.WordRepository;
 import com.nhom2.learnenglish.core.network.RetrofitClient;
 import com.nhom2.learnenglish.core.network.dictionary.DictionaryApi;
-import com.nhom2.learnenglish.feature.dictionary.DictionaryViewModel;
+import com.nhom2.learnenglish.core.data.model.DictionaryViewModel;
 import com.nhom2.learnenglish.core.util.AppExecutors;
-import android.widget.Spinner;
-import android.widget.ArrayAdapter;
-import android.widget.AdapterView;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -50,12 +48,10 @@ public class ArticleDetailActivity extends AppCompatActivity {
     private ArticleRepository articleRepository;
     private ImageView ivDetailImage;
 
-    // 1. KHAI BÁO THÊM VIEWMODEL Ở ĐÂY
     private DictionaryViewModel dictionaryViewModel;
-    // THÊM 2 BIẾN NÀY ĐỂ LƯU VỊ TRÍ TỪ ĐANG ĐƯỢC CHỌN
     private int selectedStart = -1;
     private int selectedEnd = -1;
-    // Đặt ở trên cùng class ArticleDetailActivity
+
     private List<WordSetEntity> availableWordSets = new ArrayList<>();
 
     @Override
@@ -74,8 +70,20 @@ public class ArticleDetailActivity extends AppCompatActivity {
         setupToolbar();
     }
 
+    //KHU VỰC 2: KHỞI TẠO CƠ BẢN & LẮNG NGHE (SETUP & OBSERVE)
+
+    private void setupToolbar() {
+        ImageView ivBack = findViewById(R.id.iv_back);
+        if (ivBack != null) {
+            ivBack.setOnClickListener(v -> {
+                finish();
+                overridePendingTransition(0, 0);
+            });
+        }
+    }
+
     private void setupData() {
-        // Khởi tạo ArticleRepository cũ của bạn
+        // Khởi tạo ArticleRepository cũ của
         AppDatabase db = AppDatabase.Companion.getInstance(this);
         articleRepository = new ArticleRepository(AppExecutors.Companion.getInstance(), db.articleDao());
 
@@ -141,7 +149,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
             }
         });
 
-        // ĐÃ FIX: THÊM ĐOẠN NÀY ĐỂ LẮNG NGHE TRẠNG THÁI LƯU TỪ VỰNG
+        //   ĐOẠN NÀY ĐỂ LẮNG NGHE TRẠNG THÁI LƯU TỪ VỰNG
         dictionaryViewModel.getSaveStatus().observe(this, message -> {
             if (message != null) {
                 if (message.equals("Lưu từ vựng thành công!")) {
@@ -156,6 +164,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
         // Lấy data
         dictionaryViewModel.loadWordSets();
     }
+    //KHU VỰC 3: XỬ LÝ BÀI BÁO (ARTICLE PROCESSING)
 
     private void loadArticleDetail(long id) {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
@@ -166,7 +175,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
                     runOnUiThread(() -> {
                         tvTitle.setText(article.getTitle());
 
-                        // 5. THAY ĐỔI: Biến đổi nội dung bài báo thành các từ có thể click
+                        //   Biến đổi nội dung bài báo thành các từ có thể click
                         makeContentClickable(article.getContent());
                         //img
                         if (article.getImage() != null && !article.getImage().isEmpty()) {
@@ -193,7 +202,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
         });
     }
 
-    // 6. THUẬT TOÁN TÁCH TỪ VÀ GẮN SỰ KIỆN CLICK
+
     // 6. THUẬT TOÁN TÁCH TỪ VÀ GẮN SỰ KIỆN CLICK (CÓ HIGHLIGHT TÔ XANH)
     private void makeContentClickable(String content) {
         SpannableString spannableString = new SpannableString(content);
@@ -245,10 +254,10 @@ public class ArticleDetailActivity extends AppCompatActivity {
         tvContent.setHighlightColor(Color.TRANSPARENT);
     }
 
-    // 7. HIỂN THỊ DIALOG KẾT QUẢ DỊCH
+    // KHU VỰC 4: TÍNH NĂNG TRA TỪ VÀ LƯU (TRANSLATION UI)
     private void showTranslationBottomSheet(DictionaryResult result) {
-        // BẢO MẬT BỔ SUNG: Không cho mở nếu result rỗng
-        // BẢO MẬT BỔ SUNG: Chặn mọi đường có thể lọt từ rỗng hoặc lỗi
+
+        //  Chặn mọi đường có thể lọt từ rỗng hoặc lỗi
         if (result == null
                 || result.getVietnameseMeaning() == null
                 || result.getVietnameseMeaning().isEmpty()
@@ -325,15 +334,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
         selectionDialog.show();
     }
 
-    private void setupToolbar() {
-        ImageView ivBack = findViewById(R.id.iv_back);
-        if (ivBack != null) {
-            ivBack.setOnClickListener(v -> {
-                finish();
-                overridePendingTransition(0, 0);
-            });
-        }
-    }
+
 
     @Override
     protected void onPause() {

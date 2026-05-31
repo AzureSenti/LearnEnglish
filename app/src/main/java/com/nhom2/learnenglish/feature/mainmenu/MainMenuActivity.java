@@ -30,7 +30,6 @@ import com.nhom2.learnenglish.feature.wordsets.LibraryActivity;
 import com.nhom2.learnenglish.feature.wordsets.WordSetDetailActivity;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.Button;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -45,15 +44,7 @@ import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity;
 import java.util.ArrayList;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
-import android.text.Html;
-import androidx.core.content.ContextCompat;
-import android.widget.TextView;
-import com.google.android.material.button.MaterialButton;
 import com.nhom2.learnenglish.core.util.SessionManager;
-import com.nhom2.learnenglish.feature.game.VocabularyGameActivity;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
@@ -61,15 +52,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.nhom2.learnenglish.core.data.model.DictionaryResult;
-import com.nhom2.learnenglish.core.data.repository.DictionaryRepository;
-import com.nhom2.learnenglish.core.network.RetrofitClient;
-import com.nhom2.learnenglish.feature.dictionary.DictionaryViewModel;
+import com.nhom2.learnenglish.core.data.model.DictionaryViewModel;
 import com.nhom2.learnenglish.feature.wordsets.WordSetSelectionAdapter;
 import es.dmoral.toasty.Toasty;
-
-import java.util.ArrayList;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -122,7 +107,6 @@ public class MainMenuActivity extends AppCompatActivity {
         // Quan sát danh sách bộ từ vựng để đổ vào Modal chọn
         dictionaryViewModel.getWordSets().observe(this, sets -> {
             if (sets != null) {
-                // ĐÃ FIX: Dùng clear() và addAll() để cập nhật lại danh sách gốc, thay vì tạo danh sách mới
                 availableWordSets.clear();
                 availableWordSets.addAll(sets);
             }
@@ -132,19 +116,17 @@ public class MainMenuActivity extends AppCompatActivity {
         dictionaryViewModel.getSaveStatus().observe(this, message -> {
             // Kiểm tra nội dung message để hiển thị Toasty tương ứng
             if ("Lưu từ vựng thành công!".equals(message)) {
-                // Hiện Toasty success màu xanh lá cực đẹp khi thành công
                 Toasty.success(this, message, Toast.LENGTH_SHORT, true).show();
 
                 loadRecentWordSets(); // Cập nhật lại số lượng từ trên thẻ màn hình chính
             } else {
-                // Nếu có lỗi xảy ra (ví dụ: "Từ đã tồn tại", "Lỗi lưu trữ"...), hiện Toasty error hoặc warning
                 Toasty.error(this, message, Toast.LENGTH_SHORT, true).show();
             }
         });
         dictionaryViewModel.loadWordSets();
     }
     private void setupSearchBar() {
-        // Lưu ý đổi từ EditText thành AutoCompleteTextView
+        // Lưu ý đổi từ EditText thành AutoCompleteTextView để có gợi ý
         AutoCompleteTextView etSearch = findViewById(R.id.et_search);
 
         if (etSearch != null) {
@@ -186,7 +168,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 etSearch.setText("");
             });
 
-            // 3. Sự kiện cũ: Khi user tự gõ và bấm nút Search (Kính lúp) trên bàn phím ảo
+            // 3. Sự kiện : Khi user tự gõ và bấm nút Search (Kính lúp) trên bàn phím ảo
             etSearch.setOnEditorActionListener((v, actionId, event) -> {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     String query = etSearch.getText().toString().trim();
@@ -237,7 +219,7 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
     }
-    //  Hàm hiển thị BottomSheet tra từ (Đã thêm chức năng chọn thư mục)
+    //  Hàm hiển thị BottomSheet tra từ
     private void showTranslationBottomSheet(DictionaryResult result) {
         //  BẢO MẬT BỔ SUNG: Không cho mở nếu result rỗng
         if (result == null || result.getVietnameseMeaning() == null || result.getVietnameseMeaning().isEmpty()) {

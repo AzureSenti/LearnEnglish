@@ -1,18 +1,16 @@
-package com.nhom2.learnenglish.feature.dictionary
+package com.nhom2.learnenglish.core.data.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity
-import com.nhom2.learnenglish.core.data.model.DictionaryResult
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity
 import com.nhom2.learnenglish.core.data.repository.DictionaryRepository
 import com.nhom2.learnenglish.core.data.repository.WordRepository
-import kotlinx.coroutines.launch
-import androidx.lifecycle.viewModelScope
-import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 class DictionaryViewModel(
     private val dictionaryRepo: DictionaryRepository,
     private val wordRepo: WordRepository
