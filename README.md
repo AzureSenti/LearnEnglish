@@ -20,8 +20,7 @@ Learn English là một ứng dụng di động hỗ trợ việc học tiếng 
 
 ## 🔌 Kết nối với Server
 
-Ứng dụng cần kết nối với backend server để hoạt động đầy đủ chức năng. 
-Backend server của dự án này chạy bằng Python, link repo: https://github.com/AzureSenti/LearnEngServer
+Ứng dụng cần kết nối với [Backend server](https://github.com/AzureSenti/LearnEngServer) để hoạt động đầy đủ chức năng. 
 
 1. **Thiết lập file cấu hình môi trường:**
    - Trong thư mục gốc của dự án Android, bạn sẽ thấy file mẫu tên là `application-local.properties.example`.
