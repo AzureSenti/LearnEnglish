@@ -24,10 +24,11 @@ interface WordDao : BaseDao<WordEntity> {
     fun getWordsBySetId(setId: String): List<WordEntity>
 
 
-    // 1DÙNG CHO TRANG CHỦ (MAIN): Ôn tập tất cả các từ đến hạn của user, bất kể nằm ở bộ nào
+    // 1DÙNG CHO TRANG CHỦ (MAIN): Ôn tập tất cả các từ đến hạn của user (Chỉ lấy từ đang nằm trong bộ)
     @Query("""
-        SELECT w.* FROM words w
+        SELECT DISTINCT w.* FROM words w
         INNER JOIN word_srs srs ON w.id = srs.word_id
+        INNER JOIN word_set_cross_ref ref ON w.id = ref.word_id 
         WHERE srs.user_id = :userId AND srs.next_review_date <= :currentTime
         ORDER BY srs.next_review_date ASC
         LIMIT :limit
@@ -70,9 +71,10 @@ interface WordDao : BaseDao<WordEntity> {
         LIMIT :limit
     """)
     fun getUnlearnedWords(setId: String, userId: String, limit: Int = 10): List<WordEntity>
-    // Lấy các từ mới (chưa học) trên toàn hệ thống (không phân biệt bộ)
+    // Lấy các từ mới (chưa học) trên toàn hệ thống (Chỉ đếm từ đang nằm trong bộ)
     @Query("""
-        SELECT w.* FROM words w
+        SELECT DISTINCT w.* FROM words w
+        INNER JOIN word_set_cross_ref ref ON w.id = ref.word_id
         WHERE w.id NOT IN (SELECT word_id FROM word_srs WHERE user_id = :userId)
         LIMIT :limit
     """)
