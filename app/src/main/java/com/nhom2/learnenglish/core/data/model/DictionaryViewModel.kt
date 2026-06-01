@@ -1,0 +1,70 @@
+package com.nhom2.learnenglish.core.data.model
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSetEntity
+import com.nhom2.learnenglish.core.data.repository.DictionaryRepository
+import com.nhom2.learnenglish.core.data.repository.WordRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+class DictionaryViewModel(
+    private val dictionaryRepo: DictionaryRepository,
+    private val wordRepo: WordRepository
+) : ViewModel() {
+
+    // Trả về kết quả dịch để Activity hiển thị lên BottomSheet
+    private val _translationResult = MutableLiveData<DictionaryResult?>()
+    val translationResult: LiveData<DictionaryResult?> get() = _translationResult
+
+    // Trả về thông báo (Lưu thành công hoặc Lỗi trùng từ)
+    private val _saveStatus = MutableLiveData<String>()
+    val saveStatus: LiveData<String> get() = _saveStatus
+
+    // 1. Hàm gọi API dịch từ
+    fun translateWord(word: String) {
+        viewModelScope.launch {
+            try {
+                val result = dictionaryRepo.lookupWord(word)
+                _translationResult.postValue(result)
+            } catch (e: Exception) {
+                _translationResult.postValue(null)
+            }
+        }
+    }
+
+    // 2. Hàm lưu từ vựng vào Room Database
+    fun saveWordToSet(dictResult: DictionaryResult, setId: String) {
+        val newWord = WordEntity(
+            englishWord = dictResult.word,
+            vietnameseMeaning = dictResult.vietnameseMeaning,
+            audio = dictResult.audioUrl
+        )
+
+        wordRepo.addNewWordToSet(
+            word = newWord,
+            setId = setId,
+            onSuccess = { _saveStatus.postValue("Lưu từ vựng thành công!") },
+            onError = { errorMsg -> _saveStatus.postValue(errorMsg) }
+        )
+    }
+    // Khai báo LiveData để chứa danh sách Word Sets
+    private val _wordSets = MutableLiveData<List<WordSetEntity>>()
+    val wordSets: LiveData<List<WordSetEntity>> get() = _wordSets
+
+    // Hàm load dữ liệu từ DB (chạy trên background thread)
+    fun loadWordSets() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                // Lấy danh sách từ repository (đảm bảo wordRepo có hàm getAllSets())
+                val sets = wordRepo.getAllSets()
+                _wordSets.postValue(sets)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+}

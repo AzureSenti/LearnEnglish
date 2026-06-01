@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -10,16 +13,73 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.LearnEnglish">
+        android:theme="@style/Theme.LearnEnglish"
+        android:usesCleartextTraffic="true"
+        android:name=".LearnEnglishApp"
+        >
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".feature.game.VocabularyGameActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".feature.mainmenu.MainMenuActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".feature.auth.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.auth.SignUpActivity"
+            android:exported="false" />
+        <activity android:name=".feature.wordsets.LibraryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.profile.ProfileActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".feature.profile.EditProfileActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".feature.profile.ChangePasswordActivity"
+            android:exported="false" />
+
+
+        <activity
+            android:name=".feature.articles.ArticlesActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".feature.articles.ArticleDetailActivity"
+            android:exported="false" />
+
+
+        <activity
+            android:name=".feature.wordsets.WordSetDetailActivity"
+            android:exported="false" />
+
+        <!-- Grammar -->
+        <activity android:name=".feature.grammar.GrammarRoadmapActivity"
+            android:exported="false" />
+
+        <activity android:name=".feature.grammar.GrammarTheoryActivity"
+            android:exported="false" />
+
+        <activity android:name=".feature.grammar.GrammarQuizActivity"
+            android:exported="false" />
+
+
     </application>
 
 </manifest>

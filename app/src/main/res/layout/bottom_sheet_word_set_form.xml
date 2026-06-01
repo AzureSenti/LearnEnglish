@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="24dp">
+
+    <!-- Handle bar -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="#E5E7EB" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_sheet_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create New Set"
+            android:textColor="#111827"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_close"
+            app:tint="#9CA3AF" />
+    </RelativeLayout>
+
+    <!-- Hero Image (Bo góc 16dp) -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp">
+        <ImageView
+            android:id="@+id/iv_hero"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_sheet_hero" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Set Name"
+        android:textColor="#374151"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/et_set_name"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_input_field"
+        android:hint="e.g., Travel Phrases"
+        android:paddingHorizontal="16dp"
+        android:textSize="15sp"
+        android:inputType="textCapSentences" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Select Category Icon"
+        android:textColor="#374151"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cat_airplane"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            app:icon="@drawable/ic_airplane"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:cornerRadius="12dp"
+            android:tag="airplane" />
+
+        <Space android:layout_width="10dp" android:layout_height="wrap_content" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cat_restaurant"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            app:icon="@drawable/ic_restaurant"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:cornerRadius="12dp"
+            android:tag="restaurant" />
+
+        <Space android:layout_width="10dp" android:layout_height="wrap_content" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cat_briefcase"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            app:icon="@drawable/ic_folder"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:cornerRadius="12dp"
+            android:tag="briefcase" />
+
+        <Space android:layout_width="10dp" android:layout_height="wrap_content" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cat_brain"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            app:icon="@drawable/ic_learn"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:cornerRadius="12dp"
+            android:tag="brain" />
+
+        <Space android:layout_width="10dp" android:layout_height="wrap_content" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cat_more"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            app:icon="@drawable/ic_more_vert"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:cornerRadius="12dp"
+            android:tag="more" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#10B981"
+        android:text="Create Set"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:cornerRadius="16dp"
+        app:icon="@drawable/ic_add"
+        app:iconGravity="textEnd" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="Sets help you organize your learning journey by topic."
+        android:textColor="#6B7280"
+        android:textSize="12sp" />
+
+</LinearLayout>

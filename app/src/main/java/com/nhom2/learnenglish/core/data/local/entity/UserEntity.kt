@@ -1,0 +1,41 @@
+package com.nhom2.learnenglish.core.data.local.entity
+
+import androidx.room3.ColumnInfo
+import androidx.room3.Entity
+import androidx.room3.Index
+import androidx.room3.PrimaryKey
+
+
+@Entity(
+    tableName = "users",
+    indices = [Index(value = ["user_id"], unique = true)]
+)
+data class UserEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+
+    @ColumnInfo(name = "user_id")
+    val userId: String,
+
+    @ColumnInfo(name = "full_name")
+    val fullName: String,
+
+    @ColumnInfo(name = "avatar_url")
+    val avatarUrl: String? = null,
+
+    @ColumnInfo(name = "email")
+    val email: String? = null,
+
+    @ColumnInfo(name = "coins")
+    val coins: Int,
+
+    @ColumnInfo(name = "current_streak", defaultValue = "0")
+    val currentStreak: Int = 0,
+
+    @ColumnInfo(name = "longest_streak", defaultValue = "0")
+    val longestStreak: Int = 0,
+
+    @ColumnInfo(name = "is_synced", defaultValue = "0")
+    val isSynced: Boolean = false
+
+)

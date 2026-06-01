@@ -1,3 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">LearnEnglish</string>
+    <string name="app_name">3English</string>
+
+    <!-- Login -->
+    <string name="login_welcome_title">Welcome back to\n3English</string>
+    <string name="hint_email">Email address</string>
+    <string name="hint_password">Password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="login_action">LOGIN</string>
+    <string name="signup_prompt">Don\'t have an account? </string>
+    <string name="signup_action">Sign up</string>
+
+    <!-- Sign up -->
+    <string name="signup_title">Create your account</string>
+    <string name="signup_subtitle">Join 3English to start your journey.</string>
+    <string name="label_username">Username</string>
+    <string name="hint_username_example">username_example</string>
+    <string name="label_email">Email Address</string>
+    <string name="label_password_field">Password</string>
+    <string name="password_helper">Must be at least 8 characters</string>
+    <string name="signup_button">Sign Up</string>
+    <string name="already_have_account">Already have an account? </string>
+    <string name="log_in_link">Log In</string>
+    <string name="error_email_registered">This email is already registered</string>
+    <string name="use_without_login">Use without login?</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Profile</string>
+    <string name="profile_days_streak">Days\nStreak</string>
+    <string name="profile_study_time">Study\nTime</string>
+    <string name="profile_words_mastered">Words\nMastered</string>
+    <string name="profile_memory_levels">Memory Levels</string>
+    <string name="profile_my_badges">My Badges</string>
+
+    <!-- Nav -->
+    <string name="nav_explore">Explore</string>
+    <string name="nav_library">Library</string>
+    <string name="nav_learn">Learn</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Game -->
+    <string name="game_correct">Chính xác!</string>
+    <string name="game_incorrect_template">Sai rồi! Đáp án đúng là: %1$s</string>
 </resources>
