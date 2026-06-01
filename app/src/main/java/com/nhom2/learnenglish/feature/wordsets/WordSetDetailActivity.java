@@ -234,7 +234,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
                 .setTitle("Xóa từ")
                 .setMessage("Bạn có chắc muốn gỡ \"" + word.getEnglishWord() + "\" khỏi bộ này?")
                 .setPositiveButton("Xóa", (dialog, which) -> {
-                    wordRepository.removeWordFromSpecificSet(word.getWordId(), setId, () -> {
+                    wordRepository.removeWordFromSpecificSet(userId,word.getWordId(), setId, () -> {
                         Toasty.success(this, "Đã gỡ từ vựng", Toast.LENGTH_SHORT, true).show();
                         loadWords();
                         loadReviewCount();
