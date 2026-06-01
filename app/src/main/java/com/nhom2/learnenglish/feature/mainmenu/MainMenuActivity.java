@@ -53,6 +53,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nhom2.learnenglish.core.data.model.DictionaryViewModel;
+import com.nhom2.learnenglish.core.data.local.entity.word.WordSrsEntity;
+import com.nhom2.learnenglish.feature.profile.StreakUtils;
 import com.nhom2.learnenglish.feature.wordsets.WordSetSelectionAdapter;
 import es.dmoral.toasty.Toasty;
 
@@ -323,6 +325,42 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     }
     // Hàm  Truy vấn số lượng từ đến hạn trong Database
+    // Hàm tính Streak thực tế cho màn hình chính
+    private void loadGlobalStreak() {
+        SessionManager sessionManager = new SessionManager(this);
+        String userId = sessionManager.getCurrentUserId();
+
+        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+            try {
+                AppDatabase db = AppDatabase.Companion.getInstance(this);
+                List<Long> studyDates = new ArrayList<>();
+
+                // Truy vấn thực tế từ WordSrsDao
+                List<WordSrsEntity> srsRecords = db.wordSrsDao().getAllForUser(userId);
+                
+                if (srsRecords != null) {
+                    for (WordSrsEntity record : srsRecords) {
+                        if (record.getLastReviewDate() != null) {
+                            studyDates.add(record.getLastReviewDate());
+                        }
+                    }
+                }
+
+                // Sử dụng StreakUtils (phải import đúng package feature.profile)
+                int streak = StreakUtils.calculateStreak(studyDates);
+
+                runOnUiThread(() -> {
+                    TextView tvHomeStreak = findViewById(R.id.tv_home_streak);
+                    if (tvHomeStreak != null) {
+                        tvHomeStreak.setText(streak + "\nDays");
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
     private void loadGlobalReviewCount() {
         SessionManager sessionManager = new SessionManager(this);
         String userId = sessionManager.getCurrentUserId();
@@ -568,6 +606,7 @@ public class MainMenuActivity extends AppCompatActivity {
         //  Tự động đếm và cập nhật lại số từ cần ôn tập và từ mới mỗi khi vào trang chủ
         loadGlobalReviewCount();
         loadGlobalLearnCount();
+        loadGlobalStreak(); // THÊM DÒNG NÀY
 
         // Tự động đồng bộ dữ liệu khi có mạng
         com.nhom2.learnenglish.core.util.NetworkSyncManager.INSTANCE.syncIfOnline(this);
