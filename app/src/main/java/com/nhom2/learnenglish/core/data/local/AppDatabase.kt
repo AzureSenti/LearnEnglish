@@ -18,10 +18,12 @@ import com.nhom2.learnenglish.core.data.local.dao.word.WordSrsDao
 import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity
 import com.nhom2.learnenglish.core.data.local.entity.StoryEntity
 import com.nhom2.learnenglish.core.data.local.dao.StoryDao
+import com.nhom2.learnenglish.core.data.local.dao.sync.DeletedSyncItemDao
 import com.nhom2.learnenglish.core.data.local.entity.UserEntity
 import com.nhom2.learnenglish.core.data.local.entity.grammar.GrammarLessonEntity
 import com.nhom2.learnenglish.core.data.local.entity.grammar.GrammarQuestionEntity
 import com.nhom2.learnenglish.core.data.local.entity.grammar.UserGrammarProgress
+import com.nhom2.learnenglish.core.data.local.entity.sync.DeletedSyncItemEntity
 import com.nhom2.learnenglish.core.data.local.entity.word.UserWordSetCrossRef
 import com.nhom2.learnenglish.core.data.local.entity.word.WordEntity
 import com.nhom2.learnenglish.core.data.local.entity.word.WordSetCrossRef
@@ -41,7 +43,7 @@ import com.nhom2.learnenglish.core.data.local.entity.word.WordSrsEntity
         GrammarLessonEntity::class,
         GrammarQuestionEntity::class,
         UserGrammarProgress::class,
-        com.nhom2.learnenglish.core.data.local.entity.sync.DeletedSyncItemEntity::class
+        DeletedSyncItemEntity::class
     ],
     version = 1,
     exportSchema = true
@@ -61,7 +63,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun grammarLessonDao(): GrammarLessonDao
     abstract fun grammarQuestionDao(): GrammarQuestionDao
     abstract fun userGrammarProgressDao(): UserGrammarProgressDao
-    abstract fun deletedSyncItemDao(): com.nhom2.learnenglish.core.data.local.dao.sync.DeletedSyncItemDao
+    abstract fun deletedSyncItemDao(): DeletedSyncItemDao
 
     companion object {
         private const val DATABASE_NAME = "learn_english_db"

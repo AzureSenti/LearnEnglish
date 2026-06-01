@@ -22,6 +22,7 @@ import com.nhom2.learnenglish.core.data.repository.ArticleRepository;
 import com.nhom2.learnenglish.core.data.repository.WordRepository;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.Navigator;
+import com.nhom2.learnenglish.core.util.NetworkSyncManager;
 import com.nhom2.learnenglish.feature.articles.ArticlesActivity;
 import com.nhom2.learnenglish.feature.articles.ArticleDetailActivity;
 import com.nhom2.learnenglish.feature.grammar.GrammarRoadmapActivity;
@@ -607,7 +608,7 @@ public class MainMenuActivity extends AppCompatActivity {
         loadUserProfile();
 
         // Tự động đồng bộ dữ liệu khi có mạng
-        com.nhom2.learnenglish.core.util.NetworkSyncManager.INSTANCE.syncIfOnline(this);
+        NetworkSyncManager.INSTANCE.syncIfOnline(this);
     }
 
     @Override

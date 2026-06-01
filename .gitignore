@@ -39,4 +39,4 @@ lint/generated/
 
 application-local.properties
 
-Backend/
+app/schemas/

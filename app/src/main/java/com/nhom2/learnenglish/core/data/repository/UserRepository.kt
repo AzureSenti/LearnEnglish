@@ -38,7 +38,7 @@ class UserRepository(
         sessionManager.createLoginSession(validToken, validUserId, refreshToken)
 
         val userEntity = UserEntity(
-            userId = validUserId, // Lưu String
+            userId = validUserId,
             fullName = response.fullName ?: "",
             avatarUrl = response.avatarUrl ?: "",
             email = response.email ?: "",
@@ -115,10 +115,9 @@ class UserRepository(
         if (localUser == null) {
             localUser = UserEntity(
                 id = LOCAL_USER_ID.toLong(),
-                userId = LOCAL_USER_ID, // Chuyển -1 thành chuỗi "-1"
+                userId = LOCAL_USER_ID,
                 fullName = "Local User",
                 coins = 0,
-                // Bổ sung các trường bắt buộc khác (nếu có) để tránh lỗi null entity
                 avatarUrl = "",
                 email = ""
             )

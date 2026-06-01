@@ -3,7 +3,11 @@ package com.nhom2.learnenglish.core.data.repository
 import android.util.Log
 import com.nhom2.learnenglish.core.data.local.dao.UserDao
 import com.nhom2.learnenglish.core.data.local.dao.grammar.UserGrammarProgressDao
+import com.nhom2.learnenglish.core.data.local.dao.sync.DeletedSyncItemDao
 import com.nhom2.learnenglish.core.data.local.dao.word.UserWordSetDao
+import com.nhom2.learnenglish.core.data.local.dao.word.WordDao
+import com.nhom2.learnenglish.core.data.local.dao.word.WordSetCrossDao
+import com.nhom2.learnenglish.core.data.local.dao.word.WordSetDao
 import com.nhom2.learnenglish.core.data.local.dao.word.WordSrsDao
 import com.nhom2.learnenglish.core.data.local.entity.UserEntity
 import com.nhom2.learnenglish.core.data.local.entity.grammar.UserGrammarProgress
@@ -35,14 +39,14 @@ import com.nhom2.learnenglish.core.util.SessionManager
  */
 class SyncRepository(
     private val syncApi: SyncApi,
-    private val wordDao: com.nhom2.learnenglish.core.data.local.dao.word.WordDao,
-    private val wordSetDao: com.nhom2.learnenglish.core.data.local.dao.word.WordSetDao,
-    private val wordSetCrossDao: com.nhom2.learnenglish.core.data.local.dao.word.WordSetCrossDao,
+    private val wordDao: WordDao,
+    private val wordSetDao: WordSetDao,
+    private val wordSetCrossDao: WordSetCrossDao,
     private val wordSrsDao: WordSrsDao,
     private val grammarProgressDao: UserGrammarProgressDao,
     private val userWordSetDao: UserWordSetDao,
     private val userDao: UserDao,
-    private val deletedSyncItemDao: com.nhom2.learnenglish.core.data.local.dao.sync.DeletedSyncItemDao,
+    private val deletedSyncItemDao: DeletedSyncItemDao,
     private val sessionManager: SessionManager,
     executors: AppExecutors = AppExecutors.getInstance()
 ) : BaseRepository(executors) {

@@ -19,8 +19,10 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.nhom2.learnenglish.core.data.local.AppDatabase;
 import com.nhom2.learnenglish.core.data.local.entity.UserEntity;
+import com.nhom2.learnenglish.core.network.user.UploadAvatarResponse;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.core.util.Navigator;
+import com.nhom2.learnenglish.core.util.NetworkSyncManager;
 import com.nhom2.learnenglish.core.util.SessionManager;
 import com.nhom2.learnenglish.databinding.ActivityProfileBinding;
 import com.nhom2.learnenglish.feature.grammar.GrammarRoadmapActivity;
@@ -189,7 +191,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         BarDataSet dataSet = new BarDataSet(entries, "Memory Levels");
-        // Màu xanh chuẩn Design (#3D5CFF)
         dataSet.setColor(Color.parseColor("#3D5CFF"));
         dataSet.setValueTextColor(Color.parseColor("#858597"));
         dataSet.setValueTextSize(10f);
@@ -243,7 +244,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // Tự động đồng bộ dữ liệu khi có mạng
-        com.nhom2.learnenglish.core.util.NetworkSyncManager.INSTANCE.syncIfOnline(this);
+        NetworkSyncManager.INSTANCE.syncIfOnline(this);
         // Tải lại profile sau khi sync
         loadUserProfileData();
     }
@@ -269,7 +270,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String token = "Bearer " + sessionManager.fetchAuthToken();
                 UserApi userApi = RetrofitClient.INSTANCE.getInstance().create(UserApi.class);
 
-                retrofit2.Response<com.nhom2.learnenglish.core.network.user.UploadAvatarResponse> response = userApi.uploadAvatarSync(token, body).execute();
+                retrofit2.Response<UploadAvatarResponse> response = userApi.uploadAvatarSync(token, body).execute();
 
                 if (response.isSuccessful() && response.body() != null) {
                     String newAvatarUrl = response.body().getAvatarUrl();
