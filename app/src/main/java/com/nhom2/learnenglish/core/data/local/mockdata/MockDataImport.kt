@@ -36,6 +36,10 @@ object MockDataImport {
                     db.articleDao().deleteAll()
                     db.articleDao().insertAll(MockData.articles)
 
+                    // Story
+                    db.storyDao().deleteAll()
+                    db.storyDao().insertAll(MockData.stories)
+
                     // Word and Set
                     db.wordDao().deleteAll()
                     db.wordSetDao().deleteAll()
