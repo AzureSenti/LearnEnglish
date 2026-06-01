@@ -784,6 +784,160 @@ object MockData {
             image = "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=500",
             author = "ANTOINE DE SAINT-EXUPÉRY",
         ),
+        StoryEntity(
+            id = 10008,
+            title = "TO KILL A MOCKINGBIRD",
+            content = "When he was nearly thirteen, my brother Jem got his arm badly broken\n" +
+                    "at the elbow. When it healed, and Jem's fears of never being able to\n" +
+                    "play football were assuaged, he was seldom self-conscious about his\n" +
+                    "injury. His left arm was somewhat shorter than his right; when he\n" +
+                    "stood or walked, the back of his hand was at right angles to his body,\n" +
+                    "his thumb parallel to his thigh.\n" +
+                    "When enough years had gone by to enable us to look back on them, we\n" +
+                    "sometimes discussed the events leading to his accident. I maintain that\n" +
+                    "the Ewells started it all, but Jem, who was four years my senior, said\n" +
+                    "it started long before that. He said it began the summer Dill came to us,\n" +
+                    "when Dill first gave us the idea of making Boo Radley come out.\n" +
+                    "I said if he wanted to take a broad view of the thing, it really began\n" +
+                    "with Andrew Jackson. If General Jackson hadn't run the Creeks up the\n" +
+                    "creek, Simon Finch would never have paddled up the Alabama, and where\n" +
+                    "would we be if he hadn't? We were far too old to settle an argument\n" +
+                    "with a fistfight, so we consulted Atticus. Our father said we were\n" +
+                    "both right.\n" +
+                    "Being Southerners, it was a source of shame to some members of the\n" +
+                    "family that we had no recorded ancestors on either side of the Battle\n" +
+                    "of Hastings. All we had was Simon Finch, a fur-trapping apothecary\n" +
+                    "from Cornwall whose piety was exceeded only by his greed.\n" +
+                    "Atticus told us to delete the adjectives and we'd have the facts.\n",
+            category = "Classic",
+            level = "b2",
+            image = "https://images.unsplash.com/photo-1497864149936-d3163f0c0f4b?w=500",
+            author = "HARPER LEE",
+        ),
+
+        StoryEntity(
+            id = 10009,
+            title = "BRAVE NEW WORLD",
+            content = "A squat grey building of only thirty-four stories. Over the main\n" +
+                    "entrance the words, CENTRAL LONDON HATCHERY AND CONDITIONING CENTRE,\n" +
+                    "and, in a shield, the World State's motto, COMMUNITY, IDENTITY, STABILITY.\n" +
+                    "The enormous room on the ground floor faced towards the north. Cold\n" +
+                    "for all the summer beyond the panes, for all the tropical heat of the\n" +
+                    "room itself, a harsh thin light glared through the windows, hungrily\n" +
+                    "seeking some draped lay figure, some pallid shape of academic goose-flesh,\n" +
+                    "but finding only the glass and nickel and bleakly shining porcelain of\n" +
+                    "a laboratory.\n" +
+                    "Wintriness responded to wintriness. The overalls of the workers were\n" +
+                    "white, their hands gloved with a pale corpse-coloured rubber. The light\n" +
+                    "was frozen, dead, a ghost. Only from the yellow barrels of the\n" +
+                    "microscopes did it borrow a certain rich and living substance, lying\n" +
+                    "along the polished tubes like butter, streak after luscious streak in\n" +
+                    "long recession down the work tables.\n" +
+                    "\"And this,\" said the Director opening the door, \"is the Fertilizing Room.\"\n" +
+                    "Bent over their instruments, three hundred Fertilizers were plunged,\n" +
+                    "as the Director of Hatcheries and Conditioning entered the room, in the\n" +
+                    "scarcely breathing silence, the absent-minded, soliloquizing hum or\n" +
+                    "whistle, of absorbed concentration.\n" +
+                    "A troop of newly arrived students, very young, pink and callow, followed\n" +
+                    "nervously, rather abjectly, at the Director's heels. Each of them carried\n" +
+                    "a notebook, in which, whenever the great man spoke, he desperately\n" +
+                    "scribbled.\n",
+            category = "Dystopia",
+            level = "c1",
+            image = "https://images.unsplash.com/photo-1518770660439-4636190af475?w=500",
+            author = "ALDOUS HUXLEY",
+        ),
+
+        StoryEntity(
+            id = 10010,
+            title = "SHERLOCK HOLMES: A STUDY IN SCARLET",
+            content = "In the year 1878 I took my degree of Doctor of Medicine of the\n" +
+                    "University of London, and proceeded to Netley to go through the course\n" +
+                    "prescribed for surgeons in the army. Having completed my studies there,\n" +
+                    "I was duly attached to the Fifth Northumberland Fusiliers as Assistant\n" +
+                    "Surgeon. The regiment was stationed in India at the time, and before\n" +
+                    "I could join it, the second Afghan war had broken out.\n" +
+                    "On landing at Bombay, I learned that my corps had advanced through\n" +
+                    "the passes, and was already deep in the enemy's country. I followed,\n" +
+                    "however, with many other officers who were in the same situation as\n" +
+                    "myself, and succeeded in reaching Candahar in safety, where I found\n" +
+                    "my regiment, and at once entered upon my new duties.\n" +
+                    "The campaign brought honours and promotion to many, but for me it\n" +
+                    "had nothing but misfortune and disaster. I was removed from my brigade\n" +
+                    "and attached to the Berkshires, with whom I served at the fatal battle\n" +
+                    "of Maiwand. There I was struck on the shoulder by a Jezail bullet,\n" +
+                    "which shattered the bone and grazed the subclavian artery.\n" +
+                    "I should have fallen into the hands of the murderous Ghazis had it\n" +
+                    "not been for the devotion and courage shown by Murray, my orderly,\n" +
+                    "who threw me across a pack-horse, and succeeded in bringing me safely\n" +
+                    "to the British lines.\n" +
+                    "\"You have been in Afghanistan, I perceive,\" said Sherlock Holmes.\n",
+            category = "Mystery",
+            level = "b2",
+            image = "https://images.unsplash.com/photo-1587393855524-087f83d95bc9?w=500",
+            author = "ARTHUR CONAN DOYLE",
+        ),
+
+        StoryEntity(
+            id = 10011,
+            title = "THE HUNGER GAMES",
+            content = "When I wake up, the other side of the bed is cold. My fingers stretch\n" +
+                    "out, seeking Prim's warmth but finding only the rough canvas cover of\n" +
+                    "the mattress. She must have had bad dreams and climbed in with our\n" +
+                    "mother. Of course she did. This is the morning of the reaping.\n" +
+                    "I prop myself up on one elbow. There's enough light in the bedroom\n" +
+                    "to see them. My little sister, Prim, curled up on her side, cocooned\n" +
+                    "in my mother's body, their cheeks pressed together. In sleep my mother\n" +
+                    "looks young and beautiful as she did in the photographs before the\n" +
+                    "dark days, before my father's death.\n" +
+                    "I quietly get up and make sure there's enough blanket to go around.\n" +
+                    "Sitting on the floor, I pull on my hunting boots. Supple leather that\n" +
+                    "has molded to my feet, they were my father's and I've worn them for\n" +
+                    "several years now. I lace them up and look around the room, which\n" +
+                    "holds the three of us and our few possessions.\n" +
+                    "Our part of District 12, nicknamed the Seam, is usually crawling\n" +
+                    "with coal miners heading out to the morning shift at this hour. But\n" +
+                    "today the black cinder streets are empty. Reaping Day is a holiday.\n" +
+                    "A deeply feared holiday. No work in the mines. No school.\n" +
+                    "Instead, at two o'clock, we will all converge in the square for the\n" +
+                    "reaping. All the residents of District 12. We stand in roped areas\n" +
+                    "marked off by age. Behind the rope in the very front, the boys and\n" +
+                    "girls between twelve and eighteen.\n",
+            category = "Adventure",
+            level = "b1",
+            image = "https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=500",
+            author = "SUZANNE COLLINS",
+        ),
+
+        StoryEntity(
+            id = 10012,
+            title = "JANE EYRE",
+            content = "There was no possibility of taking a walk that day. We had been\n" +
+                    "wandering, indeed, in the leafless shrubbery an hour in the morning;\n" +
+                    "but since dinner (Mrs. Reed, when there was no company, dined early)\n" +
+                    "the cold winter wind had brought with it clouds so sombre, and a rain\n" +
+                    "so penetrating, that further outdoor exercise was now out of the question.\n" +
+                    "I was glad of it: I never liked long walks, especially on chilly\n" +
+                    "afternoons: dreadful to me was the coming home in the raw twilight,\n" +
+                    "with nipped fingers and toes, and a heart saddened by the chidings\n" +
+                    "of Bessie, the nurse, and humbled by the consciousness of my physical\n" +
+                    "inferiority to Eliza, John, and Georgiana Reed.\n" +
+                    "The said Eliza, John, and Georgiana were now clustered round their\n" +
+                    "mama in the drawing-room: she lay reclined on a sofa by the fireside,\n" +
+                    "and with her darlings about her (for the time neither quarrelling nor\n" +
+                    "crying) looked perfectly happy. Me, she had dispensed from joining\n" +
+                    "the group; saying, \"She regretted to be under the necessity of keeping\n" +
+                    "me at a distance; but that until she heard from Bessie, and could\n" +
+                    "discover by her own observation, that I was endeavouring in good\n" +
+                    "earnest to acquire a more sociable and childlike disposition, a more\n" +
+                    "attractive and sprightly manner — something lighter, franker, more\n" +
+                    "natural, as it were — she really must exclude me from privileges\n" +
+                    "intended only for contented, happy little children.\"\n",
+            category = "Romance",
+            level = "c1",
+            image = "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=500",
+            author = "CHARLOTTE BRONTË",
+        )
 
     )
 
