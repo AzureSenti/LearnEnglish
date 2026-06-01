@@ -57,7 +57,10 @@ data class SyncUploadRequest(
     @SerializedName("word_srs_list") val wordSrsList: List<WordSrsUploadItem> = emptyList(),
     @SerializedName("grammar_progress_list") val grammarProgressList: List<GrammarProgressUploadItem> = emptyList(),
     @SerializedName("unlocked_word_sets") val unlockedWordSets: List<UserWordSetUploadItem> = emptyList(),
-    @SerializedName("user_profile") val userProfile: UserProfileUploadItem? = null
+    @SerializedName("user_profile") val userProfile: UserProfileUploadItem? = null,
+    
+    @SerializedName("deleted_word_set_ids") val deletedWordSetIds: List<String> = emptyList(),
+    @SerializedName("deleted_word_set_cross_refs") val deletedWordSetCrossRefs: List<WordSetCrossRefSyncItem> = emptyList()
 )
 
 

@@ -67,6 +67,7 @@ object NetworkSyncManager {
                     grammarProgressDao = db.userGrammarProgressDao(),
                     userWordSetDao = db.userWordSetDao(),
                     userDao = db.userDao(),
+                    deletedSyncItemDao = db.deletedSyncItemDao(),
                     sessionManager = sessionManager
                 )
 

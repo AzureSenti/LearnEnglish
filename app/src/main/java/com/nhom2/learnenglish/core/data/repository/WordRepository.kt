@@ -20,6 +20,7 @@ class WordRepository(
     private val wordSrsDao: WordSrsDao,
     private val userWordSetDao: UserWordSetDao,
     private val wordSetCrossDao: WordSetCrossDao,
+    private val deletedSyncItemDao: com.nhom2.learnenglish.core.data.local.dao.sync.DeletedSyncItemDao,
     executors: AppExecutors = AppExecutors.getInstance()
 ) : BaseRepository(executors) {
 
@@ -212,6 +213,29 @@ class WordRepository(
     fun removeWordFromSpecificSet(wordId: String, setId: String, onComplete: (() -> Unit)? = null) {
         runOnDiskIO {
             wordSetCrossDao.removeWordFromSet(wordId = wordId, setId = setId)
+            deletedSyncItemDao.insert(
+                com.nhom2.learnenglish.core.data.local.entity.sync.DeletedSyncItemEntity(
+                    itemType = "CROSS_REF",
+                    primaryId = wordId,
+                    secondaryId = setId
+                )
+            )
+            onComplete?.let { runOnMain { it() } }
+        }
+    }
+
+    /**
+     * XÓA: Xóa hoàn toàn một bộ từ
+     */
+    fun deleteWordSet(set: WordSetEntity, onComplete: (() -> Unit)? = null) {
+        runOnDiskIO {
+            wordSetDao.delete(set)
+            deletedSyncItemDao.insert(
+                com.nhom2.learnenglish.core.data.local.entity.sync.DeletedSyncItemEntity(
+                    itemType = "WORD_SET",
+                    primaryId = set.id
+                )
+            )
             onComplete?.let { runOnMain { it() } }
         }
     }

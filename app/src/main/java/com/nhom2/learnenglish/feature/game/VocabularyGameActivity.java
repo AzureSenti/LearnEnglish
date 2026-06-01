@@ -130,6 +130,7 @@ public class VocabularyGameActivity extends AppCompatActivity {
                 db.wordSrsDao(),
                 db.userWordSetDao(),
                 db.wordSetCrossDao(),
+                db.deletedSyncItemDao(),
                 AppExecutors.Companion.getInstance()
         );
     }

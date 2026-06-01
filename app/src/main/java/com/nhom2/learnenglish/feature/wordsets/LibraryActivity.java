@@ -62,6 +62,7 @@ public class LibraryActivity extends AppCompatActivity {
                 db.wordSrsDao(),
                 db.userWordSetDao(),
                 db.wordSetCrossDao(),
+                db.deletedSyncItemDao(),
                 AppExecutors.Companion.getInstance()
         );
 
@@ -126,16 +127,13 @@ public class LibraryActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Xóa bộ từ")
                 .setMessage("Bạn có chắc muốn xóa \"" + item.getName() + "\"?")
-                .setPositiveButton("Xóa", (dialog, which) ->
-                        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
-                            try {
-                                wordSetDao.delete(item);
-                                runOnUiThread(() -> {
-                                    Toasty.success(this, "Đã xóa bộ từ", Toast.LENGTH_SHORT, true).show();
-                                    loadWordSetData();
-                                });
-                            } catch (Exception e) { e.printStackTrace(); }
-                        }))
+                .setPositiveButton("Xóa", (dialog, which) -> {
+                    wordRepository.deleteWordSet(item, () -> {
+                        Toasty.success(this, "Đã xóa bộ từ", Toast.LENGTH_SHORT, true).show();
+                        loadWordSetData();
+                        return kotlin.Unit.INSTANCE;
+                    });
+                })
                 .setNegativeButton("Hủy", null).show();
     }
 
@@ -173,9 +171,9 @@ public class LibraryActivity extends AppCompatActivity {
             AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
                 try {
                     if (isEdit) {
-                        wordSetDao.update(new WordSetEntity(item.getId(), name, selectedIcon[0], item.getUnlockCost(),item.isSynced()));
+                        wordSetDao.update(new WordSetEntity(item.getId(), name, selectedIcon[0], item.getUnlockCost(), false));
                     } else {
-                        wordSetDao.insert(new WordSetEntity(java.util.UUID.randomUUID().toString(), name, selectedIcon[0], 0,item.isSynced()));
+                        wordSetDao.insert(new WordSetEntity(java.util.UUID.randomUUID().toString(), name, selectedIcon[0], 0, false));
                     }
                     runOnUiThread(() -> {
                         Toasty.success(this, isEdit ? "Đã cập nhật" : "Đã tạo bộ từ mới", Toast.LENGTH_SHORT, true).show();                        sheet.dismiss();
