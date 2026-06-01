@@ -40,15 +40,16 @@ public class WordSetDetailActivity extends AppCompatActivity {
     private WordRepository wordRepository;
     private SessionManager sessionManager;
     private WordAdapter adapter;
-    private long setId;
-    private long userId;
+    private String setId;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_set_detail);
 
-        setId = getIntent().getLongExtra("SET_ID", -1);
+        setId = getIntent().getStringExtra("SET_ID");
+        if (setId == null) setId = "";
         
         setupData();
         initViews();
@@ -60,7 +61,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (setId != -1) {
+        if (!setId.isEmpty()) {
             loadWords();
             loadReviewCount();
         }
@@ -69,11 +70,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
     private void setupData() {
         AppDatabase db = AppDatabase.Companion.getInstance(this);
         sessionManager = new SessionManager(this);
-        try {
-            userId = Long.parseLong(sessionManager.getCurrentUserId());
-        } catch (NumberFormatException e) {
-            userId = -1;
-        }
+        userId = sessionManager.getCurrentUserId();
 
         wordRepository = new WordRepository(
                 db.wordDao(),
@@ -185,11 +182,13 @@ public class WordSetDetailActivity extends AppCompatActivity {
                         db.wordDao().update(updated);
                     } else {
                         WordEntity existing = db.wordDao().getWordByEnglish(eng);
-                        long wordIdToLink;
+                        String wordIdToLink;
                         if (existing != null) {
                             wordIdToLink = existing.getId();
                         } else {
-                            wordIdToLink = db.wordDao().insert(new WordEntity(0, eng, vi, null, false));
+                            WordEntity newWord = new WordEntity(java.util.UUID.randomUUID().toString(), eng, vi, null, false);
+                            db.wordDao().insert(newWord);
+                            wordIdToLink = newWord.getId();
                         }
                         
                         boolean isAlreadyInSet = db.wordSetCrossDao().isWordInSet(wordIdToLink, setId);
@@ -255,7 +254,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
     private void loadWords() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                List<WordWithProgress> list = wordRepository.getWordListWithProgress(setId, String.valueOf(userId));
+                List<WordWithProgress> list = wordRepository.getWordListWithProgress(setId, userId);
                 int masteredCount = 0;
                 for (WordWithProgress word : list) {
                     if (word.getLevel() != null && word.getLevel() > 0) masteredCount++;
@@ -277,7 +276,7 @@ public class WordSetDetailActivity extends AppCompatActivity {
     private void loadReviewCount() {
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
             try {
-                int reviewCount = wordRepository.getWordsForReview(String.valueOf(userId), setId).size();
+                int reviewCount = wordRepository.getWordsForReview(userId, setId).size();
                 runOnUiThread(() -> {
                     if (btnReview != null) {
                         btnReview.setText(reviewCount > 0 ? "ÔN TẬP (" + reviewCount + ")" : "CHƯA CÓ TỪ CẦN ÔN");

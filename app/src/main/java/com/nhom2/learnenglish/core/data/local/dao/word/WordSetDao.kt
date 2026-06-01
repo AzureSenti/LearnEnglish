@@ -12,7 +12,7 @@ interface WordSetDao : BaseDao<WordSetEntity> {
     fun getAllSets(): List<WordSetEntity>
 
     @Query("SELECT * FROM word_sets WHERE id = :id")
-    fun getSetById(id: Long): WordSetEntity?
+    fun getSetById(id: String): WordSetEntity?
 
     @Query("""
         SELECT ws.* FROM word_sets ws

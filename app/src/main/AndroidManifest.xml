@@ -51,6 +51,10 @@
             android:name=".feature.profile.EditProfileActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".feature.profile.ChangePasswordActivity"
+            android:exported="false" />
+
 
         <activity
             android:name=".feature.articles.ArticlesActivity"

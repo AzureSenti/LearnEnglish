@@ -8,25 +8,25 @@ import com.google.gson.annotations.SerializedName
 // ---------------------------------------------------------------------------
 
 data class WordSyncItem(
-    @SerializedName("word_id") val wordId: Long,
+    @SerializedName("word_id") val wordId: String,
     @SerializedName("english_word") val englishWord: String,
     @SerializedName("vietnamese_meaning") val vietnameseMeaning: String,
     @SerializedName("audio") val audio: String? = null
 )
 
 data class WordSetSyncItem(
-    @SerializedName("set_id") val setId: Long,
+    @SerializedName("set_id") val setId: String,
     @SerializedName("name") val name: String,
     @SerializedName("unlock_cost") val unlockCost: Int
 )
 
 data class WordSetCrossRefSyncItem(
-    @SerializedName("word_id") val wordId: Long,
-    @SerializedName("set_id") val setId: Long
+    @SerializedName("word_id") val wordId: String,
+    @SerializedName("set_id") val setId: String
 )
 
 data class WordSrsUploadItem(
-    @SerializedName("word_id") val wordId: Int,
+    @SerializedName("word_id") val wordId: String,
     @SerializedName("level") val level: Int,
     @SerializedName("next_review_date") val nextReviewDate: Long,
     @SerializedName("last_review_date") val lastReviewDate: Long?
@@ -40,7 +40,7 @@ data class GrammarProgressUploadItem(
 )
 
 data class UserWordSetUploadItem(
-    @SerializedName("set_id") val setId: Int
+    @SerializedName("set_id") val setId: String
 )
 
 data class UserProfileUploadItem(
@@ -66,7 +66,7 @@ data class SyncUploadRequest(
 // ---------------------------------------------------------------------------
 
 data class WordSrsDownloadItem(
-    @SerializedName("word_id") val wordId: Int,
+    @SerializedName("word_id") val wordId: String,
     @SerializedName("level") val level: Int,
     @SerializedName("next_review_date") val nextReviewDate: Long,
     @SerializedName("last_review_date") val lastReviewDate: Long?
@@ -94,6 +94,6 @@ data class SyncDownloadResponse(
 
     @SerializedName("word_srs_list") val wordSrsList: List<WordSrsDownloadItem> = emptyList(),
     @SerializedName("grammar_progress_list") val grammarProgressList: List<GrammarProgressDownloadItem> = emptyList(),
-    @SerializedName("unlocked_word_set_ids") val unlockedWordSetIds: List<Int> = emptyList(),
+    @SerializedName("unlocked_word_set_ids") val unlockedWordSetIds: List<String> = emptyList(),
     @SerializedName("user_profile") val userProfile: UserProfileDownloadItem
 )

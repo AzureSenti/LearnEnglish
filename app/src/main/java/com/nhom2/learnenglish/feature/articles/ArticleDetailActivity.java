@@ -284,7 +284,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
         tvMeaning.setText(result.getVietnameseMeaning());
 
         // Dùng mảng 1 phần tử để lưu ID (nhằm thay đổi được giá trị bên trong hàm lambda)
-        final long[] selectedSetId = {-1L};
+        final String[] selectedSetId = {""};
 
         // Khi mở lên, mờ nút đi vì chưa chọn thư mục nào
         btnSave.setEnabled(false);
@@ -297,7 +297,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
 
         // 2. SỰ KIỆN BẤM LƯU TỪ
         btnSave.setOnClickListener(v -> {
-            if (selectedSetId[0] != -1L) {
+            if (!selectedSetId[0].isEmpty()) {
                 dictionaryViewModel.saveWordToSet(result, selectedSetId[0]);
                 bottomSheetDialog.dismiss();
             } else {
@@ -308,7 +308,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
         bottomSheetDialog.show();
     }
     // HÀM MỚI ĐỂ HIỂN THỊ MODAL CHỌN TỪ VỰNG
-    private void showWordSetSelectionDialog(TextView tvSelectedWordSet, long[] selectedSetId, Button btnSave) {
+    private void showWordSetSelectionDialog(TextView tvSelectedWordSet, String[] selectedSetId, Button btnSave) {
         BottomSheetDialog selectionDialog = new BottomSheetDialog(this);
         View view = getLayoutInflater().inflate(R.layout.layout_dialog_select_word_set, null);
         selectionDialog.setContentView(view);

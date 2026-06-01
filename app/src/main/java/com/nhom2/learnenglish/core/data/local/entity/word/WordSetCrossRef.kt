@@ -29,10 +29,10 @@ import androidx.room3.Index
 )
 data class WordSetCrossRef(
     @ColumnInfo(name = "word_id")
-    val wordId: Long,
+    val wordId: String,
 
     @ColumnInfo(name = "set_id")
-    val setId: Long,
+    val setId: String,
 
     @ColumnInfo(name = "is_synced", defaultValue = "0")
     val isSynced: Boolean = false

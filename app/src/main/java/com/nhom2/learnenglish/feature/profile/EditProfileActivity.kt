@@ -1,8 +1,13 @@
 package com.nhom2.learnenglish.feature.profile
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.OnApplyWindowInsetsListener
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.nhom2.learnenglish.core.data.local.AppDatabase
 import com.nhom2.learnenglish.core.network.RetrofitClient
@@ -14,6 +19,7 @@ import com.nhom2.learnenglish.databinding.ActivityEditProfileBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -36,6 +42,15 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        this.enableEdgeToEdge()
+        ViewCompat.setOnApplyWindowInsetsListener(
+            findViewById<View?>(android.R.id.content),
+            OnApplyWindowInsetsListener { v: View?, insets: WindowInsetsCompat? ->
+                val systemBars = insets!!.getInsets(WindowInsetsCompat.Type.systemBars())
+                v!!.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+                insets
+            })
+
         binding.btnBack.setOnClickListener { finish() }
 
         binding.btnSaveProfile.setOnClickListener {
@@ -47,28 +62,13 @@ class EditProfileActivity : AppCompatActivity() {
             }
             updateProfile(fullName, avatarUrl)
         }
-
-        binding.btnChangePassword.setOnClickListener {
-            val currentPassword = binding.inputCurrentPassword.text.toString().trim()
-            val newPassword = binding.inputNewPassword.text.toString().trim()
-
-            if (currentPassword.isEmpty() || newPassword.isEmpty()) {
-                Toast.makeText(this, "Please fill in all password fields", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            if (newPassword.length < 6) {
-                Toast.makeText(this, "New password must be at least 6 characters", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            changePassword(currentPassword, newPassword)
-        }
     }
 
     private fun loadLocalData() {
         lifecycleScope.launch(Dispatchers.IO) {
             val userId = sessionManager.getCurrentUserId()
             if (userId != null) {
-                val user = database.userDao().getById(userId)
+                val user = database.userDao().getByUserId(userId)
                 withContext(Dispatchers.Main) {
                     user?.let {
                         binding.inputFullname.setText(it.fullName)
@@ -98,7 +98,7 @@ class EditProfileActivity : AppCompatActivity() {
                     if (body != null) {
                         val userId = sessionManager.getCurrentUserId()
                         if (userId != null) {
-                            val user = database.userDao().getById(userId)
+                            val user = database.userDao().getByUserId(userId)
                             if (user != null) {
                                 val updatedUser = user.copy(
                                     fullName = body.fullName,
@@ -125,41 +125,6 @@ class EditProfileActivity : AppCompatActivity() {
             } finally {
                 withContext(Dispatchers.Main) {
                     binding.btnSaveProfile.isEnabled = true
-                }
-            }
-        }
-    }
-
-    private fun changePassword(currentPass: String, newPass: String) {
-        val tokenStr = sessionManager.fetchAuthToken()
-        if (tokenStr.isNullOrEmpty()) return
-        val token = "Bearer $tokenStr"
-        
-        binding.btnChangePassword.isEnabled = false
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val response = userApi.changePassword(
-                    token = token,
-                    request = ChangePasswordRequest(currentPass, newPass)
-                )
-                withContext(Dispatchers.Main) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(this@EditProfileActivity, "Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show()
-                        binding.inputCurrentPassword.setText("")
-                        binding.inputNewPassword.setText("")
-                    } else {
-                        Toast.makeText(this@EditProfileActivity, "Đổi mật khẩu thất bại", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@EditProfileActivity, "Lỗi mạng: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            } finally {
-                withContext(Dispatchers.Main) {
-                    binding.btnChangePassword.isEnabled = true
                 }
             }
         }

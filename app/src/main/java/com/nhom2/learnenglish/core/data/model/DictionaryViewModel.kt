@@ -37,9 +37,8 @@ class DictionaryViewModel(
     }
 
     // 2. Hàm lưu từ vựng vào Room Database
-    fun saveWordToSet(dictResult: DictionaryResult, setId: Long) {
+    fun saveWordToSet(dictResult: DictionaryResult, setId: String) {
         val newWord = WordEntity(
-            id = 0, // id = 0 để Room tự động tăng
             englishWord = dictResult.word,
             vietnameseMeaning = dictResult.vietnameseMeaning,
             audio = dictResult.audioUrl

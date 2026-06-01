@@ -6,8 +6,8 @@ import androidx.room3.PrimaryKey
 
 @Entity(tableName = "word_sets")
 data class WordSetEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    @PrimaryKey
+    val id: String = java.util.UUID.randomUUID().toString(),
 
     @ColumnInfo(name = "name")
     val name: String,
@@ -18,7 +18,7 @@ data class WordSetEntity(
     @ColumnInfo(name = "unlock_cost", defaultValue = "0")
     val unlockCost: Int,
 
-    @ColumnInfo(name = "is_synced", defaultValue = "0")
+       @ColumnInfo(name = "is_synced", defaultValue = "0")
     val isSynced: Boolean? = false
 )
 

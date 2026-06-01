@@ -4,7 +4,7 @@ import androidx.room3.ColumnInfo
 
 data class WordWithProgress(
     @ColumnInfo(name = "word_id")
-    val wordId: Long,
+    val wordId: String,
 
     @ColumnInfo(name = "english_word")
     val englishWord: String,

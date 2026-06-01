@@ -244,7 +244,7 @@ public class MainMenuActivity extends AppCompatActivity {
         tvPhonetic.setText(result.getPhonetic().isEmpty() ? "/.../" : result.getPhonetic());
         tvMeaning.setText(result.getVietnameseMeaning());
 
-        final long[] selectedSetId = {-1L};
+        final String[] selectedSetId = {""};
 
         // Khi mở lên, mờ nút lưu vì chưa chọn thư mục nào
         btnSave.setEnabled(false);
@@ -257,7 +257,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
         // Sự kiện: Bấm lưu từ
         btnSave.setOnClickListener(v -> {
-            if (selectedSetId[0] != -1L) {
+            if (!selectedSetId[0].isEmpty()) {
                 // Đảm bảo chỉ truyền result thật xuống Repository
                 dictionaryViewModel.saveWordToSet(result, selectedSetId[0]);
                 bottomSheetDialog.dismiss();
@@ -270,7 +270,7 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     //  Hàm hiển thị Modal chọn Bộ từ vựng phụ
-    private void showWordSetSelectionDialog(TextView tvSelectedWordSet, long[] selectedSetId, Button btnSave) {
+    private void showWordSetSelectionDialog(TextView tvSelectedWordSet, String[] selectedSetId, Button btnSave) {
         BottomSheetDialog selectionDialog = new BottomSheetDialog(this);
         View view = getLayoutInflater().inflate(R.layout.layout_dialog_select_word_set, null);
         selectionDialog.setContentView(view);

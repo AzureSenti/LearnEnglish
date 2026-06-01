@@ -27,7 +27,7 @@ class WordRepository(
         return wordSetDao.getAllSets()
     }
 
-    fun getSetById(setId: Long): WordSetEntity? {
+    fun getSetById(setId: String): WordSetEntity? {
         return wordSetDao.getSetById(setId)
     }
 
@@ -38,15 +38,15 @@ class WordRepository(
     fun updateSet(set: WordSetEntity) {
         wordSetDao.update(set.copy(isSynced = false))
     }
-    fun addWordToSet(wordId: Long, setId: Long) {
+    fun addWordToSet(wordId: String, setId: String) {
         wordSetCrossDao.insert(WordSetCrossRef(wordId = wordId, setId = setId, isSynced = false))
     }
 
-    fun  removeWordFromSet(wordId: Long, setId: Long) {
+    fun  removeWordFromSet(wordId: String, setId: String) {
         wordSetCrossDao.removeWordFromSet(wordId, setId)
     }
 
-    fun getWordsInSet(setId: Long): List<WordEntity> {
+    fun getWordsInSet(setId: String): List<WordEntity> {
         return wordDao.getWordsBySetId(setId)
     }
     // 1. Dùng cho MainMenuActivity (Nút ôn tập toàn bộ sau này)
@@ -56,7 +56,7 @@ class WordRepository(
     }
 
     // 2. Dùng cho WordSetDetailActivity (Nút ôn tập trong từng bộ)
-    fun getWordsForReview(userId: String, setId: Long): List<WordEntity> {
+    fun getWordsForReview(userId: String, setId: String): List<WordEntity> {
         val currentTimeMillis = System.currentTimeMillis()
         return wordDao.getWordsDueForReviewBySet(userId, setId, currentTimeMillis)
     }
@@ -72,7 +72,7 @@ class WordRepository(
     }
 
 
-    fun getWordListWithProgress(setId: Long, userId: String): List<WordWithProgress> {
+    fun getWordListWithProgress(setId: String, userId: String): List<WordWithProgress> {
         val rawList = wordDao.getWordsWithProgressBySet(setId, userId)
 
         return rawList.map { item ->
@@ -88,7 +88,7 @@ class WordRepository(
         return wordDao.getGlobalNewWords(userId)
     }
 
-    fun unlockWordSet(userId: Long, setId: Long): Boolean {
+    fun unlockWordSet(userId: Long, setId: String): Boolean {
         try {
             val crossRef = UserWordSetCrossRef(userId = userId, setId = setId)
             userWordSetDao.unlockSet(crossRef)
@@ -99,11 +99,11 @@ class WordRepository(
         }
     }
 
-    fun getNewWordsToLearn(userId: String, setId: Long): List<WordEntity> {
+    fun getNewWordsToLearn(userId: String, setId: String): List<WordEntity> {
         return wordDao.getUnlearnedWords(setId, userId, limit = 10)
     }
 
-    fun processWordLearning(userId: String, wordId: Long, isCorrect: Boolean) {
+    fun processWordLearning(userId: String, wordId: String, isCorrect: Boolean) {
         val existingSrs = wordSrsDao.getWordSrs(userId, wordId)
         val currentTime = System.currentTimeMillis()
 
@@ -154,7 +154,7 @@ class WordRepository(
         return wordDao.getAll()
     }
 
-    fun getWordById(wordId: Long): WordEntity? {
+    fun getWordById(wordId: String): WordEntity? {
         return wordDao.getById(wordId)
     }
     // QUẢN LÝ TỪ VỰNG TRONG MỘT BỘ TỪ (CRUD TÙY CHỈNH)
@@ -165,7 +165,7 @@ class WordRepository(
      */
     fun addNewWordToSet(
         word: WordEntity,
-        setId: Long,
+        setId: String,
         onSuccess: (() -> Unit)? = null,
         onError: ((String) -> Unit)? = null
     ) {
@@ -178,7 +178,8 @@ class WordRepository(
                 val wordIdToLink = if (existingWord != null) {
                     existingWord.id // Dùng lại ID cũ
                 } else {
-                    wordDao.insert(word) // Thêm mới và lấy ID mới
+                    wordDao.insert(word) // Thêm mới
+                    word.id // Sử dụng ID UUID của word vừa được thêm
                 }
 
                 // 3. Kiểm tra xem từ đã nằm trong Bộ từ hiện tại chưa
@@ -208,7 +209,7 @@ class WordRepository(
     /**
      * XÓA: Gỡ liên kết của từ khỏi bộ từ hiện tại
      */
-    fun removeWordFromSpecificSet(wordId: Long, setId: Long, onComplete: (() -> Unit)? = null) {
+    fun removeWordFromSpecificSet(wordId: String, setId: String, onComplete: (() -> Unit)? = null) {
         runOnDiskIO {
             wordSetCrossDao.removeWordFromSet(wordId = wordId, setId = setId)
             onComplete?.let { runOnMain { it() } }

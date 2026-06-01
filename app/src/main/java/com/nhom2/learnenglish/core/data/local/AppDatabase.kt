@@ -40,7 +40,7 @@ import com.nhom2.learnenglish.core.data.local.entity.word.WordSrsEntity
         UserGrammarProgress::class
 
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 

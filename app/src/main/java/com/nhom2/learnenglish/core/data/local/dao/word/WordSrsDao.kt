@@ -11,7 +11,7 @@ import com.nhom2.learnenglish.core.data.local.entity.word.WordSrsEntity
 interface WordSrsDao : BaseDao<WordSrsEntity> {
 
     @Query("SELECT * FROM word_srs WHERE user_id = :userId AND word_id = :wordId")
-    fun getWordSrs(userId: String, wordId: Long): WordSrsEntity?
+    fun getWordSrs(userId: String, wordId: String): WordSrsEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdate(srs: WordSrsEntity)

@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "264f9e77c12b724ab1fbbbceda700155",
+    "version": 2,
+    "identityHash": "8b73ef661fe2165c56c73b26ec8cb506",
     "entities": [
       {
         "tableName": "users",
@@ -84,7 +84,7 @@
       },
       {
         "tableName": "user_word_set_cross_ref",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `set_id` INTEGER NOT NULL, `unlocked_at` INTEGER, PRIMARY KEY(`user_id`, `set_id`), FOREIGN KEY(`user_id`) REFERENCES `users`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`set_id`) REFERENCES `word_sets`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `set_id` TEXT NOT NULL, `unlocked_at` INTEGER, PRIMARY KEY(`user_id`, `set_id`), FOREIGN KEY(`user_id`) REFERENCES `users`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`set_id`) REFERENCES `word_sets`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "userId",
@@ -95,7 +95,7 @@
           {
             "fieldPath": "setId",
             "columnName": "set_id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -158,12 +158,12 @@
       },
       {
         "tableName": "words",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `english_word` TEXT NOT NULL, `vietnamese_meaning` TEXT NOT NULL, `audio` TEXT, `is_synced` INTEGER NOT NULL DEFAULT 0)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `english_word` TEXT NOT NULL, `vietnamese_meaning` TEXT NOT NULL, `audio` TEXT, `is_synced` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -192,7 +192,7 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": true,
+          "autoGenerate": false,
           "columnNames": [
             "id"
           ]
@@ -211,7 +211,7 @@
       },
       {
         "tableName": "word_srs",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` TEXT NOT NULL, `word_id` INTEGER NOT NULL, `level` INTEGER NOT NULL DEFAULT 0, `next_review_date` INTEGER NOT NULL DEFAULT 0, `last_review_date` INTEGER, `is_synced` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`word_id`, `user_id`), FOREIGN KEY(`word_id`) REFERENCES `words`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`user_id`) REFERENCES `users`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` TEXT NOT NULL, `word_id` TEXT NOT NULL, `level` INTEGER NOT NULL DEFAULT 0, `next_review_date` INTEGER NOT NULL DEFAULT 0, `last_review_date` INTEGER, `is_synced` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`word_id`, `user_id`), FOREIGN KEY(`word_id`) REFERENCES `words`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`user_id`) REFERENCES `users`(`user_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "userId",
@@ -222,7 +222,7 @@
           {
             "fieldPath": "wordId",
             "columnName": "word_id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -299,19 +299,19 @@
               "user_id"
             ],
             "referencedColumns": [
-              "id"
+              "user_id"
             ]
           }
         ]
       },
       {
         "tableName": "word_sets",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `description` TEXT, `unlock_cost` INTEGER NOT NULL DEFAULT 0, `is_synced` INTEGER DEFAULT 0)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `description` TEXT, `unlock_cost` INTEGER NOT NULL DEFAULT 0, `is_synced` INTEGER DEFAULT 0, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -340,7 +340,7 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": true,
+          "autoGenerate": false,
           "columnNames": [
             "id"
           ]
@@ -348,18 +348,18 @@
       },
       {
         "tableName": "word_set_cross_ref",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`word_id` INTEGER NOT NULL, `set_id` INTEGER NOT NULL, `is_synced` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`word_id`, `set_id`), FOREIGN KEY(`word_id`) REFERENCES `words`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`set_id`) REFERENCES `word_sets`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`word_id` TEXT NOT NULL, `set_id` TEXT NOT NULL, `is_synced` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`word_id`, `set_id`), FOREIGN KEY(`word_id`) REFERENCES `words`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`set_id`) REFERENCES `word_sets`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "wordId",
             "columnName": "word_id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
             "fieldPath": "setId",
             "columnName": "set_id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -614,7 +614,7 @@
       },
       {
         "tableName": "user_grammar_progress",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` TEXT NOT NULL, `lesson_id` INTEGER NOT NULL, `is_theory_completed` INTEGER NOT NULL, `is_quiz_passed` INTEGER NOT NULL, `score` INTEGER NOT NULL, `is_synced` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`user_id`, `lesson_id`), FOREIGN KEY(`lesson_id`) REFERENCES `grammar_lessons`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` TEXT NOT NULL, `lesson_id` INTEGER NOT NULL, `is_theory_completed` INTEGER NOT NULL, `is_quiz_passed` INTEGER NOT NULL, `score` INTEGER NOT NULL, `is_synced` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`user_id`, `lesson_id`), FOREIGN KEY(`user_id`) REFERENCES `users`(`user_id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`lesson_id`) REFERENCES `grammar_lessons`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "userId",
@@ -683,6 +683,17 @@
         ],
         "foreignKeys": [
           {
+            "table": "users",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "user_id"
+            ],
+            "referencedColumns": [
+              "user_id"
+            ]
+          },
+          {
             "table": "grammar_lessons",
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
@@ -698,7 +709,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '264f9e77c12b724ab1fbbbceda700155')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8b73ef661fe2165c56c73b26ec8cb506')"
     ]
   }
 }

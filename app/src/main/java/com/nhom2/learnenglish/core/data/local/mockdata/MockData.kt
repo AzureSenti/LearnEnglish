@@ -11,36 +11,36 @@ object MockData {
 
     // Từ vựng
     val wordSets = listOf(
-        WordSetEntity(id = 1, name = "Giao tiếp cơ bản", description = "Các câu chào hỏi và từ vựng thông dụng hàng ngày.", unlockCost = 0),
-        WordSetEntity(id = 2, name = "Công nghệ thông tin", description = "Từ vựng chuyên ngành lập trình và phần cứng.", unlockCost = 100),
-        WordSetEntity(id = 3, name = "Kinh doanh & Tài chính", description = "Từ vựng về hợp đồng, đầu tư và đàm phán.", unlockCost = 200),
-        WordSetEntity(id = 4, name = "Du lịch & Khám phá", description = "Hành lý, sân bay và các địa điểm tham quan.", unlockCost = 50)
+        WordSetEntity(id = "1", name = "Giao tiếp cơ bản", description = "Các câu chào hỏi và từ vựng thông dụng hàng ngày.", unlockCost = 0),
+        WordSetEntity(id = "2", name = "Công nghệ thông tin", description = "Từ vựng chuyên ngành lập trình và phần cứng.", unlockCost = 100),
+        WordSetEntity(id = "3", name = "Kinh doanh & Tài chính", description = "Từ vựng về hợp đồng, đầu tư và đàm phán.", unlockCost = 200),
+        WordSetEntity(id = "4", name = "Du lịch & Khám phá", description = "Hành lý, sân bay và các địa điểm tham quan.", unlockCost = 50)
     )
 
     val words = listOf(
-        WordEntity(id = 1, englishWord = "Hello", vietnameseMeaning = "Xin chào", audio = "hello_audio_url"),
-        WordEntity(id = 2, englishWord = "Thank you", vietnameseMeaning = "Cảm ơn", audio = "thanks_audio_url"),
-        WordEntity(id = 3, englishWord = "Please", vietnameseMeaning = "Vui lòng / Làm ơn", audio = "please_audio_url"),
-        WordEntity(id = 4, englishWord = "Sorry", vietnameseMeaning = "Xin lỗi", audio = "sorry_audio_url"),
-        WordEntity(id = 5, englishWord = "Goodbye", vietnameseMeaning = "Tạm biệt", audio = "goodbye_audio_url"),
+        WordEntity(id = "1", englishWord = "Hello", vietnameseMeaning = "Xin chào", audio = "hello_audio_url"),
+        WordEntity(id = "2", englishWord = "Thank you", vietnameseMeaning = "Cảm ơn", audio = "thanks_audio_url"),
+        WordEntity(id = "3", englishWord = "Please", vietnameseMeaning = "Vui lòng / Làm ơn", audio = "please_audio_url"),
+        WordEntity(id = "4", englishWord = "Sorry", vietnameseMeaning = "Xin lỗi", audio = "sorry_audio_url"),
+        WordEntity(id = "5", englishWord = "Goodbye", vietnameseMeaning = "Tạm biệt", audio = "goodbye_audio_url"),
 
-        WordEntity(id = 6, englishWord = "Database", vietnameseMeaning = "Cơ sở dữ liệu", audio = "db_audio_url"),
-        WordEntity(id = 7, englishWord = "Algorithm", vietnameseMeaning = "Thuật toán", audio = "algo_audio_url"),
-        WordEntity(id = 8, englishWord = "Application", vietnameseMeaning = "Ứng dụng", audio = "app_audio_url"),
-        WordEntity(id = 9, englishWord = "Variable", vietnameseMeaning = "Biến số", audio = "var_audio_url"),
-        WordEntity(id = 10, englishWord = "Server", vietnameseMeaning = "Máy chủ", audio = "server_audio_url"),
+        WordEntity(id = "6", englishWord = "Database", vietnameseMeaning = "Cơ sở dữ liệu", audio = "db_audio_url"),
+        WordEntity(id = "7", englishWord = "Algorithm", vietnameseMeaning = "Thuật toán", audio = "algo_audio_url"),
+        WordEntity(id = "8", englishWord = "Application", vietnameseMeaning = "Ứng dụng", audio = "app_audio_url"),
+        WordEntity(id = "9", englishWord = "Variable", vietnameseMeaning = "Biến số", audio = "var_audio_url"),
+        WordEntity(id = "10", englishWord = "Server", vietnameseMeaning = "Máy chủ", audio = "server_audio_url"),
 
-        WordEntity(id = 11, englishWord = "Contract", vietnameseMeaning = "Hợp đồng", audio = "contract_audio_url"),
-        WordEntity(id = 12, englishWord = "Investment", vietnameseMeaning = "Đầu tư", audio = "invest_audio_url"),
-        WordEntity(id = 13, englishWord = "Negotiation", vietnameseMeaning = "Đàm phán", audio = "nego_audio_url"),
-        WordEntity(id = 14, englishWord = "Profit", vietnameseMeaning = "Lợi nhuận", audio = "profit_audio_url"),
-        WordEntity(id = 15, englishWord = "Bankruptcy", vietnameseMeaning = "Phá sản", audio = "bankrupt_audio_url")
+        WordEntity(id = "11", englishWord = "Contract", vietnameseMeaning = "Hợp đồng", audio = "contract_audio_url"),
+        WordEntity(id = "12", englishWord = "Investment", vietnameseMeaning = "Đầu tư", audio = "invest_audio_url"),
+        WordEntity(id = "13", englishWord = "Negotiation", vietnameseMeaning = "Đàm phán", audio = "nego_audio_url"),
+        WordEntity(id = "14", englishWord = "Profit", vietnameseMeaning = "Lợi nhuận", audio = "profit_audio_url"),
+        WordEntity(id = "15", englishWord = "Bankruptcy", vietnameseMeaning = "Phá sản", audio = "bankrupt_audio_url")
     )
 
     val wordSetRefs = listOf(
-        WordSetCrossRef(1, 1), WordSetCrossRef(2, 1), WordSetCrossRef(3, 1), WordSetCrossRef(4, 1), WordSetCrossRef(5, 1),
-        WordSetCrossRef(6, 2), WordSetCrossRef(7, 2), WordSetCrossRef(8, 2), WordSetCrossRef(9, 2), WordSetCrossRef(10, 2),
-        WordSetCrossRef(11, 3), WordSetCrossRef(12, 3), WordSetCrossRef(13, 3), WordSetCrossRef(14, 3), WordSetCrossRef(15, 3)
+        WordSetCrossRef("1", "1"), WordSetCrossRef("2", "1"), WordSetCrossRef("3", "1"), WordSetCrossRef("4", "1"), WordSetCrossRef("5", "1"),
+        WordSetCrossRef("6", "2"), WordSetCrossRef("7", "2"), WordSetCrossRef("8", "2"), WordSetCrossRef("9", "2"), WordSetCrossRef("10", "2"),
+        WordSetCrossRef("11", "3"), WordSetCrossRef("12", "3"), WordSetCrossRef("13", "3"), WordSetCrossRef("14", "3"), WordSetCrossRef("15", "3")
     )
     val articles = listOf(
         ArticleEntity(

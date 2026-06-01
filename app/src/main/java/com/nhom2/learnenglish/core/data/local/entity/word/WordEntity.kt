@@ -12,8 +12,8 @@ import androidx.room3.PrimaryKey
     ]
 )
 data class WordEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    @PrimaryKey
+    val id: String = java.util.UUID.randomUUID().toString(),
 
     @ColumnInfo(name = "english_word")
     val englishWord: String,

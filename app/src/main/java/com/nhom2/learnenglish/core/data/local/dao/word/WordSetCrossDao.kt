@@ -14,11 +14,11 @@ interface WordSetCrossDao : BaseDao<WordSetCrossRef> {
     // --- CODE BỔ SUNG ---
     // Xóa một từ khỏi một bộ từ cụ thể
     @Query("DELETE FROM word_set_cross_ref WHERE word_id = :wordId AND set_id = :setId")
-    fun removeWordFromSet(wordId: Long, setId: Long)
+    fun removeWordFromSet(wordId: String, setId: String)
 
     // Kiểm tra xem từ này đã nằm trong bộ chưa
     @Query("SELECT EXISTS(SELECT 1 FROM word_set_cross_ref WHERE word_id = :wordId AND set_id = :setId)")
-    fun isWordInSet(wordId: Long, setId: Long): Boolean
+    fun isWordInSet(wordId: String, setId: String): Boolean
 
     @Query("SELECT * FROM word_set_cross_ref WHERE is_synced = 0")
     fun getUnsyncedCrossRefs(): List<WordSetCrossRef>
