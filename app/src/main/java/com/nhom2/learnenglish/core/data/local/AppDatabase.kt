@@ -43,7 +43,7 @@ import com.nhom2.learnenglish.core.data.local.entity.word.WordSrsEntity
         UserGrammarProgress::class,
         com.nhom2.learnenglish.core.data.local.entity.sync.DeletedSyncItemEntity::class
     ],
-    version = 2,
+    version = 1,
     exportSchema = true
 )
 
