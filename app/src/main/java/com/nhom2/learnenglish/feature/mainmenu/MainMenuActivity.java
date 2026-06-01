@@ -518,6 +518,30 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
     }
+    private void loadUserProfile() {
+        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+            try {
+                // Lấy thông tin người dùng đang đăng nhập từ UserDao
+                com.nhom2.learnenglish.core.data.local.entity.UserEntity activeUser =
+                        AppDatabase.Companion.getInstance(this).userDao().getActiveUser();
+
+                runOnUiThread(() -> {
+                    TextView tvGreeting = findViewById(R.id.tv_greeting);
+                    if (tvGreeting != null) {
+                        if (activeUser != null && activeUser.getFullName() != null && !activeUser.getFullName().isEmpty()) {
+                            // Hiển thị tên người dùng
+                            tvGreeting.setText("Hi, " + activeUser.getFullName() + "!");
+                        } else {
+                            // Fallback nếu không có dữ liệu
+                            tvGreeting.setText("Hi, Guest!");
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
     private void updateFeaturedUI(ArticleEntity article) {
         ImageView ivFeaturedImage = findViewById(R.id.iv_featured_image);
@@ -568,6 +592,8 @@ public class MainMenuActivity extends AppCompatActivity {
         //  Tự động đếm và cập nhật lại số từ cần ôn tập và từ mới mỗi khi vào trang chủ
         loadGlobalReviewCount();
         loadGlobalLearnCount();
+        //
+        loadUserProfile();
 
         // Tự động đồng bộ dữ liệu khi có mạng
         com.nhom2.learnenglish.core.util.NetworkSyncManager.INSTANCE.syncIfOnline(this);
