@@ -64,6 +64,10 @@
             android:name=".feature.articles.ArticleDetailActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".feature.stories.StoriesActivity"
+            android:exported="false" />
+
 
         <activity
             android:name=".feature.wordsets.WordSetDetailActivity"

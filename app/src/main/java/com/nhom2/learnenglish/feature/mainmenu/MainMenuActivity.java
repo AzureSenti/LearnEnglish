@@ -26,6 +26,7 @@ import com.nhom2.learnenglish.feature.articles.ArticlesActivity;
 import com.nhom2.learnenglish.feature.articles.ArticleDetailActivity;
 import com.nhom2.learnenglish.feature.grammar.GrammarRoadmapActivity;
 import com.nhom2.learnenglish.feature.profile.ProfileActivity;
+import com.nhom2.learnenglish.feature.stories.StoriesActivity;
 import com.nhom2.learnenglish.feature.wordsets.LibraryActivity;
 import com.nhom2.learnenglish.feature.wordsets.WordSetDetailActivity;
 import android.view.inputmethod.EditorInfo;
@@ -495,6 +496,16 @@ public class MainMenuActivity extends AppCompatActivity {
             navProfile.setOnClickListener(v -> {
                 Navigator.navigateTo(this, ProfileActivity.class);
                 overridePendingTransition(0, 0); // THÊM DÒNG NÀY: Xóa hiệu ứng chuyển trang
+            });
+        }
+
+        // Nút Đọc truyện
+        LinearLayout cardStories = findViewById(R.id.card_stories);
+        if (cardStories != null) {
+            cardStories.setOnClickListener(v -> {
+                Intent intent = new Intent(this, StoriesActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             });
         }
 
