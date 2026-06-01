@@ -175,8 +175,8 @@ public class LibraryActivity extends AppCompatActivity {
                     if (isEdit) {
                         wordSetDao.update(new WordSetEntity(item.getId(), name, selectedIcon[0], item.getUnlockCost(),item.isSynced()));
                     } else {
-                        wordSetDao.insert(new WordSetEntity(java.util.UUID.randomUUID().toString(), name, selectedIcon[0], 0,item.isSynced()));
-                    }
+// Sửa item.isSynced() thành false vì tạo mới thì item đang bằng null
+                        wordSetDao.insert(new WordSetEntity(java.util.UUID.randomUUID().toString(), name, selectedIcon[0], 0, false));                    }
                     runOnUiThread(() -> {
                         Toasty.success(this, isEdit ? "Đã cập nhật" : "Đã tạo bộ từ mới", Toast.LENGTH_SHORT, true).show();                        sheet.dismiss();
                         loadWordSetData();
@@ -204,7 +204,7 @@ public class LibraryActivity extends AppCompatActivity {
 
             Runnable updateStyle = () -> {
                 boolean active = tag.equals(selectedIcon[0]);
-                // ĐÃ FIX LỖI: R.color.blue_primary
+                //  R.color.blue_primary
                 btn.setStrokeColorResource(active ? R.color.blue_primary : R.color.border_light);
                 btn.setStrokeWidth(active ? 4 : 1);
             };
