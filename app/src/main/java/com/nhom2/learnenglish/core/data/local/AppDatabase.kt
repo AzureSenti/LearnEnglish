@@ -16,6 +16,8 @@ import com.nhom2.learnenglish.core.data.local.dao.word.WordSetCrossDao
 import com.nhom2.learnenglish.core.data.local.dao.word.WordSetDao
 import com.nhom2.learnenglish.core.data.local.dao.word.WordSrsDao
 import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity
+import com.nhom2.learnenglish.core.data.local.entity.StoryEntity
+import com.nhom2.learnenglish.core.data.local.dao.StoryDao
 import com.nhom2.learnenglish.core.data.local.entity.UserEntity
 import com.nhom2.learnenglish.core.data.local.entity.grammar.GrammarLessonEntity
 import com.nhom2.learnenglish.core.data.local.entity.grammar.GrammarQuestionEntity
@@ -35,18 +37,20 @@ import com.nhom2.learnenglish.core.data.local.entity.word.WordSrsEntity
         WordSetEntity::class,
         WordSetCrossRef::class,
         ArticleEntity::class,
+        StoryEntity::class,
         GrammarLessonEntity::class,
         GrammarQuestionEntity::class,
         UserGrammarProgress::class,
         com.nhom2.learnenglish.core.data.local.entity.sync.DeletedSyncItemEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun articleDao(): ArticleDao
+    abstract fun storyDao(): StoryDao
     abstract fun userDao() : UserDao
     abstract fun wordDao(): WordDao
     abstract fun wordSetDao(): WordSetDao
