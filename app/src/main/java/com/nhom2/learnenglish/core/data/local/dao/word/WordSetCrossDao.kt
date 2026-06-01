@@ -22,6 +22,9 @@ interface WordSetCrossDao : BaseDao<WordSetCrossRef> {
 
     @Query("SELECT * FROM word_set_cross_ref WHERE is_synced = 0")
     fun getUnsyncedCrossRefs(): List<WordSetCrossRef>
+    // Đếm xem từ này còn nằm trong bao nhiêu bộ từ vựng khác
+    @Query("SELECT COUNT(*) FROM word_set_cross_ref WHERE word_id = :wordId")
+    fun countSetsContainingWord(wordId: String): Int
 
     @Query("UPDATE word_set_cross_ref SET is_synced = 1")
     fun markAllAsSynced()

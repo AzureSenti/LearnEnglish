@@ -16,6 +16,9 @@ interface WordSrsDao : BaseDao<WordSrsEntity> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdate(srs: WordSrsEntity)
 
+    @Query("DELETE FROM word_srs WHERE user_id = :userId AND word_id = :wordId")
+    fun deleteSrsRecord(userId: String, wordId: String)
+
     // --- Sync queries ---
 
     @Query("SELECT * FROM word_srs WHERE user_id = :userId AND is_synced = 0")

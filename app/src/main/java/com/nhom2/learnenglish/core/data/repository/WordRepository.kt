@@ -210,9 +210,20 @@ class WordRepository(
     /**
      * XÓA: Gỡ liên kết của từ khỏi bộ từ hiện tại
      */
-    fun removeWordFromSpecificSet(wordId: String, setId: String, onComplete: (() -> Unit)? = null) {
+    fun removeWordFromSpecificSet(userId: String, wordId: String, setId: String, onComplete: (() -> Unit)? = null) {
         runOnDiskIO {
+            // 1. Gỡ từ khỏi bộ từ hiện tại
             wordSetCrossDao.removeWordFromSet(wordId = wordId, setId = setId)
+
+            // 2. KIỂM TRA XEM TỪ NÀY CÒN NẰM TRONG BỘ NÀO KHÁC KHÔNG
+            val remainingSetsCount = wordSetCrossDao.countSetsContainingWord(wordId)
+
+            if (remainingSetsCount == 0) {
+                // Nếu không còn nằm trong bất kỳ bộ nào -> RESET LEVEL bằng cách xóa bản ghi SRS
+                wordSrsDao.deleteSrsRecord(userId, wordId)
+            }
+
+            // 3. Thêm vào hàng đợi đồng bộ xóa với server (giữ nguyên logic cũ của dự án)
             deletedSyncItemDao.insert(
                 com.nhom2.learnenglish.core.data.local.entity.sync.DeletedSyncItemEntity(
                     itemType = "CROSS_REF",
@@ -220,6 +231,8 @@ class WordRepository(
                     secondaryId = setId
                 )
             )
+
+            // Trả kết quả về Main Thread để cập nhật giao diện
             onComplete?.let { runOnMain { it() } }
         }
     }

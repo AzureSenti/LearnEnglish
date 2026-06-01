@@ -26,6 +26,7 @@ import com.nhom2.learnenglish.feature.articles.ArticlesActivity;
 import com.nhom2.learnenglish.feature.articles.ArticleDetailActivity;
 import com.nhom2.learnenglish.feature.grammar.GrammarRoadmapActivity;
 import com.nhom2.learnenglish.feature.profile.ProfileActivity;
+import com.nhom2.learnenglish.feature.stories.StoriesActivity;
 import com.nhom2.learnenglish.feature.wordsets.LibraryActivity;
 import com.nhom2.learnenglish.feature.wordsets.WordSetDetailActivity;
 import android.view.inputmethod.EditorInfo;
@@ -498,6 +499,16 @@ public class MainMenuActivity extends AppCompatActivity {
             });
         }
 
+        // Nút Đọc truyện
+        LinearLayout cardStories = findViewById(R.id.card_stories);
+        if (cardStories != null) {
+            cardStories.setOnClickListener(v -> {
+                Intent intent = new Intent(this, StoriesActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            });
+        }
+
         // Nút Ngữ pháp ở phần Categories giữa màn hình (Giữ nguyên)
         LinearLayout cardGrammar = findViewById(R.id.card_grammar);
         if (cardGrammar != null) {
@@ -513,6 +524,30 @@ public class MainMenuActivity extends AppCompatActivity {
                     ArticleEntity featured = articles.get(0);
                     runOnUiThread(() -> updateFeaturedUI(featured));
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+    private void loadUserProfile() {
+        AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
+            try {
+                // Lấy thông tin người dùng đang đăng nhập từ UserDao
+                com.nhom2.learnenglish.core.data.local.entity.UserEntity activeUser =
+                        AppDatabase.Companion.getInstance(this).userDao().getActiveUser();
+
+                runOnUiThread(() -> {
+                    TextView tvGreeting = findViewById(R.id.tv_greeting);
+                    if (tvGreeting != null) {
+                        if (activeUser != null && activeUser.getFullName() != null && !activeUser.getFullName().isEmpty()) {
+                            // Hiển thị tên người dùng
+                            tvGreeting.setText("Hi, " + activeUser.getFullName() + "!");
+                        } else {
+                            // Fallback nếu không có dữ liệu
+                            tvGreeting.setText("Hi, Guest!");
+                        }
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -568,6 +603,8 @@ public class MainMenuActivity extends AppCompatActivity {
         //  Tự động đếm và cập nhật lại số từ cần ôn tập và từ mới mỗi khi vào trang chủ
         loadGlobalReviewCount();
         loadGlobalLearnCount();
+        //
+        loadUserProfile();
 
         // Tự động đồng bộ dữ liệu khi có mạng
         com.nhom2.learnenglish.core.util.NetworkSyncManager.INSTANCE.syncIfOnline(this);
