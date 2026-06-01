@@ -42,6 +42,7 @@ class SyncRepository(
     private val grammarProgressDao: UserGrammarProgressDao,
     private val userWordSetDao: UserWordSetDao,
     private val userDao: UserDao,
+    private val deletedSyncItemDao: com.nhom2.learnenglish.core.data.local.dao.sync.DeletedSyncItemDao,
     private val sessionManager: SessionManager,
     executors: AppExecutors = AppExecutors.getInstance()
 ) : BaseRepository(executors) {
@@ -157,10 +158,18 @@ class SyncRepository(
             )
         }
 
+        // 8. Deleted items
+        val unsyncedDeletedItems = deletedSyncItemDao.getAll()
+        val deletedWordSetIds = unsyncedDeletedItems.filter { it.itemType == "WORD_SET" }.map { it.primaryId }
+        val deletedCrossRefs = unsyncedDeletedItems.filter { it.itemType == "CROSS_REF" }.map { 
+            WordSetCrossRefSyncItem(wordId = it.primaryId, setId = it.secondaryId ?: "")
+        }
+
         // Skip upload if nothing to sync
         if (wordSrsUpload.isEmpty() && grammarUpload.isEmpty() &&
             wordSetUpload.isEmpty() && profileUpload == null &&
-            wordsUpload.isEmpty() && wordSetsUpload.isEmpty() && crossRefsUpload.isEmpty()
+            wordsUpload.isEmpty() && wordSetsUpload.isEmpty() && crossRefsUpload.isEmpty() &&
+            deletedWordSetIds.isEmpty() && deletedCrossRefs.isEmpty()
         ) {
             Log.d(TAG, "Nothing to upload, skipping")
             return
@@ -174,7 +183,9 @@ class SyncRepository(
             wordSrsList = wordSrsUpload,
             grammarProgressList = grammarUpload,
             unlockedWordSets = wordSetUpload,
-            userProfile = profileUpload
+            userProfile = profileUpload,
+            deletedWordSetIds = deletedWordSetIds,
+            deletedWordSetCrossRefs = deletedCrossRefs
         )
 
         val response = syncApi.uploadProgress(bearerToken, request)
@@ -185,7 +196,8 @@ class SyncRepository(
             wordSetCrossDao.markAllAsSynced()
             wordSrsDao.markAllAsSynced(userId)
             grammarProgressDao.markAllAsSynced(userId)
-            Log.i(TAG, "Upload successful: ${wordSrsUpload.size} SRS, ${grammarUpload.size} grammar, ${wordSetUpload.size} word sets")
+            deletedSyncItemDao.deleteAll()
+            Log.i(TAG, "Upload successful: ${wordSrsUpload.size} SRS, ${grammarUpload.size} grammar, ${wordSetUpload.size} word sets, ${unsyncedDeletedItems.size} deleted items")
         } else {
             Log.e(TAG, "Upload failed: ${response.code()} ${response.message()}")
             throw Exception("Upload failed: ${response.code()}")

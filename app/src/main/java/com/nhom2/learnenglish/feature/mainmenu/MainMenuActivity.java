@@ -87,7 +87,13 @@ public class MainMenuActivity extends AppCompatActivity {
         AppDatabase db = AppDatabase.Companion.getInstance(this);
         articleRepository = new ArticleRepository(AppExecutors.Companion.getInstance(), db.articleDao());
         wordRepository = new WordRepository(
-                db.wordDao(), db.wordSetDao(), db.wordSrsDao(), db.userWordSetDao(), db.wordSetCrossDao(), AppExecutors.Companion.getInstance()
+                db.wordDao(),
+                db.wordSetDao(),
+                db.wordSrsDao(),
+                db.userWordSetDao(),
+                db.wordSetCrossDao(),
+                db.deletedSyncItemDao(),
+                AppExecutors.Companion.getInstance()
         );
 
         // KHỞI TẠO DICTIONARY REPOSITORY

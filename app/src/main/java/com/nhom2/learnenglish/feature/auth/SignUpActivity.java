@@ -77,6 +77,7 @@ public class SignUpActivity extends AppCompatActivity {
                 db.userGrammarProgressDao(),
                 db.userWordSetDao(),
                 db.userDao(),
+                db.deletedSyncItemDao(),
                 sessionManager,
                 AppExecutors.Companion.getInstance()
         );

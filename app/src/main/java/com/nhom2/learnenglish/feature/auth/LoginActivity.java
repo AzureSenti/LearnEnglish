@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                         db.userGrammarProgressDao(),
                         db.userWordSetDao(),
                         db.userDao(),
+                        db.deletedSyncItemDao(),
                         sessionManager,
                         AppExecutors.Companion.getInstance()
                 );
