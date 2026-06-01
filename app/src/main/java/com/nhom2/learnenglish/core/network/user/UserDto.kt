@@ -24,3 +24,7 @@ data class ChangePasswordRequest(
 data class ChangePasswordResponse(
     @SerializedName("message") val message: String
 )
+
+data class UploadAvatarResponse(
+    @SerializedName("avatar_url") val avatarUrl: String
+)

@@ -60,18 +60,38 @@
                 app:strokeColor="#FFFFFF"
                 app:strokeWidth="4dp" />
 
-            <TextView
-                android:id="@+id/tv_full_name"
+            <LinearLayout
+                android:id="@+id/layout_full_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                tools:text="Alex"
-                android:textColor="#1F1F39"
-                android:textSize="32sp"
-                android:textStyle="bold"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_user_avatar" />
+                app:layout_constraintTop_toBottomOf="@id/iv_user_avatar">
+
+                <TextView
+                    android:id="@+id/tv_full_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Alex"
+                    android:textColor="#1F1F39"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/iv_edit_name"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:padding="2dp"
+                    android:src="@android:drawable/ic_menu_edit"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:tint="#858597" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout_badge_level"
@@ -86,7 +106,7 @@
                 android:paddingVertical="6dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_full_name">
+                app:layout_constraintTop_toBottomOf="@id/layout_full_name">
 
                 <ImageView
                     android:layout_width="14dp"
