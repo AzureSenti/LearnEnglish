@@ -21,8 +21,8 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.nhom2.learnenglish.R;
 import com.nhom2.learnenglish.core.data.local.AppDatabase;
-import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity;
-import com.nhom2.learnenglish.core.data.repository.ArticleRepository;
+import com.nhom2.learnenglish.core.data.local.entity.StoryEntity;
+import com.nhom2.learnenglish.core.data.repository.StoryRepository;
 import com.nhom2.learnenglish.core.util.AppExecutors;
 import com.nhom2.learnenglish.feature.articles.ArticleDetailActivity;
 
@@ -33,113 +33,133 @@ import java.util.Set;
 
 public class StoriesActivity extends AppCompatActivity {
 
-    private ArticleRepository articleRepository;
+    private RecyclerView recyclerView;
     private StoryAdapter adapter;
     private ChipGroup chipGroup;
     private EditText etSearch;
-    
-    private final List<ArticleEntity> masterList = new ArrayList<>();
-    private String currentSearchQuery = "";
+    private ImageView ivClearSearch, ivBack;
+
+    private StoryRepository storyRepository;
+    private final List<StoryEntity> masterList = new ArrayList<>();
     private String currentCategory = "All Stories";
+    private String currentSearchQuery = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        setupWindowInsets();
         setContentView(R.layout.activity_stories_library);
 
+        // Khởi tạo Repository đúng thực thể Story
+        storyRepository = new StoryRepository(
+                AppExecutors.Companion.getInstance(),
+                AppDatabase.Companion.getInstance(this).storyDao()
+        );
+
         initViews();
-        setupWindowInsets();
-        setupToolbar();
         setupRecyclerView();
-        setupSearch();
+        setupSearchLogic();
+
+        ivBack.setOnClickListener(v -> finish());
         loadData();
     }
 
-    private void initViews() {
-        chipGroup = findViewById(R.id.cg_categories);
-        etSearch = findViewById(R.id.et_search);
-    }
-
+    // FIX TRIỆT ĐỂ WINDOW INSETS: Lấy chuẩn padding hệ thống và gán an toàn vào view root
     private void setupWindowInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.ll_header).getParent(), (v, insets) -> {
+        EdgeToEdge.enable(this);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
     }
 
-    private void setupToolbar() {
-        ImageView ivBack = findViewById(R.id.iv_back);
-        if (ivBack != null) {
-            ivBack.setOnClickListener(v -> finish());
-        }
+    private void initViews() {
+        recyclerView = findViewById(R.id.rv_stories);
+        chipGroup = findViewById(R.id.cg_categories);
+        etSearch = findViewById(R.id.et_search);
+        ivClearSearch = findViewById(R.id.iv_clear_search);
+        ivBack = findViewById(R.id.iv_back);
     }
 
     private void setupRecyclerView() {
-        RecyclerView rvStories = findViewById(R.id.rv_stories);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         adapter = new StoryAdapter(story -> {
-            Intent intent = new Intent(this, ArticleDetailActivity.class);
-            intent.putExtra("article_id", story.getId());
+            // SỬA LẠI THÀNH STORY DETAIL
+            Intent intent = new Intent(this, StoryDetailActivity.class);
+            intent.putExtra("story_id", story.getId());
             startActivity(intent);
-            overridePendingTransition(0, 0);
         });
-        
-        rvStories.setLayoutManager(new GridLayoutManager(this, 2));
-        rvStories.setAdapter(adapter);
-    }
-
-    private void setupSearch() {
-        if (etSearch != null) {
-            etSearch.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    currentSearchQuery = s.toString().toLowerCase().trim();
-                    filterData();
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {}
-            });
-        }
+        recyclerView.setAdapter(adapter);
     }
 
     private void loadData() {
-        AppDatabase db = AppDatabase.Companion.getInstance(this);
-        articleRepository = new ArticleRepository(
-                AppExecutors.Companion.getInstance(),
-                db.articleDao()
-        );
-
         AppExecutors.Companion.getInstance().getDiskIO().execute(() -> {
-            List<ArticleEntity> list = articleRepository.getAll();
-            runOnUiThread(() -> {
+            try {
+                // 1. Kiểm tra xem dưới DB đã có truyện chưa
+                List<StoryEntity> list = storyRepository.getAll();
+
+                if (list == null || list.isEmpty()) {
+                    // 2. Nếu CHƯA CÓ, lôi toàn bộ dữ liệu từ file MockData.kt sang để nạp vào DB
+                    List<StoryEntity> mockStories = com.nhom2.learnenglish.core.data.local.mockdata.MockData.INSTANCE.getStories();
+
+                    if (mockStories != null && !mockStories.isEmpty()) {
+                        for (StoryEntity story : mockStories) {
+                            // Insert từng truyện vào Room DB
+                            AppDatabase.Companion.getInstance(this).storyDao().insert(story);
+                        }
+                        // Lấy lại danh sách sau khi nạp thành công
+                        list = storyRepository.getAll();
+                    }
+                }
+
                 masterList.clear();
-                masterList.addAll(list);
-                setupCategories(list);
-                filterData();
-            });
+                if (list != null) {
+                    masterList.addAll(list);
+                }
+
+
+                // Gom tất cả các thể loại truyện duy nhất để làm bộ lọc Chip
+                Set<String> categories = new HashSet<>();
+                for (StoryEntity item : masterList) {
+                    if (item.getCategory() != null && !item.getCategory().isEmpty()) {
+                        categories.add(item.getCategory());
+                    }
+                }
+
+                // Chuyển Set sang List và xóa "All Stories" nếu lỡ có trong DB để tránh trùng lặp
+                List<String> finalCategories = new ArrayList<>(categories);
+                finalCategories.remove("All Stories");
+
+                // (Tùy chọn) Sắp xếp các danh mục còn lại theo thứ tự chữ cái A-Z cho đẹp mắt
+                java.util.Collections.sort(finalCategories);
+
+                finalCategories.add(0, "All Stories");
+
+                runOnUiThread(() -> {
+                    setupChips(finalCategories);
+                    filterData();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 
-    private void setupCategories(List<ArticleEntity> list) {
-        if (chipGroup == null) return;
+    // HÀM ĐỔ DỮ LIỆU MẪU (MOCK DATA) CHO TRUYỆN TRỰC TIẾP VÀO DATABASE
+    private void insertMockStoriesIfNeeded() {
+        AppDatabase db = AppDatabase.Companion.getInstance(this);
+        db.storyDao().insert(new StoryEntity(0, "The Tortoise and the Hare", "A classic story about how slow and steady wins the race. The proud hare falls asleep while the tortoise keeps moving forward patiently.", "Fables", "A1", "", "Aesop", false));
+        db.storyDao().insert(new StoryEntity(0, "The Secret Garden", "Mary Lennox is a lonely girl sent to live at her uncle's estate. She discovers a hidden, locked garden and breathes new life into it.", "Fiction", "B1", "", "Frances Hodgson", false));
+        db.storyDao().insert(new StoryEntity(0, "The Little Prince", "A pilot crashes in the Sahara Desert and meets a young prince from an asteroid who tells him poetic stories of his travels.", "Fantasy", "A2", "", "Antoine de Saint", false));
+        db.storyDao().insert(new StoryEntity(0, "A Christmas Carol", "Ebenezer Scrooge, a cold-hearted miser, is visited by ghosts of Christmas Past, Present, and Yet to Come to transform his life.", "Classic", "B2", "", "Charles Dickens", false));
+    }
+
+    private void setupChips(List<String> categories) {
         chipGroup.removeAllViews();
-
-        addChip("All Stories");
-        
-        Set<String> categories = new HashSet<>();
-        for (ArticleEntity item : list) {
-            if (item.getCategory() != null) categories.add(item.getCategory());
-        }
-
         for (String cat : categories) {
             addChip(cat);
         }
-
         chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
             Chip chip = findViewById(checkedId);
             if (chip != null) {
@@ -158,13 +178,35 @@ public class StoriesActivity extends AppCompatActivity {
         chipGroup.addView(chip);
     }
 
+    private void setupSearchLogic() {
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                currentSearchQuery = s.toString().toLowerCase().trim();
+                ivClearSearch.setVisibility(currentSearchQuery.isEmpty() ? View.GONE : View.VISIBLE);
+                filterData();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        ivClearSearch.setOnClickListener(v -> {
+            etSearch.setText("");
+            hideKeyboard();
+        });
+    }
+
     private void filterData() {
-        List<ArticleEntity> filtered = new ArrayList<>();
-        for (ArticleEntity item : masterList) {
+        List<StoryEntity> filtered = new ArrayList<>();
+        for (StoryEntity item : masterList) {
             boolean matchesSearch = item.getTitle().toLowerCase().contains(currentSearchQuery);
-            boolean matchesCategory = currentCategory.equals("All Stories") || 
-                                     (item.getCategory() != null && item.getCategory().equals(currentCategory));
-            
+            boolean matchesCategory = currentCategory.equals("All Stories") ||
+                    (item.getCategory() != null && item.getCategory().equals(currentCategory));
+
             if (matchesSearch && matchesCategory) {
                 filtered.add(item);
             }

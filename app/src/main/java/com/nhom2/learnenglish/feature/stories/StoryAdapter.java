@@ -11,26 +11,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.nhom2.learnenglish.R;
-import com.nhom2.learnenglish.core.data.local.entity.ArticleEntity;
+import com.nhom2.learnenglish.core.data.local.entity.StoryEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHolder> {
 
-    private List<ArticleEntity> stories = new ArrayList<>();
+    private List<StoryEntity> stories = new ArrayList<>();
     private final OnStoryClickListener listener;
 
     public interface OnStoryClickListener {
-        void onStoryClick(ArticleEntity story);
+        void onStoryClick(StoryEntity story);
     }
 
     public StoryAdapter(OnStoryClickListener listener) {
         this.listener = listener;
     }
 
-    public void updateData(List<ArticleEntity> newData) {
-        this.stories = newData;
+    public void updateData(List<StoryEntity> newData) {
+        this.stories = newData != null ? newData : new ArrayList<>();
         notifyDataSetChanged();
     }
 
@@ -43,8 +43,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
 
     @Override
     public void onBindViewHolder(@NonNull StoryViewHolder holder, int position) {
-        ArticleEntity story = stories.get(position);
-        holder.bind(story, listener);
+        holder.bind(stories.get(position), listener);
     }
 
     @Override
@@ -66,10 +65,11 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
             tvDuration = itemView.findViewById(R.id.tv_story_duration);
         }
 
-        public void bind(ArticleEntity story, OnStoryClickListener listener) {
+        public void bind(StoryEntity story, OnStoryClickListener listener) {
             tvTitle.setText(story.getTitle());
-            tvLevel.setText(story.getLevel());
-            tvDuration.setText(story.getReadTime());
+            tvLevel.setText(story.getLevel() != null ? story.getLevel() : "All");
+            // Hiển thị Thể loại (Category) ở mục phụ phụ thay cho readTime
+            tvDuration.setText(story.getCategory() != null ? story.getCategory() : "Short Story");
 
             if (story.getImage() != null && !story.getImage().isEmpty()) {
                 Glide.with(itemView.getContext())

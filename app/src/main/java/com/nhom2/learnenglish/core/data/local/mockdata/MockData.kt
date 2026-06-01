@@ -590,9 +590,200 @@ object MockData {
                     "slept.\n",
             category = "Fantasy",
             level = "c1",
-            image = "",
+            image = "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=500",
             author = "JK.ROWLING",
-        )
+        ),
+        StoryEntity(
+            id = 10002,
+            title = "THE LORD OF THE RINGS: THE FELLOWSHIP OF THE RING",
+            content = "When Mr. Bilbo Baggins of Bag End announced that he would shortly be\n" +
+                    "celebrating his eleventy-first birthday with a party of special magnificence,\n" +
+                    "there was much talk and excitement in Hobbiton. Bilbo was very rich and very\n" +
+                    "peculiar, and had been the wonder of the Hobbiton for sixty years, ever since\n" +
+                    "his remarkable disappearance and unexpected return. The riches he had brought\n" +
+                    "back from his travels had now become a local legend, and it was popularly\n" +
+                    "believed, whatever the old folk might say, that the Hill at Bag End was full\n" +
+                    "of tunnels stuffed with treasure.\n" +
+                    "And if that was not enough for fame, there was also his prolonged vigor to\n" +
+                    "marvel at. Time wore on, but it seemed to have little effect on Mr. Baggins.\n" +
+                    "At ninety he was much the same as at fifty. At ninety-nine they began to\n" +
+                    "call him well-preserved, but unchanged would have been nearer the mark.\n" +
+                    "There were some that shook their heads and thought this was too much of a\n" +
+                    "good thing; it seemed unfair that anyone should possess apparently\n" +
+                    "perpetual youth as well as inexhaustible wealth.\n" +
+                    "\"It will have to be paid for,\" they said. \"It isn't natural, and trouble\n" +
+                    "will come of it!\"\n" +
+                    "But so far trouble had not come; and as Mr. Baggins was generous with his\n" +
+                    "money, most people were willing to forgive him his oddities and his good\n" +
+                    "fortune. He remained on visiting terms with his relatives, and he had many\n" +
+                    "devoted admirers among the hobbits of poor and unimportant families.\n",
+            category = "Fantasy",
+            level = "b2",
+            image = "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=500",
+            author = "J.R.R. TOLKIEN",
+        ),
+
+        StoryEntity(
+            id = 10003,
+            title = "THE GREAT GATSBY",
+            content = "In my younger and more vulnerable years my father gave me some advice\n" +
+                    "that I've been turning over in my mind ever since.\n" +
+                    "\"Whenever you feel like criticizing anyone,\" he told me, \"just remember\n" +
+                    "that all the people in this world haven't had the advantages that you've had.\"\n" +
+                    "He didn't say any more, but we've always been unusually communicative in\n" +
+                    "a reserved way, and I understood that he meant a great deal more than that.\n" +
+                    "In consequence, I'm inclined to reserve all judgments, a habit that has\n" +
+                    "opened up many curious natures to me and also made me the victim of not a\n" +
+                    "few veteran bores. The abnormal mind is quick to detect and attach itself\n" +
+                    "to this quality when it appears in a normal person, and so it came about\n" +
+                    "that in college I was unjustly accused of being a politician, because I was\n" +
+                    "privy to the secret griefs of wild, unknown men. Most of the confidences\n" +
+                    "were unsought — frequently I have feigned sleep, preoccupation, or a\n" +
+                    "hostile levity when I realized by some unmistakable sign that an intimate\n" +
+                    "revelation was quivering on the horizon; for the intimate revelations of\n" +
+                    "young men, or at least the terms in which they express them, are usually\n" +
+                    "plagiaristic and marred by obvious suppressions.\n" +
+                    "Reserving judgments is a matter of infinite hope. I am still a little\n" +
+                    "afraid of missing something if I forget that, as my father snobbishly\n" +
+                    "suggested, and I snobbishly repeat, a sense of the fundamental decencies\n" +
+                    "is parcelled out unequally at birth.\n",
+            category = "Classic",
+            level = "c1",
+            image = "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=500",
+            author = "F. SCOTT FITZGERALD",
+        ),
+
+        StoryEntity(
+            id = 10004,
+            title = "PRIDE AND PREJUDICE",
+            content = "It is a truth universally acknowledged, that a single man in possession\n" +
+                    "of a good fortune, must be in want of a wife.\n" +
+                    "However little known the feelings or views of such a man may be on his\n" +
+                    "first entering a neighbourhood, this truth is so well fixed in the minds\n" +
+                    "of the surrounding families, that he is considered as the rightful property\n" +
+                    "of some one or other of their daughters.\n" +
+                    "\"My dear Mr. Bennet,\" said his lady to him one day, \"have you heard that\n" +
+                    "Netherfield Park is let at last?\"\n" +
+                    "Mr. Bennet replied that he had not.\n" +
+                    "\"But it is,\" returned she; \"for Mrs. Long has just been here, and she\n" +
+                    "told me all about it.\"\n" +
+                    "Mr. Bennet made no answer.\n" +
+                    "\"Do you not want to know who has taken it?\" cried his wife impatiently.\n" +
+                    "\"You want to tell me, and I have no objection to hearing it.\"\n" +
+                    "This was invitation enough.\n" +
+                    "\"Why, my dear, you must know, Mrs. Long says that Netherfield is taken\n" +
+                    "by a young man of large fortune from the north of England; that he came\n" +
+                    "down on Monday in a chaise and four to see the place, and was so much\n" +
+                    "delighted with it, that he agreed with Mr. Morris immediately; that he is\n" +
+                    "to take possession before Michaelmas, and some of his servants are to be\n" +
+                    "in the house by the end of next week.\"\n" +
+                    "\"What is his name?\"\n" +
+                    "\"Bingley.\"\n" +
+                    "\"Is he married or single?\"\n" +
+                    "\"Oh! Single, my dear, to be sure! A single man of large fortune; four or\n" +
+                    "five thousand a year. What a fine thing for our girls!\"\n",
+            category = "Romance",
+            level = "b2",
+            image = "https://images.unsplash.com/photo-1474932430478-367dbb6832c1?w=500",
+            author = "JANE AUSTEN",
+        ),
+        StoryEntity(
+            id = 10005,
+            title = "THE ALCHEMIST",
+            content = "The boy's name was Santiago. Dusk was falling as the boy arrived with\n" +
+                    "his herd at an abandoned church. The roof had fallen in long ago, and an\n" +
+                    "enormous sycamore had grown up where the sacristy had once stood.\n" +
+                    "He decided to spend the night there. He saw to it that all the sheep\n" +
+                    "entered through the ruined gate, and then laid down his jacket and\n" +
+                    "used it for a pillow. He told himself that he would have to begin\n" +
+                    "reading thicker books: they lasted longer, and made more comfortable\n" +
+                    "pillows.\n" +
+                    "It was still dark when he awoke, and, looking up, he could see the\n" +
+                    "stars through the half-destroyed roof. I wanted to sleep a little\n" +
+                    "longer, he thought. He had the same dream that night as a week ago,\n" +
+                    "and once again he had awakened before it ended.\n" +
+                    "He arose and, taking up his crook, began to awaken the sheep that\n" +
+                    "still slept. He had noticed that, as soon as he awoke, most of his\n" +
+                    "animals also began to stir. It was as if some mysterious energy\n" +
+                    "bound his life to that of the sheep, with whom he had spent the\n" +
+                    "past two years, leading them through the countryside of Andalusia\n" +
+                    "in search of food and water.\n" +
+                    "\"They are so used to me that they know my schedule,\" he muttered.\n" +
+                    "Thinking about that for a moment, he realized that it could be the\n" +
+                    "other way around: that it was he who had become accustomed to\n" +
+                    "their schedule.\n" +
+                    "There were some people, though, who felt envious of his way of\n" +
+                    "life and said that shepherds never need comb their hair, and have\n" +
+                    "no fixed address.\n",
+            category = "Adventure",
+            level = "b1",
+            image = "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=500",
+            author = "PAULO COELHO",
+        ),
+
+        StoryEntity(
+            id = 10006,
+            title = "1984",
+            content = "It was a bright cold day in April, and the clocks were striking thirteen.\n" +
+                    "Winston Smith, his chin nuzzled into his breast in an effort to escape\n" +
+                    "the vile wind, slipped quickly through the glass doors of Victory\n" +
+                    "Mansions, though not quickly enough to prevent a swirl of gritty dust\n" +
+                    "from entering along with him.\n" +
+                    "The hallway smelt of boiled cabbage and old rag mats. At one end of\n" +
+                    "it a coloured poster, too large for the room, had been tacked to the\n" +
+                    "wall. It depicted simply an enormous face, more than a metre wide:\n" +
+                    "the face of a man of about forty-five, with a heavy black moustache\n" +
+                    "and ruggedly handsome features.\n" +
+                    "Winston made for the stairs. It was no use trying the lift. Even at\n" +
+                    "the best of times it was seldom working, and at present the electric\n" +
+                    "current was cut off during daylight hours. It was part of the economy\n" +
+                    "drive in preparation for Hate Week. The flat was seven flights up,\n" +
+                    "and Winston, who was thirty-nine and had a varicose ulcer above his\n" +
+                    "right ankle, went slowly, resting several times on the way.\n" +
+                    "On each landing, opposite the lift shaft, the poster with the enormous\n" +
+                    "face gazed from the wall. It was one of those pictures which are so\n" +
+                    "contrived that the eyes follow you about when you move. BIG BROTHER\n" +
+                    "IS WATCHING YOU, the caption beneath it ran.\n" +
+                    "\"Down with Big Brother!\" he said to himself. But it was no use.\n" +
+                    "The words had been forming in his mind for weeks now. He did not\n" +
+                    "know why they had suddenly crystallized into an overt act.\n",
+            category = "Dystopia",
+            level = "c1",
+            image = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500",
+            author = "GEORGE ORWELL",
+        ),
+
+        StoryEntity(
+            id = 10007,
+            title = "THE LITTLE PRINCE",
+            content = "Once when I was six years old I saw a magnificent picture in a book,\n" +
+                    "called True Stories from Nature, about the primeval forest. It was a\n" +
+                    "picture of a boa constrictor in the act of swallowing an animal. Here\n" +
+                    "is a copy of the drawing.\n" +
+                    "In the book it said: Boa constrictors swallow their prey whole, without\n" +
+                    "chewing it. After that they are not able to move, and they sleep through\n" +
+                    "the six months that they need for digestion.\n" +
+                    "I pondered deeply, then, over the adventures of the jungle. And after\n" +
+                    "some work with a colored pencil I succeeded in making my first drawing.\n" +
+                    "My Drawing Number One. It looked something like this.\n" +
+                    "I showed my masterpiece to the grown-ups, and asked them whether the\n" +
+                    "drawing frightened them. But they answered: Frighten? Why should any\n" +
+                    "one be frightened by a hat?\n" +
+                    "My drawing was not a picture of a hat. It was a picture of a boa\n" +
+                    "constrictor digesting an elephant. But since the grown-ups were not\n" +
+                    "able to understand it, I made another drawing: I drew the inside of a\n" +
+                    "boa constrictor, so that the grown-ups could see it clearly. They always\n" +
+                    "need to have things explained.\n" +
+                    "The grown-ups' response, this time, was to advise me to lay aside my\n" +
+                    "drawings of boa constrictors, whether from the inside or the outside,\n" +
+                    "and devote myself instead to geography, history, arithmetic, and grammar.\n" +
+                    "That is why, at the age of six, I gave up what might have been a\n" +
+                    "magnificent career as a painter.\n",
+            category = "Fiction",
+            level = "a2",
+            image = "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=500",
+            author = "ANTOINE DE SAINT-EXUPÉRY",
+        ),
 
     )
 
